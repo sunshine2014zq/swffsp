@@ -46,6 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login.html")
                 .loginProcessingUrl("/login")
                 .permitAll();
+        //Spring security 与 iframe 的兼容问题
+        http.headers().frameOptions().sameOrigin();
     }
 
     @Override
