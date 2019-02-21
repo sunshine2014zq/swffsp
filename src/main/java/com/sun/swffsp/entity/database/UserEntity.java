@@ -1,6 +1,7 @@
-package com.sun.swffsp.entity;
+package com.sun.swffsp.entity.database;
 
-import com.sun.swffsp.entity.base.BaseEntity;
+import com.sun.swffsp.entity.database.base.BaseEntity;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,43 +20,55 @@ import java.util.List;
  */
 @Table(name = "user")
 @Entity
-public class UserEntity extends BaseEntity implements Serializable,UserDetails {
+public class UserEntity extends BaseEntity implements Serializable, UserDetails {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private String id;
-
-    /** 用户名 */
-    @Column(name="username")
+    /**
+     * 用户名
+     */
+    @UniqueElements
+    @Column(name = "username", length = 32, nullable = false, unique = true)
     private String username;
 
-    /** 密码 */
-    @Column(name="password")
+    /**
+     * 密码
+     */
+    @Column(name = "password", length = 64)
     private String password;
 
-    /**账号类型 */
-    @Column(name="type")
+    /**
+     * 账号类型
+     */
+    @Column(name = "type")
     private Integer type;
 
-    /** 昵称 */
-    @Column(name="nick_name")
+    /**
+     * 昵称
+     */
+    @Column(name = "nick_name", length = 16)
     private String nickName;
 
-    /** 邮箱 */
-    @Column(name="mail")
+    /**
+     * 邮箱
+     */
+    @Column(name = "mail", length = 32)
     private String mail;
 
-    /** 手机号 */
-    @Column(name="phone_num")
+    /**
+     * 手机号
+     */
+    @Column(name = "phone_num", length = 16)
     private String phoneNum;
 
-    /** qq号 */
-    @Column(name="qq_num")
+    /**
+     * qq号
+     */
+    @Column(name = "qq_num", length = 16)
     private String qqNum;
 
-    /** 微信号 */
-    @Column(name="wx_num")
+    /**
+     * 微信号
+     */
+    @Column(name = "wx_num", length = 16)
     private String wxNum;
 
     @Override
@@ -81,16 +94,8 @@ public class UserEntity extends BaseEntity implements Serializable,UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>();
-//        auths.add(new SimpleGrantedAuthority("admin"));
+        auths.add(new SimpleGrantedAuthority("超级管理员"));
         return auths;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUsername() {
