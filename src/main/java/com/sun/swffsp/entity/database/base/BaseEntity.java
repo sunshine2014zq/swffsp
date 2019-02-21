@@ -1,5 +1,7 @@
 package com.sun.swffsp.entity.database.base;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -59,6 +61,11 @@ public abstract class BaseEntity implements Serializable {
     @Version
     @Column(name = "version")
     private long version;
+
+    /**
+     * 对象转化为JSONObject
+     * @return
+     */
 
     public Date getCreateTime() {
         return createTime;

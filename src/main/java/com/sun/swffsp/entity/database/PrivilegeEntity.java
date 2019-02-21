@@ -1,5 +1,6 @@
 package com.sun.swffsp.entity.database;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sun.swffsp.entity.database.base.BaseEntity;
 
 import javax.persistence.Column;
@@ -34,6 +35,14 @@ public class PrivilegeEntity extends BaseEntity implements Serializable {
      */
     @Column(name = "type")
     private Integer type;
+    /**
+     * 一级菜单
+     */
+    public static final Integer TYPE_MENU_1 = 1;
+    /**
+     * 二级菜单
+     */
+    public static final Integer TYPE_MENU_2 = 2;
 
     /**
      * 权限地址

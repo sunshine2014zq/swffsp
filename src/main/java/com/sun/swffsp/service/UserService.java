@@ -8,4 +8,9 @@ package com.sun.swffsp.service;
  */
 public interface UserService {
 
+    /**
+     * 获取用户信息
+     * @return username,menu
+     */
+    Object getUserInfo();
 }
