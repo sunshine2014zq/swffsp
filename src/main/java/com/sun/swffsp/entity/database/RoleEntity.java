@@ -3,6 +3,7 @@ package com.sun.swffsp.entity.database;
 import com.sun.swffsp.entity.database.base.BaseEntity;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * 角色实体
@@ -25,6 +26,12 @@ public class RoleEntity extends BaseEntity {
     @Column(name = "name", length = 16, nullable = false)
     private String name;
 
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JoinTable(name = "role_privilege",
+            joinColumns = @JoinColumn(name = "role_code", referencedColumnName = "code"),
+            inverseJoinColumns = @JoinColumn(name = "privilege_code", referencedColumnName = "code"))
+    private List<PrivilegeEntity> privileges;
+
     public String getCode() {
         return code;
     }
@@ -41,11 +48,20 @@ public class RoleEntity extends BaseEntity {
         this.name = name;
     }
 
+    public List<PrivilegeEntity> getPrivileges() {
+        return privileges;
+    }
+
+    public void setPrivileges(List<PrivilegeEntity> privileges) {
+        this.privileges = privileges;
+    }
+
     @Override
     public String toString() {
         return "RoleEntity{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
+                ", privileges=" + privileges +
                 '}';
     }
 }

@@ -71,6 +71,12 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
     @Column(name = "wx_num", length = 16)
     private String wxNum;
 
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_code", referencedColumnName = "username"),
+            inverseJoinColumns = @JoinColumn(name = "role_code", referencedColumnName = "code"))
+    private List<RoleEntity> roles;
+
     @Override
     public boolean isAccountNonExpired() {
         return false;
@@ -162,6 +168,14 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
         this.wxNum = wxNum;
     }
 
+    public List<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +
@@ -173,6 +187,7 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
                 ", phoneNum='" + phoneNum + '\'' +
                 ", qqNum='" + qqNum + '\'' +
                 ", wxNum='" + wxNum + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }
