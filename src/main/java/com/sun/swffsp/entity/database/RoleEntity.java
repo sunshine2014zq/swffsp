@@ -61,7 +61,6 @@ public class RoleEntity extends BaseEntity {
         return "RoleEntity{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
-                ", privileges=" + privileges +
                 '}';
     }
 }

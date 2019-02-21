@@ -1,6 +1,7 @@
 package com.sun.swffsp.entity.database;
 
 import com.sun.swffsp.entity.database.base.BaseEntity;
+import com.sun.swffsp.security.CustomGrantedAuthority;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -100,7 +101,9 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>();
-        auths.add(new SimpleGrantedAuthority("超级管理员"));
+        for (RoleEntity role : roles){
+            auths.add(new CustomGrantedAuthority(role));
+        }
         return auths;
     }
 
@@ -187,7 +190,6 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
                 ", phoneNum='" + phoneNum + '\'' +
                 ", qqNum='" + qqNum + '\'' +
                 ", wxNum='" + wxNum + '\'' +
-                ", roles=" + roles +
                 '}';
     }
 }
