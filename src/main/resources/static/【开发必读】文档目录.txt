@@ -68,7 +68,7 @@ Lib/	第三方插件
 ├── layer					layer弹出层插件
 ├── laypage					laypage 翻页插件
 ├── jquery.contextmenu			右键菜单插件
-├── ueditor					百度编辑器
+├── ueditor					百度编辑器 (10M)
 ├── Highcharts				图表插件
 ├── echarts					百度图标插件
 ├── datatables				表格排序，检索插件
