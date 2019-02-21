@@ -101,7 +101,7 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>();
-        for (RoleEntity role : roles){
+        for (RoleEntity role : roles) {
             auths.add(new CustomGrantedAuthority(role));
         }
         return auths;

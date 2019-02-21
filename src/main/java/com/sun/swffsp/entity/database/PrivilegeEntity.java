@@ -5,6 +5,7 @@ import com.sun.swffsp.entity.database.base.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * 权限实体
@@ -14,7 +15,7 @@ import javax.persistence.Table;
  */
 @Table(name = "privilege")
 @Entity
-public class PrivilegeEntity extends BaseEntity {
+public class PrivilegeEntity extends BaseEntity implements Serializable {
 
     /**
      * 权限代码

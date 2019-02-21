@@ -3,6 +3,7 @@ package com.sun.swffsp.entity.database;
 import com.sun.swffsp.entity.database.base.BaseEntity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "role")
-public class RoleEntity extends BaseEntity {
+public class RoleEntity extends BaseEntity implements Serializable {
 
     /**
      * 角色代码

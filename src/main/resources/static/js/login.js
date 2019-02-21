@@ -15,12 +15,17 @@ $(".loginBtn").click(function () {
     var formData = $(".loginForm").serializeObject();
     baseUtils.post(new Vue(),loginUrl,formData,function (response) {
         console.log(response)
-
         if(response.body.status){
             window.location.href = indexUrl;
             baseUtils.tip(response.body.msg,1,1500);
         }else {
-            baseUtils.tip(response.body.msg,2,1500);
+            if(response.body.msg){
+                baseUtils.tip(response.body.msg,2,1500);
+            }else {
+                //没有返回正确的JSON结果
+                baseUtils.tip("系统繁忙!请稍后重试!",2,1500);
+            }
+
         }
     })
 });
