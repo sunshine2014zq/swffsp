@@ -1,17 +1,10 @@
 package com.sun.swffsp.controller;
 
-import com.sun.swffsp.entity.database.RoleEntity;
-import com.sun.swffsp.entity.database.UserEntity;
-import com.sun.swffsp.security.CustomGrantedAuthority;
 import com.sun.swffsp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 用户模块
