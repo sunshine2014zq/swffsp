@@ -1,15 +1,18 @@
 package com.sun.swffsp.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.sun.swffsp.entity.database.PrivilegeEntity;
-import com.sun.swffsp.entity.database.RoleEntity;
-import com.sun.swffsp.entity.database.UserEntity;
+import com.sun.swffsp.dto.db.PrivilegeEntity;
+import com.sun.swffsp.dto.db.UserEntity;
 import com.sun.swffsp.jpa.UserJPA;
 import com.sun.swffsp.security.CustomGrantedAuthority;
 import com.sun.swffsp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * 用户业务
@@ -68,6 +69,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         List<JSONObject> menus =menuTree(privileges);
         result.put("menus",menus);
         return result;
+    }
+
+    @Override
+    public Page<UserEntity> getUserList() {
+        Pageable pageable = PageRequest.of(0,10, Sort.Direction.ASC,"modifiedTime");
+        Page<UserEntity> users = userJPA.findAll((Specification<UserEntity>) (root, criteriaQuery, criteriaBuilder) -> {
+            return null;
+        }, pageable);
+        return users;
     }
 
     /**

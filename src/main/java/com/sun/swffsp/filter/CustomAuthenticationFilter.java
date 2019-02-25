@@ -1,7 +1,7 @@
 package com.sun.swffsp.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.swffsp.entity.database.UserEntity;
+import com.sun.swffsp.dto.db.UserEntity;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

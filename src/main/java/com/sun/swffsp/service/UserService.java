@@ -1,5 +1,8 @@
 package com.sun.swffsp.service;
 
+import com.sun.swffsp.dto.db.UserEntity;
+import org.springframework.data.domain.Page;
+
 /**
  * 用户模块相关业务接口
  *
@@ -13,4 +16,10 @@ public interface UserService {
      * @return username,menu
      */
     Object getUserInfo();
+
+    /**
+     *
+     * @return
+     */
+    Page<UserEntity> getUserList();
 }

@@ -1,6 +1,6 @@
-package com.sun.swffsp.entity.database;
+package com.sun.swffsp.dto.db;
 
-import com.sun.swffsp.entity.database.base.BaseEntity;
+import com.sun.swffsp.dto.db.common.CommonEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "role")
-public class RoleEntity extends BaseEntity implements Serializable {
+public class RoleEntity extends CommonEntity implements Serializable {
 
     /**
      * 角色代码

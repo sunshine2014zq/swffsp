@@ -1,6 +1,6 @@
 package com.sun.swffsp.jpa;
 
-import com.sun.swffsp.entity.database.UserEntity;
+import com.sun.swffsp.dto.db.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

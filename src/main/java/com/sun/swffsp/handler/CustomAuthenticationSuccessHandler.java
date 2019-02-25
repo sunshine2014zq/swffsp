@@ -1,7 +1,7 @@
 package com.sun.swffsp.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.swffsp.entity.LoginEntity;
+import com.sun.swffsp.dto.LoginEntity;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;

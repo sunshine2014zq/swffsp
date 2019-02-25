@@ -1,7 +1,5 @@
-package com.sun.swffsp.entity.database.base;
+package com.sun.swffsp.dto.db.common;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,13 +8,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 实体基础字段
+ * 数据库映射实体通用字段
  *
  * @author sun
  * @date 2019/2/20 14:48
  */
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable {
+public abstract class CommonEntity implements Serializable {
 
     /**
      * 主键-UUID

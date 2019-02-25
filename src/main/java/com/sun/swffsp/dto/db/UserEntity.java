@@ -1,10 +1,9 @@
-package com.sun.swffsp.entity.database;
+package com.sun.swffsp.dto.db;
 
-import com.sun.swffsp.entity.database.base.BaseEntity;
+import com.sun.swffsp.dto.db.common.CommonEntity;
 import com.sun.swffsp.security.CustomGrantedAuthority;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -21,7 +20,7 @@ import java.util.List;
  */
 @Table(name = "user")
 @Entity
-public class UserEntity extends BaseEntity implements Serializable, UserDetails {
+public class UserEntity extends CommonEntity implements Serializable, UserDetails {
 
     /**
      * 用户名

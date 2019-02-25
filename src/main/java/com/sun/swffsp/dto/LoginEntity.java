@@ -1,4 +1,4 @@
-package com.sun.swffsp.entity;
+package com.sun.swffsp.dto;
 
 /**
  * JSON登录结果相应实体
