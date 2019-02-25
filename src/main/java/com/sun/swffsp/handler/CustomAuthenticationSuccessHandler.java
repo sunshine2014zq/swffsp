@@ -2,6 +2,8 @@ package com.sun.swffsp.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.sun.swffsp.dto.LoginEntity;
+import com.sun.swffsp.dto.resp.JSONObject;
+import com.sun.swffsp.dto.resp.ResponseFields;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -24,8 +26,10 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 || httpServletRequest.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
             //JSON请求处理返回JSON
             httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            LoginEntity entity = new LoginEntity(true, "登录成功!欢迎" + authentication.getName());
-            String str = JSON.toJSONString(entity);
+            String str = new JSONObject()
+                    .put(ResponseFields.Login.STATUS, true)
+                    .put(ResponseFields.Login.MESSAGE, "登录成功!欢迎" + authentication.getName())
+                    .toJSONString();
             httpServletResponse.getWriter().println(str);
         } else {
             //非JSON请求采用默认处理-跳转页面
