@@ -1,7 +1,5 @@
 package com.sun.swffsp.handler;
 
-import com.alibaba.fastjson.JSON;
-import com.sun.swffsp.dto.LoginEntity;
 import com.sun.swffsp.dto.resp.JSONObject;
 import com.sun.swffsp.dto.resp.ResponseFields;
 import org.springframework.http.MediaType;
