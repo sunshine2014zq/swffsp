@@ -1,5 +1,6 @@
 package com.sun.swffsp.service;
 
+import com.sun.swffsp.dto.condition.UserCondition;
 import com.sun.swffsp.dto.db.UserEntity;
 import org.springframework.data.domain.Page;
 
@@ -15,11 +16,12 @@ public interface UserService {
      * 获取用户信息
      * @return username,menu
      */
-    Object getUserInfo();
+    Object info();
 
     /**
      *
      * @return
+     * @param userCondition
      */
-    Page<UserEntity> getUserList();
+    Page<UserEntity> list(UserCondition userCondition);
 }

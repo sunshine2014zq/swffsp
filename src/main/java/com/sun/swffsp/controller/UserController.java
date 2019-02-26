@@ -1,5 +1,6 @@
 package com.sun.swffsp.controller;
 
+import com.sun.swffsp.dto.condition.UserCondition;
 import com.sun.swffsp.dto.db.UserEntity;
 import com.sun.swffsp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,13 @@ public class UserController {
 
     @RequestMapping("/info")
     @ResponseBody
-    public Object getUserInfo() {
-        return userService.getUserInfo();
+    public Object info() {
+        return userService.info();
     }
 
     @RequestMapping("/list")
-    public Page<UserEntity> getUserList(){
-        return userService.getUserList();
+    public Page<UserEntity> list(UserCondition userCondition){
+        return userService.list(userCondition);
     }
 
 

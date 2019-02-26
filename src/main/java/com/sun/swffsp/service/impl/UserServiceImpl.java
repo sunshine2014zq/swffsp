@@ -1,6 +1,7 @@
 package com.sun.swffsp.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sun.swffsp.dto.condition.UserCondition;
 import com.sun.swffsp.dto.db.PrivilegeEntity;
 import com.sun.swffsp.dto.db.UserEntity;
 import com.sun.swffsp.jpa.UserJPA;
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
 
     @Override
-    public Object getUserInfo() {
+    public Object info() {
         JSONObject result = new JSONObject();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         result.put("username",auth.getName());
@@ -72,12 +74,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public Page<UserEntity> getUserList() {
-        Pageable pageable = PageRequest.of(0,10, Sort.Direction.ASC,"modifiedTime");
-        Page<UserEntity> users = userJPA.findAll((Specification<UserEntity>) (root, criteriaQuery, criteriaBuilder) -> {
-            return null;
+    public Page<UserEntity> list(UserCondition userCondition) {
+        Pageable pageable = PageRequest.of(userCondition.getPage(),userCondition.getSize(),
+                Sort.Direction.ASC,"modifiedTime");
+        Page<UserEntity> list = userJPA.findAll((Specification<UserEntity>) (root, criteriaQuery, criteriaBuilder) -> {
+            Predicate predicate = criteriaBuilder.like(root.get("username"),
+                    "%" + userCondition.getUsernameKey() + "%");
+            return predicate;
         }, pageable);
-        return users;
+        return list;
     }
 
     /**
