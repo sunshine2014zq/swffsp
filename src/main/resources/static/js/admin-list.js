@@ -20,7 +20,7 @@ var service = {
             //返回数据相关处理
             console.log(response)
             if(response.body.status){
-                successCallback();//html组件相关处理
+                successCallback(response.body.msg);//html组件相关处理
             }
         });
     }
@@ -49,22 +49,17 @@ var userVue = new Vue({
         search: function () {
             service.userPaging(this, this.$data.query);
         }
-        , statusModified: function (obj, id, status) {
+        ,statusModified: function (event, id, status) {
             var vue = this;
-            layer.confirm('确认要启用吗？', function () {
+            var msg = status == 1 ?  "确定启用吗?" :"确定停用吗?";
+            layer.confirm(msg, function (index) {
                 //此处请求后台程序，下方是成功后的前台处理……
                 var user = {"id":id,"status":status};
-                service.modified(vue,user,function () {
-                    var disable = {"title":"停用","status":0,"icon":"&#xe631;","tag":'<span class="label label-success radius">已启用</span>'}
-                    var enable = {"title":"启用","status":1,"icon":"&#xe615;","tag":'<span class="label radius">已停用</span>'}
-                    var current = status == 1 ?  disable :enable;
-                    var str = '<span><a @click="statusModified(this,user.id,' + current.status + ')" href="javascript:;" ' +
-                        'title="' + current.titile + '" style="text-decoration:none">' +
-                        '<i class="Hui-iconfont">' + current.icon + '</i>' +
-                        '</a></span>'
-                    $(obj).parents("tr").find(".td-manage").prepend(str);
-                    $(obj).parents("tr").find(".td-status").html(current.tag);
-                    $(obj).remove();
+                service.modified(vue,user,function (msg) {
+                    $(".btn-status").toggle();
+                    $(".label-status").toggle();
+                    layer.close(index);
+                    baseUtils.tip(msg,1,1000)
                     // layer.msg('已启用!', {icon: 6,time:1000});
                 })
             });

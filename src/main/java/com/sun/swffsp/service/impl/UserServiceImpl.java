@@ -99,7 +99,8 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
         if(null != userEntity.getStatus()){
             user.setStatus(userEntity.getStatus());
         }
-        return userJPA.save(user);
+        userJPA.save(user);
+        return modifiedSuccess();
     }
 
     /**

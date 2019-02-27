@@ -76,17 +76,17 @@
 				</td>
 				<td>{{user.createTime}}</td>
 				<td class="td-status">
-					<span class="label radius" v-if="user.status==0">已停用</span>
-					<span class="label label-success radius" v-if="user.status==1">已启用</span>
+					<span class="label-status label radius" v-show="user.status==0">已停用</span>
+					<span class="label-status label label-success radius" v-show="user.status==1">已启用</span>
 				</td>
 				<td class="td-manage">
-					<span v-if="user.status==0">
-						<a style="text-decoration:none" @click="statusModified(this,user.id,1)" href="javascript:;" title="启用">
+					<span class="btn-status" v-show="user.status==0">
+						<a style="text-decoration:none" @click="statusModified($event,user.id,1)" href="javascript:;" title="启用">
 							<i class="Hui-iconfont">&#xe615;</i>
 						</a>
 					</span>
-					<span v-if="user.status==1">
-						<a style="text-decoration:none" @click="statusModified(this,user.id,0)" href="javascript:;" title="停用">
+					<span class="btn-status" v-show="user.status==1">
+						<a style="text-decoration:none" @click="statusModified($event,user.id,0)" href="javascript:;" title="停用">
 							<i class="Hui-iconfont">&#xe631;</i>
 						</a>
 					</span>
