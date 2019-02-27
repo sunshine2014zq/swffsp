@@ -19,7 +19,7 @@ public class CommonCondition {
     private Integer size;
 
     public Integer getPage() {
-        return page;
+        return page-1;
     }
 
     public void setPage(Integer page) {

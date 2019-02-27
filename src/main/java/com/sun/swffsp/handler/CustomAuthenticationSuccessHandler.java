@@ -25,8 +25,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             //JSON请求处理返回JSON
             httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             String str = new JSONObject()
-                    .put(ResponseFields.Login.STATUS, true)
-                    .put(ResponseFields.Login.MESSAGE, "登录成功!欢迎" + authentication.getName())
+                    .put(ResponseFields.Common.STATUS, true)
+                    .put(ResponseFields.Common.MESSAGE, "登录成功!欢迎" + authentication.getName())
                     .toJSONString();
             httpServletResponse.getWriter().println(str);
         } else {

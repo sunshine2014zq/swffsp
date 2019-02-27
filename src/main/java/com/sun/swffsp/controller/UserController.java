@@ -5,6 +5,7 @@ import com.sun.swffsp.dto.db.UserEntity;
 import com.sun.swffsp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,8 +30,15 @@ public class UserController {
     }
 
     @RequestMapping("/list")
-    public Page<UserEntity> list(UserCondition userCondition){
+    @ResponseBody
+    public Page<UserEntity> list(@RequestBody UserCondition userCondition){
         return userService.list(userCondition);
+    }
+
+    @RequestMapping("/modified")
+    public Object modified(@RequestBody UserEntity userEntity){
+        return userService.modified(userEntity);
+
     }
 
 

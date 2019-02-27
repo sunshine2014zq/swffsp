@@ -19,9 +19,16 @@ public interface UserService {
     Object info();
 
     /**
-     *
+     * 用户列表
      * @return
      * @param userCondition
      */
     Page<UserEntity> list(UserCondition userCondition);
+
+    /**
+     * 修改
+     * @param userEntity
+     * @return
+     */
+    Object modified(UserEntity userEntity);
 }

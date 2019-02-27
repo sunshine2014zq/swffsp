@@ -25,7 +25,6 @@ public class UserEntity extends CommonEntity implements Serializable, UserDetail
     /**
      * 用户名
      */
-    @UniqueElements
     @Column(name = "username", length = 32, nullable = false, unique = true)
     private String username;
 

@@ -16,16 +16,13 @@ $(".loginBtn").click(function () {
     baseUtils.post(new Vue(),loginUrl,formData,function (response) {
         console.log(response)
         if(response.body.status){
-            window.location.href = indexUrl;
             baseUtils.tip(response.body.msg,1,1500);
-        }else {
-            if(response.body.msg){
-                baseUtils.tip(response.body.msg,2,1500);
-            }else {
-                //没有返回正确的JSON结果
-                baseUtils.tip("系统繁忙!请稍后重试!",2,1500);
-            }
+            setTimeout(function () {
+                window.location.href = indexUrl
+            },400)
 
+        }else {
+            baseUtils.tip(response.body.msg,2,1500);
         }
     })
 });

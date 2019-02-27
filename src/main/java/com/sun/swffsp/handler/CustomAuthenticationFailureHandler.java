@@ -25,8 +25,8 @@ public class CustomAuthenticationFailureHandler extends ExceptionMappingAuthenti
             //JSON请求处理返回JSON
             httpServletResponse.setContentType("application/json;charset=utf-8");
             String str = new JSONObject()
-                    .put(ResponseFields.Login.STATUS, false)
-                    .put(ResponseFields.Login.MESSAGE, "账号或密码错误")
+                    .put(ResponseFields.Common.STATUS, false)
+                    .put(ResponseFields.Common.MESSAGE, "账号或密码错误")
                     .toJSONString();
             httpServletResponse.getWriter().println(str);
         } else {

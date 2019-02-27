@@ -1,5 +1,6 @@
 package com.sun.swffsp.service.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.sun.swffsp.dto.condition.UserCondition;
 import com.sun.swffsp.dto.db.PrivilegeEntity;
@@ -7,6 +8,7 @@ import com.sun.swffsp.dto.db.UserEntity;
 import com.sun.swffsp.jpa.UserJPA;
 import com.sun.swffsp.security.CustomGrantedAuthority;
 import com.sun.swffsp.service.UserService;
+import com.sun.swffsp.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +36,7 @@ import java.util.List;
  * @date 2019/1/10 14:20
  */
 @Service
-public class UserServiceImpl implements UserDetailsService, UserService {
+public class UserServiceImpl extends BaseService implements UserDetailsService, UserService {
 
     @Autowired
     private UserJPA userJPA;
@@ -78,11 +81,25 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         Pageable pageable = PageRequest.of(userCondition.getPage(),userCondition.getSize(),
                 Sort.Direction.ASC,"modifiedTime");
         Page<UserEntity> list = userJPA.findAll((Specification<UserEntity>) (root, criteriaQuery, criteriaBuilder) -> {
-            Predicate predicate = criteriaBuilder.like(root.get("username"),
-                    "%" + userCondition.getUsernameKey() + "%");
-            return predicate;
+            List<Predicate> predicates = new ArrayList<>();
+            Predicate[] p = new Predicate[predicates.size()];
+            if(!StringUtils.isEmpty(userCondition.getUsernameKey())){
+                String pattern = "%" + (userCondition.getUsernameKey() == null ? "" : userCondition.getUsernameKey())+ "%";
+                predicates.add(criteriaBuilder.like(root.get("username"), pattern));
+            }
+            return criteriaBuilder.and(predicates.toArray(p));
         }, pageable);
         return list;
+    }
+
+    @Transactional
+    @Override
+    public Object modified(UserEntity userEntity) {
+        UserEntity user = userJPA.findById(userEntity.getId()).get();
+        if(null != userEntity.getStatus()){
+            user.setStatus(userEntity.getStatus());
+        }
+        return userJPA.save(user);
     }
 
     /**

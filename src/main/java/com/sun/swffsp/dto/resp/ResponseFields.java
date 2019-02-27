@@ -9,18 +9,26 @@ package com.sun.swffsp.dto.resp;
 public class ResponseFields {
 
     /**
-     * 登录响应
+     * 通用的JSON请求响应
      */
-    public static class Login{
+    public static class Common {
         /**
-         * 登录状态
+         * 状态
          */
         public static final String STATUS = "status";
         /**
-         * 登录消息
+         * 消息
          */
         public static final String MESSAGE = "msg";
     }
+
+    /**
+     * 修改
+     */
+    public static class Modified extends Common{
+
+    }
+
 
 
 

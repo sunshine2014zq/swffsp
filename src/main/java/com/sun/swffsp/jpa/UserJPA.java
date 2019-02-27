@@ -12,7 +12,14 @@ import java.io.Serializable;
  * @author sun
  * @date 2019/1/8 13:32
  */
-public interface UserJPA extends JpaRepository<UserEntity,Long>,JpaSpecificationExecutor<UserEntity>,Serializable {
+public interface UserJPA extends JpaRepository<UserEntity,String>,JpaSpecificationExecutor<UserEntity>,Serializable {
 
+    /**
+     * 通过用户名查找用户
+     * @param username
+     * @return
+     */
     public UserEntity findByUsername(String username);
+
+
 }
