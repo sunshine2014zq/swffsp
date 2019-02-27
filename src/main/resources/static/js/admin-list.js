@@ -60,7 +60,6 @@ var userVue = new Vue({
                     $(".label-status").toggle();
                     layer.close(index);
                     baseUtils.tip(msg,1,1000)
-                    // layer.msg('已启用!', {icon: 6,time:1000});
                 })
             });
         }
