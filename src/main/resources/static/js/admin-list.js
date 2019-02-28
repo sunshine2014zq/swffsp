@@ -56,8 +56,8 @@ var userVue = new Vue({
                 //此处请求后台程序，下方是成功后的前台处理……
                 var user = {"id":id,"status":status};
                 service.modified(vue,user,function (msg) {
-                    $(".btn-status").toggle();
-                    $(".label-status").toggle();
+                    $(event.target).parents("tr").find(".btn-status").toggle();
+                    $(event.target).parents("tr").find(".label-status").toggle();
                     layer.close(index);
                     baseUtils.tip(msg,1,1000)
                 })

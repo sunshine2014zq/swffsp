@@ -79,7 +79,7 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
     @Override
     public Page<UserEntity> list(UserCondition userCondition) {
         Pageable pageable = PageRequest.of(userCondition.getPage(),userCondition.getSize(),
-                Sort.Direction.ASC,"modifiedTime");
+                Sort.Direction.DESC,"createTime");
         Page<UserEntity> list = userJPA.findAll((Specification<UserEntity>) (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             Predicate[] p = new Predicate[predicates.size()];
