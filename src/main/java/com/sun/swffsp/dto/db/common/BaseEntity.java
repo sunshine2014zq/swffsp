@@ -56,6 +56,22 @@ public abstract class BaseEntity implements Serializable {
     @Column(name = "status")
     private Integer status;
 
+
+    /**
+     * 正常状态
+     */
+    public static final Integer STATUS_NORMAL = 1;
+    /**
+     * 无效状态-列表可见
+     */
+    public static final Integer STATUS_INVALID = 0;
+    /**
+     * 已删除状态-列表不可见<br>
+     * 该状态数据任何时候不计入查询等其他操作,除了恢复数据时
+     */
+    public static final Integer STATUS_DELETED = -1;
+
+
     @Version
     @Column(name = "version")
     private long version;

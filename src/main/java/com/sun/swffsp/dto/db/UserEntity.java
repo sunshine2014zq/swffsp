@@ -75,15 +75,6 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
             inverseJoinColumns = @JoinColumn(name = "role_code", referencedColumnName = "code"))
     private List<RoleEntity> roles;
 
-    /**
-     * 用户状态-激活
-     */
-    public static final Integer USER_STATUS_ENABLED = 1;
-    /**
-     * 用户状态-停用
-     */
-    public static final Integer USER_STATUS_DISABLED = 0;
-
     @Override
     public boolean isAccountNonExpired() {
         return false;

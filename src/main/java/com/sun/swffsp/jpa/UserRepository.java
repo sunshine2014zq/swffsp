@@ -1,6 +1,7 @@
 package com.sun.swffsp.jpa;
 
 import com.sun.swffsp.dto.db.UserEntity;
+import com.sun.swffsp.jpa.base.BaseRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -12,7 +13,8 @@ import java.io.Serializable;
  * @author sun
  * @date 2019/1/8 13:32
  */
-public interface UserJPA extends JpaRepository<UserEntity,String>,JpaSpecificationExecutor<UserEntity>,Serializable {
+//public interface UserRepository extends JpaRepository<UserEntity, String>, JpaSpecificationExecutor<UserEntity>, Serializable {
+public interface UserRepository extends BaseRepository<UserEntity> {
 
     /**
      * 通过用户名查找用户
