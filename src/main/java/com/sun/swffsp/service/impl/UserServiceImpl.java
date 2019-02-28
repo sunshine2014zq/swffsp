@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.sun.swffsp.dto.condition.UserCondition;
 import com.sun.swffsp.dto.db.PrivilegeEntity;
 import com.sun.swffsp.dto.db.UserEntity;
-import com.sun.swffsp.jpa.UserJPA;
+import com.sun.swffsp.jpa.UserRepository;
 import com.sun.swffsp.security.CustomGrantedAuthority;
 import com.sun.swffsp.service.UserService;
 import com.sun.swffsp.service.base.BaseService;
@@ -28,6 +28,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户业务
@@ -36,10 +37,10 @@ import java.util.List;
  * @date 2019/1/10 14:20
  */
 @Service
-public class UserServiceImpl extends BaseService implements UserDetailsService, UserService {
+public class UserServiceImpl extends BaseService<UserEntity> implements UserDetailsService, UserService {
 
     @Autowired
-    private UserJPA userJPA;
+    private UserRepository userJPA;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -100,7 +101,24 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
             user.setStatus(userEntity.getStatus());
         }
         userJPA.save(user);
-        return modifiedSuccess();
+        return responseMap(true,"修改成功!");
+    }
+
+    @Override
+    public void delete(List<String> ids) {
+        softDelete(ids);
+    }
+
+
+    @Override
+    protected boolean check(UserEntity entity, Map fieldErr) {
+
+        return false;
+    }
+
+    @Override
+    protected boolean checkNotNullFields(UserEntity entity, Map fieldErr) {
+        return false;
     }
 
     /**
@@ -131,4 +149,6 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
         }
         return menus;
     }
+
+
 }

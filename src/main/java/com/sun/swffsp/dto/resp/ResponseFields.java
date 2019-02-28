@@ -23,13 +23,16 @@ public class ResponseFields {
     }
 
     /**
-     * 修改
+     * 增删改查
      */
-    public static class Modified extends Common{
+    public static class CRUD extends Common {
+
+        /**
+         * 字段错误信息 name:msg
+         */
+        public static final String FIELD_ERROR = "fieldErr";
 
     }
-
-
 
 
 }
