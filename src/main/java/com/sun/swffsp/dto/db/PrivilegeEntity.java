@@ -1,6 +1,6 @@
 package com.sun.swffsp.dto.db;
 
-import com.sun.swffsp.dto.db.common.CommonEntity;
+import com.sun.swffsp.dto.db.common.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @Table(name = "privilege")
 @Entity
-public class PrivilegeEntity extends CommonEntity implements Serializable {
+public class PrivilegeEntity extends BaseEntity implements Serializable {
 
     /**
      * 权限代码

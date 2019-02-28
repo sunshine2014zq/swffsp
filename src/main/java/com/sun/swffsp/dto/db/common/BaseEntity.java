@@ -8,13 +8,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 数据库映射实体通用字段
+ * 底层实体：数据库映射实体通用字段
  *
  * @author sun
  * @date 2019/2/20 14:48
  */
 @MappedSuperclass
-public abstract class CommonEntity implements Serializable {
+public abstract class BaseEntity implements Serializable {
 
     /**
      * 主键-UUID
