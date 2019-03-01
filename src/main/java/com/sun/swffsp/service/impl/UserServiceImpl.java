@@ -1,6 +1,5 @@
 package com.sun.swffsp.service.impl;
 
-import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.sun.swffsp.dto.condition.UserCondition;
 import com.sun.swffsp.dto.db.PrivilegeEntity;
@@ -9,6 +8,8 @@ import com.sun.swffsp.jpa.UserRepository;
 import com.sun.swffsp.security.CustomGrantedAuthority;
 import com.sun.swffsp.service.UserService;
 import com.sun.swffsp.service.base.BaseService;
+import com.sun.swffsp.service.base.PredicateUtils;
+import com.sun.swffsp.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -87,13 +88,13 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserDeta
         Pageable pageable = PageRequest.of(userCondition.getPage(), userCondition.getSize(),
                 Sort.Direction.DESC, "createTime");
         Page<UserEntity> list = userJPA.findAll((Specification<UserEntity>) (root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            Predicate[] p = new Predicate[predicates.size()];
-            if (!StringUtils.isEmpty(userCondition.getUsernameKey())) {
-                String pattern = "%" + (userCondition.getUsernameKey() == null ? "" : userCondition.getUsernameKey()) + "%";
-                predicates.add(criteriaBuilder.like(root.get("username"), pattern));
-            }
-            return criteriaBuilder.and(predicates.toArray(p));
+            //like表达式
+            String pattern = "%" + StringUtils.ifNullToEmptyStr(userCondition.getUsernameKey()) + "%";
+            PredicateUtils pu = new PredicateUtils(root,criteriaQuery,criteriaBuilder);
+            return pu
+                    .and(pu.like("username",pattern))
+                    .and(pu.notIn("status",UserEntity.STATUS_DELETED))
+                    .getPredicate();
         }, pageable);
         return list;
     }
