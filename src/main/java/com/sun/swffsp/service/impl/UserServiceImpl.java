@@ -43,6 +43,11 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserDeta
     private UserRepository userJPA;
 
     @Override
+    public void initBaseRepository() {
+        super.setBaseRepository(userJPA);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserEntity user = userJPA.findByUsername(s);
         if (user == null) {
@@ -56,36 +61,36 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserDeta
     public Object info() {
         JSONObject result = new JSONObject();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        result.put("username",auth.getName());
+        result.put("username", auth.getName());
         //合并所有权限-去重
         List<PrivilegeEntity> privileges = new ArrayList<>();
         List<String> codes = new ArrayList<>();
         List<CustomGrantedAuthority> authorities = (List<CustomGrantedAuthority>) auth.getAuthorities();
         for (CustomGrantedAuthority authority : authorities) {
             List<PrivilegeEntity> privilegeList = authority.getRole().getPrivileges();
-            if(privilegeList != null){
-                for (PrivilegeEntity privilege : privilegeList){
-                    if(!codes.contains(privilege.getCode())){
+            if (privilegeList != null) {
+                for (PrivilegeEntity privilege : privilegeList) {
+                    if (!codes.contains(privilege.getCode())) {
                         privileges.add(privilege);
                     }
                 }
             }
         }
         //将权限排成树形菜单
-        List<JSONObject> menus =menuTree(privileges);
-        result.put("menus",menus);
+        List<JSONObject> menus = menuTree(privileges);
+        result.put("menus", menus);
         return result;
     }
 
     @Override
     public Page<UserEntity> list(UserCondition userCondition) {
-        Pageable pageable = PageRequest.of(userCondition.getPage(),userCondition.getSize(),
-                Sort.Direction.DESC,"createTime");
+        Pageable pageable = PageRequest.of(userCondition.getPage(), userCondition.getSize(),
+                Sort.Direction.DESC, "createTime");
         Page<UserEntity> list = userJPA.findAll((Specification<UserEntity>) (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             Predicate[] p = new Predicate[predicates.size()];
-            if(!StringUtils.isEmpty(userCondition.getUsernameKey())){
-                String pattern = "%" + (userCondition.getUsernameKey() == null ? "" : userCondition.getUsernameKey())+ "%";
+            if (!StringUtils.isEmpty(userCondition.getUsernameKey())) {
+                String pattern = "%" + (userCondition.getUsernameKey() == null ? "" : userCondition.getUsernameKey()) + "%";
                 predicates.add(criteriaBuilder.like(root.get("username"), pattern));
             }
             return criteriaBuilder.and(predicates.toArray(p));
@@ -97,11 +102,11 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserDeta
     @Override
     public Object modified(UserEntity userEntity) {
         UserEntity user = userJPA.findById(userEntity.getId()).get();
-        if(null != userEntity.getStatus()){
+        if (null != userEntity.getStatus()) {
             user.setStatus(userEntity.getStatus());
         }
         userJPA.save(user);
-        return responseMap(true,"修改成功!");
+        return responseMap(true, "修改成功!");
     }
 
     @Override
@@ -109,10 +114,8 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserDeta
         softDelete(ids);
     }
 
-
     @Override
     protected boolean check(UserEntity entity, Map fieldErr) {
-
         return false;
     }
 
@@ -123,25 +126,26 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserDeta
 
     /**
      * 将权限排成树形菜单
+     *
      * @param privileges
      * @return
      */
     private List<JSONObject> menuTree(List<PrivilegeEntity> privileges) {
         List<JSONObject> menus = new ArrayList<>();
         Iterator<PrivilegeEntity> iterator = privileges.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             PrivilegeEntity privilege = iterator.next();
-            if(privilege.getType().equals(PrivilegeEntity.TYPE_MENU_1)){
+            if (privilege.getType().equals(PrivilegeEntity.TYPE_MENU_1)) {
                 //一级菜单
                 JSONObject object = JSONObject.parseObject(JSONObject.toJSONString(privilege));
                 //为一级菜单查找子菜单
                 List<PrivilegeEntity> subMenus = new ArrayList<>();
-                privileges.forEach(p->{
-                    if (privilege.getCode().equals(p.getParentCode())){
+                privileges.forEach(p -> {
+                    if (privilege.getCode().equals(p.getParentCode())) {
                         subMenus.add(p);
                     }
                 });
-                object.put("subMenus",subMenus);
+                object.put("subMenus", subMenus);
                 menus.add(object);
                 iterator.remove();
 //                privileges.removeAll(subMenus);
@@ -149,6 +153,4 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserDeta
         }
         return menus;
     }
-
-
 }

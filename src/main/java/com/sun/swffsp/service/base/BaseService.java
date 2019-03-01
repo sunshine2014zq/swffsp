@@ -5,8 +5,8 @@ import com.sun.swffsp.jpa.base.BaseRepository;
 import com.sun.swffsp.utils.ReflexUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +21,18 @@ public abstract class BaseService<T> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private BaseRepository<T> baseJPA;
+    private BaseRepository<T> baseRepository;
+
+    public void setBaseRepository(BaseRepository<T> baseRepository) {
+        this.baseRepository = baseRepository;
+    }
+
+    /**
+     * 初始化父类的baseRepository属性<br>
+     * 请在子类中调用super.setBaseRepository(*)初始化<br>
+     */
+    @PostConstruct
+    public abstract void initBaseRepository();
 
     /**
      * 检查数据并添加到数据库<br>
@@ -40,7 +50,7 @@ public abstract class BaseService<T> {
                 throw new RuntimeException("新增方法：id必须为null");
             }
             //保存数据到数据库
-            baseJPA.save(entity);
+            baseRepository.save(entity);
             return responseMap(true, "添加成功");
         }
         return responseMap(false, "添加的数据有误", fieldErr);
@@ -53,7 +63,7 @@ public abstract class BaseService<T> {
      * @return
      */
     protected Map softDelete(List ids) {
-        int i = baseJPA.softDelete("user",ids);
+        int i = baseRepository.softDelete("user", ids);
         return responseMap(true, "成功删除" + i + "条数据");
     }
 
@@ -71,10 +81,10 @@ public abstract class BaseService<T> {
             if (null == id) {
                 throw new RuntimeException("修改方法：id不能为null");
             }
-            T query = baseJPA.findById(id).get();
+            T query = baseRepository.findById(id).get();
             //把需要修改的实体中不为null的字段的值合并到查询出的实体
             ReflexUtils.mergeNotNull(entity.getClass(), query, entity);
-            baseJPA.save(query);
+            baseRepository.save(query);
         }
         return responseMap(false, "修改的数据有误", fieldErr);
     }
@@ -124,16 +134,4 @@ public abstract class BaseService<T> {
      */
     protected abstract boolean checkNotNullFields(T entity, Map fieldErr);
 
-
-//    /**
-//     * 修改成功返回
-//     * @return
-//     */
-//    protected Map modifiedSuccess(){
-//
-//        Map map = new HashMap();
-//        map.put(ResponseFields.CRUD.STATUS,true);
-//        map.put(ResponseFields.CRUD.MESSAGE,"修改成功");
-//        return map;
-//    }
 }

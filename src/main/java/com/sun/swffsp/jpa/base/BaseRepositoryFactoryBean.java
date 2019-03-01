@@ -9,6 +9,13 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 
+/**
+ * 自定义的Repository工厂类
+ *
+ * @param <R>
+ * @param <T>
+ * @param <I>
+ */
 public class BaseRepositoryFactoryBean<R extends JpaRepository<T, I>, T, I extends Serializable>
         extends JpaRepositoryFactoryBean<R, T, I> {
 

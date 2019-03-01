@@ -7,10 +7,13 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
+ * JPA-Repository基类实现<br>
+ * 用于自定义JPA公共方法
+ *
  * @author sun
  * @date 2019/2/28 18:07
  */
-public class BaseRepositoryImpl <T> extends SimpleJpaRepository<T,String> implements BaseRepository<T> {
+public class BaseRepositoryImpl<T> extends SimpleJpaRepository<T, String> implements BaseRepository<T> {
     private EntityManager entityManager;
 
     public BaseRepositoryImpl(JpaEntityInformation entityInformation, EntityManager entityManager) {
@@ -22,10 +25,11 @@ public class BaseRepositoryImpl <T> extends SimpleJpaRepository<T,String> implem
         super(domainClass, em);
     }
 
-    public int softDelete(String tableName, List ids){
+    @Override
+    public int softDelete(String tableName, List ids) {
         StringBuffer sb = new StringBuffer().append("update ").append(tableName)
                 .append(" set status = -1 where id in (");
-        ids.forEach(id->{
+        ids.forEach(id -> {
             sb.append(id).append(",");
         });
         String sql = sb.substring(0, sb.length() - 1) + ")";

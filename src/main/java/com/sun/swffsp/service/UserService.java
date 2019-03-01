@@ -16,19 +16,22 @@ public interface UserService {
 
     /**
      * 获取用户信息
-     * @return username,menu
+     *
+     * @return username, menu
      */
     Object info();
 
     /**
      * 用户列表
-     * @return
+     *
      * @param userCondition
+     * @return
      */
     Page<UserEntity> list(UserCondition userCondition);
 
     /**
      * 修改
+     *
      * @param userEntity
      * @return
      */

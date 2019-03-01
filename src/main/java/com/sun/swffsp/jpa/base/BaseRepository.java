@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 各模块JPA父类
+ * JPA-Repository基类接口
  *
  * @author sun
  * @date 2019/2/28 11:03
@@ -17,9 +17,14 @@ import java.util.List;
 @NoRepositoryBean
 public interface BaseRepository<T> extends JpaRepository<T, String>, JpaSpecificationExecutor<T>, Serializable {
 
-//    @Modifying
+    /**
+     * 批量删除 - 软删除
+     *
+     * @param tableName
+     * @param ids
+     * @return
+     */
     @Transactional
-//    @Query("update UserEntity SET status = -1 where id in(ids)")
     public int softDelete(String tableName, List ids);
 
 }

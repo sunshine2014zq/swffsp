@@ -8,16 +8,16 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.io.Serializable;
 
 /**
- * user表JPA数据库操作
+ * user表JPA数据库操作接口
  *
  * @author sun
  * @date 2019/1/8 13:32
  */
-//public interface UserRepository extends JpaRepository<UserEntity, String>, JpaSpecificationExecutor<UserEntity>, Serializable {
 public interface UserRepository extends BaseRepository<UserEntity> {
 
     /**
      * 通过用户名查找用户
+     *
      * @param username
      * @return
      */
