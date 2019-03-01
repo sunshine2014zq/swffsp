@@ -31,6 +31,11 @@ var baseUtils = {
         }
     },
 
+    reqTip: function(msg,status,time){
+        var icon = status ? 1 : 2;
+        this.tip(msg,icon,time);
+    },
+
     /**
      * 包含加载遮罩层的post请求
      * @param vue vue对象

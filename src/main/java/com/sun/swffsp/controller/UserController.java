@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 用户模块
  *
@@ -38,7 +40,11 @@ public class UserController {
     @RequestMapping("/modified")
     public Object modified(@RequestBody UserEntity userEntity){
         return userService.modified(userEntity);
+    }
 
+    @RequestMapping("/delete")
+    public Object delete(@RequestBody List<String> ids){
+        return userService.delete(ids);
     }
 
 

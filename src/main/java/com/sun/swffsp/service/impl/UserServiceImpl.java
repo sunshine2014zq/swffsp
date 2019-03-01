@@ -24,7 +24,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -111,8 +110,8 @@ public class UserServiceImpl extends BaseService<UserEntity> implements UserDeta
     }
 
     @Override
-    public void delete(List<String> ids) {
-        softDelete(ids);
+    public Map delete(List<String> ids) {
+        return softDelete(ids);
     }
 
     @Override

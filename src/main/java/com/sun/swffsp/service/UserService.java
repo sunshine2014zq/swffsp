@@ -5,6 +5,7 @@ import com.sun.swffsp.dto.db.UserEntity;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户模块相关业务接口
@@ -37,5 +38,5 @@ public interface UserService {
      */
     Object modified(UserEntity userEntity);
 
-    void delete(List<String> ids);
+    Map delete(List<String> ids);
 }

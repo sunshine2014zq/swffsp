@@ -6,6 +6,7 @@
 var contextPath = "/swffsp"
 var listUrl = contextPath +"/user/list";
 var modifiedUrl = contextPath + "/user/modified";
+var delUrl = contextPath + "/user/delete";
 
 // 本页面业务方法
 var service = {
@@ -23,6 +24,16 @@ var service = {
                 successCallback(response.body.msg);//html组件相关处理
             }
         });
+    }
+    ,del:function (vue, ids,successCallback) {
+        baseUtils.post(vue,delUrl,ids,function (response) {
+            console.log(response)
+            baseUtils.reqTip(response.body.msg,response.body.status,1500);
+            if(response.body.status){
+                successCallback()
+            }
+        })
+
     }
 
 }
@@ -49,6 +60,7 @@ var userVue = new Vue({
         search: function () {
             service.userPaging(this, this.$data.query);
         }
+        //修改状态
         ,statusModified: function (event, id, status) {
             var vue = this;
             var msg = status == 1 ?  "确定启用吗?" :"确定停用吗?";
@@ -59,7 +71,36 @@ var userVue = new Vue({
                     $(event.target).parents("tr").find(".btn-status").toggle();
                     $(event.target).parents("tr").find(".label-status").toggle();
                     layer.close(index);
-                    baseUtils.tip(msg,1,1000)
+                    baseUtils.tip(msg,1,1500)
+                })
+            });
+        }
+        //删除
+        ,admin_del:function (event,id) {
+            var vue = this;
+            var ids = [];
+            ids.push(id);
+            layer.confirm('确认要删除吗？',function(index){
+                service.del(vue,ids,function () {
+                    $(event.target).parents("tr").remove();
+                })
+            });
+        }
+        //批量删除
+        ,batch_del:function () {
+            var vue = this;
+            console.log()
+            layer.confirm('确认要删除吗？',function(index){
+                service.del(vue,userVue.$data.ids,function () {
+                    //显示处理
+                    $(userVue.$data.pageInfo.content).each(function (index,user) {
+                        //隐藏多选框选中的行
+                        $("input[name='ids']").each(function (index, el) {
+                            if(el.checked){
+                                $(el).parents("tr").remove();
+                            }
+                        })
+                    })
                 })
             });
         }
@@ -80,49 +121,10 @@ var userVue = new Vue({
 function admin_add(title,url,w,h){
     layer_show(title,url,w,h);
 }
-/*管理员-删除*/
-function admin_del(obj,id){
-    layer.confirm('确认要删除吗？',function(index){
-        $.ajax({
-            type: 'POST',
-            url: '',
-            dataType: 'json',
-            success: function(data){
-                $(obj).parents("tr").remove();
-                layer.msg('已删除!',{icon:1,time:1000});
-            },
-            error:function(data) {
-                console.log(data.msg);
-            },
-        });
-    });
-}
 
 /*管理员-编辑*/
 function admin_edit(title,url,id,w,h){
     layer_show(title,url,w,h);
 }
-/*管理员-停用*/
-function admin_stop(obj,id){
-    layer.confirm('确认要停用吗？',function(index){
-        //此处请求后台程序，下方是成功后的前台处理……
 
-        $(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_start(this,id)" href="javascript:;" title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
-        $(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已禁用</span>');
-        $(obj).remove();
-        layer.msg('已停用!',{icon: 5,time:1000});
-    });
-}
 
-/*管理员-启用*/
-// function admin_start(obj,id){
-//     layer.confirm('确认要启用吗？',function(index){
-//         //此处请求后台程序，下方是成功后的前台处理……
-//
-//
-//         $(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_stop(this,id)" href="javascript:;" title="停用" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
-//         $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
-//         $(obj).remove();
-//         layer.msg('已启用!', {icon: 6,time:1000});
-//     });
-// }
