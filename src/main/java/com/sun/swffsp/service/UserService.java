@@ -3,6 +3,7 @@ package com.sun.swffsp.service;
 import com.sun.swffsp.dto.condition.UserCondition;
 import com.sun.swffsp.dto.db.UserEntity;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.Map;
  * @author sun
  * @date 2019/2/21 10:57
  */
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     /**
      * 获取用户信息

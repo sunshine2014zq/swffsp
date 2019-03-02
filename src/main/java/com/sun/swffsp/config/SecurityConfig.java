@@ -3,6 +3,7 @@ package com.sun.swffsp.config;
 import com.sun.swffsp.filter.CustomAuthenticationFilter;
 import com.sun.swffsp.handler.CustomAuthenticationFailureHandler;
 import com.sun.swffsp.handler.CustomAuthenticationSuccessHandler;
+import com.sun.swffsp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -26,9 +27,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Qualifier("userServiceImpl")
     @Autowired
-    private UserDetailsService userService;
+    private UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

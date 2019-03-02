@@ -37,7 +37,7 @@ import java.util.Map;
  * @date 2019/1/10 14:20
  */
 @Service
-public class UserServiceImpl extends BaseService<UserEntity> implements UserDetailsService, UserService {
+public class UserServiceImpl extends BaseService<UserEntity>implements UserService {
 
     @Autowired
     private UserRepository userJPA;
