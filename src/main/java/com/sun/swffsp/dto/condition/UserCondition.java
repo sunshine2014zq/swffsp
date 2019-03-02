@@ -1,6 +1,6 @@
 package com.sun.swffsp.dto.condition;
 
-import com.sun.swffsp.dto.condition.common.CommonCondition;
+import com.sun.swffsp.dto.condition.base.BaseCondition;
 
 /**
  * 用户模块查询条件
@@ -8,7 +8,7 @@ import com.sun.swffsp.dto.condition.common.CommonCondition;
  * @author sun
  * @date 2019/2/26 10:22
  */
-public class UserCondition extends CommonCondition {
+public class UserCondition extends BaseCondition {
 
     /**
      * 用户名查找关键字

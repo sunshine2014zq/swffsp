@@ -1,4 +1,4 @@
-package com.sun.swffsp.dto.db.common;
+package com.sun.swffsp.dto.db.base;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

@@ -1,6 +1,6 @@
 package com.sun.swffsp.dto.db;
 
-import com.sun.swffsp.dto.db.common.BaseEntity;
+import com.sun.swffsp.dto.db.base.BaseEntity;
 import com.sun.swffsp.security.CustomGrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

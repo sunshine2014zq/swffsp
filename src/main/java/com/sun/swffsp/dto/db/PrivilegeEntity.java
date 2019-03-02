@@ -1,6 +1,6 @@
 package com.sun.swffsp.dto.db;
 
-import com.sun.swffsp.dto.db.common.BaseEntity;
+import com.sun.swffsp.dto.db.base.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.sun.swffsp.dto.condition.common;
+package com.sun.swffsp.dto.condition.base;
 
 /**
  * 通用查询条件
@@ -6,7 +6,7 @@ package com.sun.swffsp.dto.condition.common;
  * @author sun
  * @date 2019/2/26 10:17
  */
-public class CommonCondition {
+public class BaseCondition {
 
     /**
      * 页面
