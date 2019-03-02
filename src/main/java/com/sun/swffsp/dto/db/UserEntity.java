@@ -48,8 +48,8 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
     /**
      * 邮箱
      */
-    @Column(name = "mail", length = 32)
-    private String mail;
+    @Column(name = "email", length = 32)
+    private String email;
 
     /**
      * 手机号
@@ -136,12 +136,12 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
         this.nickName = nickName;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhoneNum() {
@@ -183,7 +183,7 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
                 ", password='" + password + '\'' +
                 ", type=" + type +
                 ", nickName='" + nickName + '\'' +
-                ", mail='" + mail + '\'' +
+                ", email='" + email + '\'' +
                 ", phoneNum='" + phoneNum + '\'' +
                 ", qqNum='" + qqNum + '\'' +
                 ", wxNum='" + wxNum + '\'' +
