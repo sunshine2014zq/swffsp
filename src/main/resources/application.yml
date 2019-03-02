@@ -3,7 +3,7 @@ server:
   servlet:
     context-path: /swffsp
     session:
-      timeout: 3m
+      timeout: 15m
 
 spring:
   #https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
