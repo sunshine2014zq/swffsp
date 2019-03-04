@@ -37,7 +37,7 @@
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 			<a href="javascript:;" @click="batch_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-			<a href="javascript:;" onclick="admin_add('添加管理员','admin-add.html','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
+			<a href="javascript:;" @click="admin_edit('添加账号','800','460')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
 		</span> <span class="r">
 		共有数据：<strong>54</strong> 条</span>
 	</div>
@@ -52,8 +52,8 @@
 				<th>昵称</th>
 				<th width="90">手机</th>
 				<th width="150">邮箱</th>
-				<th>QQ</th>
-				<th>微信</th>
+				<!--<th>QQ</th>-->
+				<!--<th>微信</th>-->
 				<th>角色</th>
 				<th width="130">加入时间</th>
 				<th width="100">是否已启用</th>
@@ -61,14 +61,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="user in pageInfo.content" class="text-c">
+			<tr v-for="(user,index) in pageInfo.content" class="text-c">
 				<td><input type="checkbox" :value="user.id" name="ids" v-model="ids"></td>
 				<td>{{user.username}}</td>
 				<td>{{user.nickName}}</td>
 				<td>{{user.phoneNum}}</td>
-				<td>{{user.mail}}</td>
-				<td>{{user.qqNum}}</td>
-				<td>{{user.wxNum}}</td>
+				<td>{{user.email}}</td>
+				<!--<td>{{user.qqNum}}</td>-->
+				<!--<td>{{user.wxNum}}</td>-->
 				<td>
 					<span v-for="role in user.roles">
 						{{role.name}}&nbsp;&nbsp;
@@ -90,7 +90,7 @@
 							<i class="Hui-iconfont">&#xe631;</i>
 						</a>
 					</span>
-					<a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','admin-add.html','2','800','500')" class="ml-5" style="text-decoration:none">
+					<a title="编辑" href="javascript:;" @click="admin_edit('账号编辑','800','400',index)" class="ml-5" style="text-decoration:none">
 						<i class="Hui-iconfont">&#xe6df;</i>
 					</a>
 					<a title="删除" href="javascript:;" @click="admin_del($event,user.id)" class="ml-5" style="text-decoration:none">
@@ -101,6 +101,69 @@
 		</tbody>
 	</table>
 </div>
+<!--修改/添加-->
+<article class="page-container admin-edit" style="display: none">
+    <form class="form form-horizontal" id="form-admin-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>账号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" placeholder="" name="username" v-model="user.username">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>昵称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" placeholder="" name="nickName" v-model="user.nickName">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密&nbsp;&nbsp;码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="password" class="input-text" autocomplete="off" placeholder="请输入密码" name="password" v-model="user.password">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="password" class="input-text" autocomplete="off"  placeholder="确认密码" name="password-repeat">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">手机：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" name="phoneNum" v-model="user.phoneNum">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">邮箱：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" placeholder="请输入电子邮箱地址" name="email" v-model="user.email">
+            </div>
+        </div>
+
+
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">角色：</label>
+            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+			<select class="select" name="adminRole" size="1">
+				<option value="">-请选择账号角色</option>
+                <!--<option value="0">超级管理员</option>-->
+                <!--<option value="1">总编</option>-->
+                <!--<option value="2">栏目主辑</option>-->
+                <!--<option value="3">栏目编辑</option>-->
+			</select>
+			</span> </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="提交">
+            </div>
+        </div>
+    </form>
+</article>
+
+
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
@@ -112,13 +175,14 @@
 <script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+
 <script type="text/javascript" src="lib/vue/vue.min.js"></script>
 <script type="text/javascript" src="lib/vue-resource/vue-resource.min.js"></script>
 <script type="text/javascript" src="js/base/baseUtils.js"></script>
 <script type="text/javascript" src="js/admin-list.js"></script>
 
-<script type="text/javascript">
-
-</script>
 </body>
 </html>

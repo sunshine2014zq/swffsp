@@ -38,7 +38,7 @@ var service = {
 
 }
 
-//×××模块
+//用户列表模块
 var userVue = new Vue({
     el: ".page-container",
     // 内部参数定义
@@ -89,7 +89,6 @@ var userVue = new Vue({
         //批量删除
         ,batch_del:function () {
             var vue = this;
-            console.log()
             layer.confirm('确认要删除吗？',function(index){
                 service.del(vue,userVue.$data.ids,function () {
                     //显示处理
@@ -104,27 +103,105 @@ var userVue = new Vue({
                 })
             });
         }
+        /*管理员-编辑*/
+        ,admin_edit :function (title,w,h,index){
+            baseUtils.layer_show(1,title,$(".admin-edit"),w,h,function () {
+                baseUtils.clearValues(userEdit.$data.user);
+            });
+            if(index != undefined){
+                //修改
+                var current = userVue.$data.pageInfo.content[index];
+                baseUtils.copyValue(userEdit.$data.user,current);
+                $("input[type='password']").parents(".row").hide();
+            }else{
+                //添加
+                $("input[type='password']").parents(".row").show();
+            }
+        }
+    }
+});
+
+/**
+ * 用户添加或修改
+ */
+var userEdit = new Vue({
+    el: ".admin-edit",
+    // 内部参数定义
+    data: {
+        user:{
+            id:""
+            ,username:""
+            ,nickName:""
+            ,password:""
+            ,phoneNum:""
+            ,email:""
+        }
+    },
+    // 页面加载初始化函数
+    mounted: function () {
+    },
+    methods: {
+
     }
 });
 
 
+// $(function(){
+//     $('.skin-minimal input').iCheck({
+//         checkboxClass: 'icheckbox-blue',
+//         radioClass: 'iradio-blue',
+//         increaseArea: '20%'
+//     });
+//
+//     $("#form-admin-add").validate({
+//         rules:{
+//             adminName:{
+//                 required:true,
+//                 minlength:4,
+//                 maxlength:16
+//             },
+//             password:{
+//                 required:true,
+//             },
+//             password2:{
+//                 required:true,
+//                 equalTo: "#password"
+//             },
+//             sex:{
+//                 required:true,
+//             },
+//             phone:{
+//                 required:true,
+//                 isPhone:true,
+//             },
+//             email:{
+//                 required:true,
+//                 email:true,
+//             },
+//             adminRole:{
+//                 required:true,
+//             },
+//         },
+//         onkeyup:false,
+//         focusCleanup:true,
+//         success:"valid",
+//         submitHandler:function(form){
+//             $(form).ajaxSubmit({
+//                 type: 'post',
+//                 url: "xxxxxxx" ,
+//                 success: function(data){
+//                     layer.msg('添加成功!',{icon:1,time:1000});
+//                 },
+//                 error: function(XmlHttpRequest, textStatus, errorThrown){
+//                     layer.msg('error!',{icon:1,time:1000});
+//                 }
+//             });
+//             var index = parent.layer.getFrameIndex(window.name);
+//             parent.$('.btn-refresh').click();
+//             parent.layer.close(index);
+//         }
+//     });
+// });
 
-/*
-	参数解释：
-	title	标题
-	url		请求的url
-	id		需要操作的数据id
-	w		弹出层宽度（缺省调默认值）
-	h		弹出层高度（缺省调默认值）
-*/
-/*管理员-增加*/
-function admin_add(title,url,w,h){
-    layer_show(title,url,w,h);
-}
-
-/*管理员-编辑*/
-function admin_edit(title,url,id,w,h){
-    layer_show(title,url,w,h);
-}
 
 

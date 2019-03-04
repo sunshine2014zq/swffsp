@@ -94,7 +94,7 @@ var baseUtils = {
      * @param w 宽
      * @param h 高
      */
-    layer_show: function (type, title, content, w, h) {
+    layer_show: function (type, title, content, w, h,closeCallback) {
         if (title == null || title == '') {
             title = false;
         }
@@ -117,10 +117,32 @@ var baseUtils = {
             maxmin: true,
             shade: 0.4,
             title: title,
-            content: content
+            content: content,
+            end: closeCallback
         });
+    },
+    /**
+     * 将第二个对象的值赋值给第一个对象<br>
+     * 只赋值第一个对象有的属性
+     * @param obj
+     * @param from
+     */
+    copyValue: function (obj,from) {
+        $.each(obj,function (key, val) {
+            if(from[key]){
+                obj[key] = from[key];
+            }
+        })
+    },
+    /**
+     * 清除对象所有属性的值,不删除属性
+     * @param obj
+     */
+    clearValues: function (obj) {
+        $.each(obj,function (key, val) {
+            obj[key] = '';
+        })
     }
-
 }
 
 
