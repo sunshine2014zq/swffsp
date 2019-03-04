@@ -85,6 +85,40 @@ var baseUtils = {
                 baseUtils.tip("系统繁忙!请稍后重试",2,1500);
             }
         });
+    },
+    /**
+     * layer弹框
+     * @param type 弹框类型 1页面层(content为请求内容) ; 2iframe层(content为请求URL)
+     * @param title 标题
+     * @param content 内容
+     * @param w 宽
+     * @param h 高
+     */
+    layer_show: function (type, title, content, w, h) {
+        if (title == null || title == '') {
+            title = false;
+        }
+        if (content == null || content == '') {
+            content = 'empty content'
+        }
+        if (w == null || w == '') {
+            w = 800;
+        }
+        if (h == null || h == '') {
+            h = ($(window).height() - 50);
+        }
+        if (type == null || type == '') {
+            type = 1;
+        }
+        layer.open({
+            type: type,
+            area: [w + 'px', h + 'px'],
+            fix: false, //不固定
+            maxmin: true,
+            shade: 0.4,
+            title: title,
+            content: content
+        });
     }
 
 }
