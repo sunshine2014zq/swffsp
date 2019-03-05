@@ -52,6 +52,9 @@
                             }else {
                                 message = validate.messages[name][ruleName];
                             }
+                            if(message.startWith("format")){
+                                message = this.paramInstall(message.split("format:")[1],params);
+                            }
                             //错误提示
                             layer.tips(message, $("input[name='"+name+"']"), {
                                 tips: [3, '#FF3300'],
@@ -63,6 +66,16 @@
             },
             isUndefinedEmpty: function(val) {
                 return undefined == val || '' == val;
+            },
+            paramInstall: function (str, params) {
+                var result = "";
+                var s1 = str.split("{");
+                result += s1[0];
+                for (var i = 1; i < s1.length; i++) {
+                    var s2 = s1[i].split("}");
+                    result += params[s2[0]] + s2[1]
+                }
+                return result;
             }
         }
     });

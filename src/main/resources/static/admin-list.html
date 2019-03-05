@@ -107,7 +107,7 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>账号：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" @blur="vf($event)"  class="input-text required" name="username" v-model="user.username"
+                <input type="text" @focusout="vf($event)"  class="input-text required" name="username" v-model="user.username"
                        minlength="2">
             </div>
         </div>

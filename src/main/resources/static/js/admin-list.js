@@ -137,7 +137,7 @@ var userEdit = new Vue({
         },
         validate:{
             rules:{
-                username:["required","isEnglish"]
+                username:["required","isEnglish","length(3,16)"]
             }
         }
     },
