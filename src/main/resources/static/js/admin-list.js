@@ -33,9 +33,7 @@ var service = {
                 successCallback()
             }
         })
-
     }
-
 }
 
 //用户列表模块
@@ -48,6 +46,7 @@ var userVue = new Vue({
             usernameKey:""
             ,page:1
             ,size:15
+
         }
         ,ids:[]
     },
@@ -55,7 +54,7 @@ var userVue = new Vue({
     mounted: function () {
         service.userPaging(this,this.$data.query);
     },
-    methods: {
+    methods:{
         // vue element 范围内触发事件处理
         search: function () {
             service.userPaging(this, this.$data.query);
@@ -135,12 +134,21 @@ var userEdit = new Vue({
             ,password:""
             ,phoneNum:""
             ,email:""
+        },
+        validate:{
+            rules:{
+                username:["required","isEnglish"]
+            }
         }
     },
     // 页面加载初始化函数
     mounted: function () {
     },
     methods: {
+        vf: function (event) {
+            var name = $(event.target).attr("name");
+            $.vf_validate.validate(name,this.$data.user,this.$data.validate);
+        }
 
     }
 });
@@ -202,6 +210,3 @@ var userEdit = new Vue({
 //         }
 //     });
 // });
-
-
-
