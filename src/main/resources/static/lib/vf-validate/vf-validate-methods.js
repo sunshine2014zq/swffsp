@@ -243,13 +243,13 @@ $(function(){
         return ( nCheck % 10 ) === 0;
     },"请输入有效的信用卡号码")
     //长度 length(minLength,maxLength)
-    $.vf_validate.addMethod("length",function (value, min, max) {
+    $.vf_validate.addMethod("length",function (value, params) {
         var length = value.length;
-        return isEmpty(value) || ( length >= min && length <= max );
+        return isEmpty(value) || ( length >= params[0] && length <= params[1] );
     },"format:请输入长度在 {0} 到 {1} 之间的字符串")
     //值范围 range(minValue,maxValue)
-    $.vf_validate.addMethod("range",function (value, min, max) {
-        return isEmpty(value) || ( value >= min && value <= max );
+    $.vf_validate.addMethod("range",function (value, params) {
+        return isEmpty(value) || ( value >= params[0] && value <= params[1] );
     },"format:请输入范围在 {0} 到 {1} 之间的数值")
     //相等 equal(eqValue)
     $.vf_validate.addMethod("equal",function (value, eqVal) {

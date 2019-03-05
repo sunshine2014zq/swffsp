@@ -56,10 +56,13 @@
                                 message = this.paramInstall(message.split("format:")[1],params);
                             }
                             //错误提示
-                            layer.tips(message, $("input[name='"+name+"']"), {
-                                tips: [3, '#FF3300'],
+                            var icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-icon--jinggao"></use></svg>&nbsp;&nbsp;'
+                            var text = '<span style="color: #1b1b1b">' + message + '</span>>'
+                            layer.tips(icon + text, $("input[name='"+name+"']"), {
+                                tips: [3, '#FFF5EE'],
                                 time: 4000
                             });
+                            return;
                         }
                     }
                 }
