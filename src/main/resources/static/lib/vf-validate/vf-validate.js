@@ -11,14 +11,16 @@
             addMethod: function( name, method, message ) {
                 $.vf_validate.methods[ name ] = method;
                 $.vf_validate.messages[ name ] = (message !== undefined ? message : $.vf_validate.messages[ name ]);
-
             },
             messages: {
 
             },
             validate:function (name,obj,validate) {
+                $("input[name='"+name+"']").parents(".row").find(".message").html("")
                 var value = obj[name];
                 var rules = validate.rules[name];
+                var fail_icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-icon--jinggao"></use></svg>';
+                var ok_icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-ok"></use></svg>';
                 if(rules && $.isArray(rules)){
                     //循环执行校验规则
                     for (var i = 0;i<rules.length ; i++){
@@ -56,16 +58,14 @@
                                 message = this.paramInstall(message.split("format:")[1],params);
                             }
                             //错误提示
-                            var icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-icon--jinggao"></use></svg>&nbsp;&nbsp;'
-                            var text = '<span style="color: #1b1b1b">' + message + '</span>>'
-                            layer.tips(icon + text, $("input[name='"+name+"']"), {
-                                tips: [3, '#FFF5EE'],
-                                time: 4000
-                            });
+                            $("input[name='"+name+"']").parents(".row").find(".message-icon").html(fail_icon);
+                            $("input[name='"+name+"']").parents(".row").find(".message").html(message);
                             return;
                         }
                     }
                 }
+                //所有规则验证通过
+                $("input[name='"+name+"']").parents(".row").find(".message-icon").html(ok_icon);
             },
             isUndefinedEmpty: function(val) {
                 return undefined == val || '' == val;

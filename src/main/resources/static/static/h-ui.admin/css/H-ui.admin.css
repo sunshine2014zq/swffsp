@@ -132,3 +132,21 @@ h4{line-height:30px}
 	fill: currentColor;
 	overflow: hidden;
 }
+
+.input-message {
+	line-height: 14px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 31px;
+	position: relative;
+	right: 20px;
+	font-size: 12px;
+}
+.input-message .icon{
+	position:relative;
+	right:7px
+}
+.input-message .message{
+	color: red;
+}

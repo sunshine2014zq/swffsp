@@ -21,6 +21,7 @@
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
+<script type="text/javascript" src="//at.alicdn.com/t/font_1072156_35luz1mgyhi.js" ></script>
 <script type="text/javascript" src="//at.alicdn.com/t/font_1072156_xtoytjy4dn.js" ></script>
 <title>账号管理</title>
 </head>
@@ -106,48 +107,72 @@
 <article class="page-container admin-edit" style="display: none">
     <form class="form form-horizontal" id="form-admin-edit">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>账号：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" @focusout="vf($event)" class="input-text" name="username" v-model="user.username"
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>账号：</label>
+            <div class="formControls col-xs-4 col-sm-6">
+                <input type="text" @focusout="vf($event)" class="input-text input-w10" name="username" v-model="user.username"
                        minlength="2">
             </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>昵称：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text"  class="input-text" placeholder="" name="nickName" v-model="user.nickName">
+            <div class="input-message col-xs-4 col-sm-4">
+				<span class="message-icon"></span>
+				<span class="message"></span>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密&nbsp;&nbsp;码：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" autocomplete="off" placeholder="请输入密码" name="password" v-model="user.password">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>昵称：</label>
+            <div class="formControls col-xs-4 col-sm-6">
+                <input type="text"  class="input-text " placeholder="" name="nickName" v-model="user.nickName">
             </div>
+			<div class="input-message col-xs-4 col-sm-4">
+				<span class="message-icon"></span>
+				<span class="message"></span>
+			</div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" autocomplete="off"  placeholder="确认密码" name="password-repeat">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>密&nbsp;&nbsp;码：</label>
+            <div class="formControls col-xs-4 col-sm-6">
+                <input type="password" class="input-text " autocomplete="off" placeholder="请输入密码" name="password" v-model="user.password">
             </div>
+			<div class="input-message col-xs-4 col-sm-4">
+				<span class="message-icon"></span>
+				<span class="message"></span>
+			</div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">手机：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" name="phoneNum" v-model="user.phoneNum">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>确认密码：</label>
+            <div class="formControls col-xs-4 col-sm-6">
+                <input type="password" class="input-text " autocomplete="off"  placeholder="确认密码" name="password-repeat">
             </div>
+			<div class="input-message col-xs-4 col-sm-4">
+				<span class="message-icon"></span>
+				<span class="message"></span>
+			</div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">邮箱：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" placeholder="请输入电子邮箱地址" name="email" v-model="user.email">
+            <label class="form-label col-xs-4 col-sm-2">手机：</label>
+            <div class="formControls col-xs-4 col-sm-6">
+                <input type="text" class="input-text " value="" placeholder="" name="phoneNum" v-model="user.phoneNum">
             </div>
+			<div class="input-message col-xs-4 col-sm-4">
+				<span class="message-icon"></span>
+				<span class="message"></span>
+			</div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">邮箱：</label>
+            <div class="formControls col-xs-4 col-sm-6">
+                <input type="text" class="input-text " placeholder="请输入电子邮箱地址" name="email" v-model="user.email">
+            </div>
+			<div class="input-message col-xs-4 col-sm-4">
+				<span class="message-icon"></span>
+				<span class="message"></span>
+			</div>
         </div>
 
 
 
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">角色：</label>
-            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+            <label class="form-label col-xs-4 col-sm-2">角色：</label>
+            <div class="formControls col-xs-4 col-sm-6"> <span class="select-box" style="width:150px;">
 			<select class="select" name="adminRole" size="1">
 				<option value="">-请选择账号角色</option>
                 <!--<option value="0">超级管理员</option>-->
@@ -155,10 +180,15 @@
                 <!--<option value="2">栏目主辑</option>-->
                 <!--<option value="3">栏目编辑</option>-->
 			</select>
-			</span> </div>
+			</span>
+			</div>
+			<div class="input-message col-xs-4 col-sm-4">
+				<span class="message-icon"></span>
+				<span class="message"></span>
+			</div>
         </div>
         <div class="row cl">
-            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+            <div class="col-xs-4 col-sm-6 col-xs-offset-4 col-sm-offset-3">
                 <input class="btn btn-primary radius" type="submit" value="提交">
             </div>
         </div>
