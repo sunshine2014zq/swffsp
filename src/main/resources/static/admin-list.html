@@ -109,8 +109,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>账号：</label>
             <div class="formControls col-xs-4 col-sm-6">
-                <input type="text" @focusout="vf($event)" class="input-text input-w10" name="username" v-model="user.username"
-                       minlength="2">
+                <input type="text"  class="input-text input-w10" placeholder="请输入管理员帐号"
+					   name="username" v-model="user.username">
             </div>
             <div class="input-message col-xs-4 col-sm-4">
 				<span class="message-icon"></span>
@@ -118,9 +118,10 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>昵称：</label>
+            <label class="form-label col-xs-4 col-sm-2">昵称：</label>
             <div class="formControls col-xs-4 col-sm-6">
-                <input type="text"  class="input-text " placeholder="" name="nickName" v-model="user.nickName">
+                <input type="text" class="input-text " placeholder="请输入管理员昵称"
+					   name="nickName" v-model="user.nickName">
             </div>
 			<div class="input-message col-xs-4 col-sm-4">
 				<span class="message-icon"></span>
@@ -130,7 +131,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>密&nbsp;&nbsp;码：</label>
             <div class="formControls col-xs-4 col-sm-6">
-                <input type="password" class="input-text " autocomplete="off" placeholder="请输入密码" name="password" v-model="user.password">
+                <input type="password" class="input-text "autocomplete="new-password" placeholder="请输入密码"
+					   name="password" v-model="user.password">
             </div>
 			<div class="input-message col-xs-4 col-sm-4">
 				<span class="message-icon"></span>
@@ -138,9 +140,10 @@
 			</div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>确认密码：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>重复密码：</label>
             <div class="formControls col-xs-4 col-sm-6">
-                <input type="password" class="input-text " autocomplete="off"  placeholder="确认密码" name="password-repeat">
+                <input type="password" class="input-text " autocomplete="off"  placeholder="请重复密码"
+					   name="passwordRepeat" v-model="user.passwordRepeat">
             </div>
 			<div class="input-message col-xs-4 col-sm-4">
 				<span class="message-icon"></span>
@@ -150,7 +153,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">手机：</label>
             <div class="formControls col-xs-4 col-sm-6">
-                <input type="text" class="input-text " value="" placeholder="" name="phoneNum" v-model="user.phoneNum">
+                <input type="text" class="input-text " placeholder="请输入手机号"
+					   name="phoneNum" v-model="user.phoneNum">
             </div>
 			<div class="input-message col-xs-4 col-sm-4">
 				<span class="message-icon"></span>
@@ -160,16 +164,14 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">邮箱：</label>
             <div class="formControls col-xs-4 col-sm-6">
-                <input type="text" class="input-text " placeholder="请输入电子邮箱地址" name="email" v-model="user.email">
+                <input type="text" class="input-text " placeholder="请输入电子邮箱地址"
+					   name="email" v-model="user.email">
             </div>
 			<div class="input-message col-xs-4 col-sm-4">
 				<span class="message-icon"></span>
 				<span class="message"></span>
 			</div>
         </div>
-
-
-
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">角色：</label>
             <div class="formControls col-xs-4 col-sm-6"> <span class="select-box" style="width:150px;">
@@ -189,7 +191,7 @@
         </div>
         <div class="row cl">
             <div class="col-xs-4 col-sm-6 col-xs-offset-4 col-sm-offset-3">
-                <input class="btn btn-primary radius" type="submit" value="提交">
+                <input class="btn btn-primary radius" type="button" value="提交">
             </div>
         </div>
     </form>

@@ -166,7 +166,7 @@ $(function(){
     // 判断是否为合法字符(a-zA-Z0-9-_)
     $.vf_validate.addMethod("isRightfulString", function(value) {
          return isEmpty(value) || /^[A-Za-z0-9_-]+$/.test(value);       
-    }, "含有非法字符(合法字符：A-Za-z-_)");
+    }, "含有(A-Za-z-_)之外的非法字符");
     
     // 判断是否包含中英文特殊字符，除英文"-_"字符外
     $.vf_validate.addMethod("isContainsSpecialChar", function(value) {
@@ -252,9 +252,13 @@ $(function(){
         return isEmpty(value) || ( value >= params[0] && value <= params[1] );
     },"format:请输入范围在 {0} 到 {1} 之间的数值")
     //相等 equal(eqValue)
-    $.vf_validate.addMethod("equal",function (value, eqVal) {
+    $.vf_validate.addMethod("equalTo",function (value, eqName) {
+        var eqVal = $("input[name='"+ eqName+"']").val();
         return isEmpty(value) || value ==eqVal;
-    },"两次输入的不相同")
+    },"两次输入不一致")
+    $.vf_validate.addMethod("isUsername",function (value) {
+        return isEmpty(value) || /^[a-zA-Z][a-zA-Z0-9]*$/.test(value);
+    },"以字母开头，只能包含英文字母，数字")
 
 });
 

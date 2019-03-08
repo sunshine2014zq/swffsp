@@ -134,12 +134,18 @@ var userEdit = new Vue({
             ,username:""
             ,nickName:""
             ,password:""
+            ,passwordRepeat:""
             ,phoneNum:""
             ,email:""
         },
         validate:{
             rules:{
-                username:["required","isEnglish","length(3,16)"]
+                username:["required","isUsername","length(3,10)"]
+                ,nickName:["stringCheck","length(1,10)"]
+                ,password:["required","isRightfulString","length(6,16)"]
+                ,passwordRepeat:["equalTo(password)"]
+                ,phoneNum:["isMobile"]
+                ,email:["email"]
             }
             ,message:{
 
@@ -148,12 +154,12 @@ var userEdit = new Vue({
     },
     // 页面加载初始化函数
     mounted: function () {
+        $('#form-admin-edit input').on("focusout",function(event){
+            var name = $(event.target).attr("name");
+            $.vf_validate.validate(name,userEdit.$data.user,userEdit.$data.validate);
+        });
     },
     methods: {
-        vf: function (event) {
-            var name = $(event.target).attr("name");
-            $.vf_validate.validate(name,this.$data.user,this.$data.validate);
-        }
 
     }
 });
