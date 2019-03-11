@@ -147,13 +147,32 @@ var userEdit = new Vue({
                         min:3,
                         max:10
                     }
+                },
+                nickName:{
+                    stringCheck:true,
+                    length:{
+                        min:1,
+                        max:10
+                    }
+                },
+                password:{
+                    required:true,
+                    isRightfulString: true,
+                    length:{
+                        min:6,
+                        max:16
+                    }
+                },
+                passwordRepeat:{
+                    required:true,
+                    equalTo:"password"
+                },
+                phoneNum:{
+                    isMobile:true
+                },
+                email:{
+                    email:true
                 }
-                // username:["required","isUsername","length(3,10)"]
-                // ,nickName:["stringCheck","length(1,10)"]
-                // ,password:["required","isRightfulString","length(6,16)"]
-                // ,passwordRepeat:["equalTo(password)"]
-                // ,phoneNum:["isMobile"]
-                // ,email:["email"]
             }
             ,messages:{
 
@@ -168,6 +187,9 @@ var userEdit = new Vue({
         });
     },
     methods: {
+        save: function () {
+            $.vf_validate.each();
+        }
 
     }
 });
