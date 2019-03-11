@@ -108,13 +108,13 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
 
     @Transactional
     @Override
-    public Object modified(UserEntity userEntity) {
-        UserEntity user = userRepository.findById(userEntity.getId()).get();
-        if (null != userEntity.getStatus()) {
-            user.setStatus(userEntity.getStatus());
+    public Object save(UserEntity userEntity) {
+        try {
+            return saveNotNull(userEntity);
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+            return responseMap(false,"系统繁忙!请稍后重试");
         }
-        userRepository.save(user);
-        return responseMap(true, "修改成功!");
     }
 
     @Override
@@ -133,11 +133,6 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
 
     @Override
     protected boolean check(UserEntity entity, Map fieldErr) {
-        return false;
-    }
-
-    @Override
-    protected boolean checkNotNullFields(UserEntity entity, Map fieldErr) {
         return false;
     }
 

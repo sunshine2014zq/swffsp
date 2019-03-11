@@ -33,12 +33,13 @@ public interface SecurityService extends UserDetailsService {
     Page<UserEntity> list(UserCondition userCondition);
 
     /**
-     * 修改
+     * 保存<br>
+     * id为空添加,不为空修改对象，值为空的属性不会被修改
      *
      * @param userEntity
      * @return
      */
-    Object modified(UserEntity userEntity);
+    Object save(UserEntity userEntity);
 
     /**
      * 删除

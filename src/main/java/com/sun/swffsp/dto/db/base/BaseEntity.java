@@ -74,12 +74,13 @@ public abstract class BaseEntity implements Serializable {
 
     @Version
     @Column(name = "version")
-    private long version;
+    private Long version;
 
     /**
      * 对象转化为JSONObject
      * @return
      */
+
 
     public Date getCreateTime() {
         return createTime;
@@ -129,11 +130,11 @@ public abstract class BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public long getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(long version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 }

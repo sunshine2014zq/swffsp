@@ -50,9 +50,9 @@ public class SecurityController {
      * @param userEntity
      * @return
      */
-    @RequestMapping("/modifiedUser")
-    public Object modified(@RequestBody UserEntity userEntity){
-        return securityService.modified(userEntity);
+    @RequestMapping("/save")
+    public Object save(@RequestBody UserEntity userEntity){
+        return securityService.save(userEntity);
     }
 
     /**

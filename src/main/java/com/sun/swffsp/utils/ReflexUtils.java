@@ -2,9 +2,11 @@ package com.sun.swffsp.utils;
 
 import com.alibaba.fastjson.JSON;
 
+import javax.management.ReflectionException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,11 +28,18 @@ public class ReflexUtils {
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
-    public static Object getFieldValue(Class clazz, String name, Object object) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static Object getFieldValue(Class clazz, String name, Object object) throws ReflectiveOperationException {
         String getMethodName = "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
         Method method = getMethod(clazz, getMethodName);
         return invokeMethod(method, object);
     }
+
+    public static void setFieldValue(Class clazz, Object object,String name,Object val) throws ReflectiveOperationException {
+        String setMethodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
+        Method method = getMethod(clazz, setMethodName,val.getClass());
+        invokeMethod(method, object,val);
+    }
+
 
 
     /**
@@ -45,14 +54,17 @@ public class ReflexUtils {
      * @throws IllegalAccessException
      */
     public static Object mergeNotNull(Class clazz, Object b1, Object b2) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Field[] fields = clazz.getDeclaredFields();
+        Field[] fields = getFieldsNoStatic(clazz);
         for (Field field : fields) {
+            if(field == null) {
+                continue;
+            }
             String fieldName = field.getName();
             String setMethodName = "set" + toFirstLetterUpperCase(fieldName);
             String getMethodName = "get" + toFirstLetterUpperCase(fieldName);
             Object value = invokeMethod(getMethod(clazz, getMethodName), b2);
             if (null != value) {
-                invokeMethod(getMethod(clazz, setMethodName), b1, value);
+                invokeMethod(getMethod(clazz, setMethodName,field.getType()), b1, value);
             }
         }
         return b1;
@@ -73,6 +85,38 @@ public class ReflexUtils {
         }
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
+
+
+    public static Field[] getFieldsNoStatic(Class clazz){
+        Field[] fields = getFields(clazz);
+        List<Field> result = new ArrayList<>();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            if (!Modifier.isStatic(field.getModifiers())) {
+                result.add(field);
+            }
+        }
+        return result.toArray(new Field[result.size()]);
+    }
+
+    /**
+     * 获取所有字段-包括父类的-包括类型private,public,protected...
+     * @param clazz
+     * @return
+     */
+    public static Field[] getFields(Class clazz){
+        List<Field> fieldList = new ArrayList<>();
+
+        while (clazz != null) {//当父类为null的时候说明到达了最上层的父类(Object类).
+            fieldList.addAll(Arrays.asList(clazz .getDeclaredFields()));
+            clazz = clazz.getSuperclass(); //得到父类,然后赋给自己
+        }
+        Field[] result = new Field[fieldList.size()];
+        return fieldList.toArray(result);
+    }
+
+
+
 
 
     /**
@@ -135,39 +179,39 @@ public class ReflexUtils {
         return list;
     }
 
-    /**
-     * 获取所有属性
-     *
-     * @return 所有的属性【每一个属性添加到StringBuilder中，最后保存到一个List集合中】
-     */
-    public static List<StringBuilder> getFields(Class<?> clazz) {
-        Field[] fields = clazz.getDeclaredFields();
-        int len = fields.length;
-
-        List<StringBuilder> list = new ArrayList<StringBuilder>();
-        StringBuilder sb = null;
-        for (int i = 0; i < len; i++) {
-            Field field = fields[i];
-            sb = new StringBuilder();
-
-            // 修饰符
-            String modifier = Modifier.toString(field.getModifiers());
-            sb.append(modifier + " ");
-
-            // 数据类型
-            Class<?> type = field.getType();
-            String typeName = type.getSimpleName();
-            sb.append(typeName + " ");
-
-            // 属性名
-            String fieldName = field.getName();
-            sb.append(fieldName + ";");
-
-            list.add(sb);
-        }
-
-        return list;
-    }
+//    /**
+//     * 获取所有属性
+//     *
+//     * @return 所有的属性【每一个属性添加到StringBuilder中，最后保存到一个List集合中】
+//     */
+//    public static List<StringBuilder> getFields(Class<?> clazz) {
+//        Field[] fields = clazz.getDeclaredFields();
+//        int len = fields.length;
+//
+//        List<StringBuilder> list = new ArrayList<StringBuilder>();
+//        StringBuilder sb = null;
+//        for (int i = 0; i < len; i++) {
+//            Field field = fields[i];
+//            sb = new StringBuilder();
+//
+//            // 修饰符
+//            String modifier = Modifier.toString(field.getModifiers());
+//            sb.append(modifier + " ");
+//
+//            // 数据类型
+//            Class<?> type = field.getType();
+//            String typeName = type.getSimpleName();
+//            sb.append(typeName + " ");
+//
+//            // 属性名
+//            String fieldName = field.getName();
+//            sb.append(fieldName + ";");
+//
+//            list.add(sb);
+//        }
+//
+//        return list;
+//    }
 
 
     /**
@@ -475,20 +519,20 @@ public class ReflexUtils {
         }
     }
 
-    /**
-     * 打印所有属性
-     */
-    public static void printFields(Class<?> clazz) {
-        List<StringBuilder> list = getFields(clazz);
-        int size = list.size();
-        if (0 < size) {
-            for (int i = 0; i < size; i++) {
-                System.out.println(list.get(i));
-            }
-        } else {
-            System.out.println("没有属性！");
-        }
-    }
+//    /**
+//     * 打印所有属性
+//     */
+//    public static void printFields(Class<?> clazz) {
+//        List<StringBuilder> list = getFields(clazz);
+//        int size = list.size();
+//        if (0 < size) {
+//            for (int i = 0; i < size; i++) {
+//                System.out.println(list.get(i));
+//            }
+//        } else {
+//            System.out.println("没有属性！");
+//        }
+//    }
 
     /**
      * 打印所有公共的属性
@@ -612,7 +656,7 @@ public class ReflexUtils {
         printInterfaces(clazz);
 
         System.out.println("\n【属性】");
-        printFields(clazz);
+//        printFields(clazz);
         System.out.println("\n【构造方法】");
         printConstructors(clazz);
         System.out.println("\n【方法】");
@@ -658,23 +702,23 @@ public class ReflexUtils {
         return constructor.newInstance(initargs);
     }
 
-    /**
-     * 根据传入的属性名字符串，修改对应的属性值
-     *
-     * @param clazz 类的Class对象
-     * @param name  属性名
-     * @param obj   要修改的实例对象
-     * @param value 修改后的新值
-     */
-    public static void setField(Class<?> clazz, String name, Object obj, Object value)
-            throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        Field field = clazz.getDeclaredField(name);
-        field.setAccessible(true);
-        field.set(obj, value);
-    }
+//    /**
+//     * 根据传入的属性名字符串，修改对应的属性值
+//     *
+//     * @param clazz 类的Class对象
+//     * @param name  属性名
+//     * @param obj   要修改的实例对象
+//     * @param value 修改后的新值
+//     */
+//    public static void setField(Class<?> clazz, String name, Object obj, Object value)
+//            throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+//        Field field = clazz.getDeclaredField(name);
+//        field.setAccessible(true);
+//        field.set(obj, value);
+//    }
 
     /**
-     * 根据传入的方法名字符串，获取对应的方法
+     * 根据传入的方法名字符串，获取对应的方法，包括父类的
      *
      * @param clazz          类的Class对象
      * @param name           方法名
@@ -683,8 +727,10 @@ public class ReflexUtils {
      */
     public static Method getMethod(Class<?> clazz, String name, Class<?>... parameterTypes)
             throws NoSuchMethodException, SecurityException {
-        return clazz.getDeclaredMethod(name, parameterTypes);
+        return clazz.getMethod(name, parameterTypes);
     }
+
+
 
     /**
      * 根据传入的方法对象，调用对应的方法

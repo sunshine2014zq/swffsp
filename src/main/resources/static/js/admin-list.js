@@ -5,7 +5,7 @@
 // 全局变量
 var contextPath = "/swffsp"
 var listUrl = contextPath +"/security/userList";
-var modifiedUrl = contextPath + "/security/modifiedUser";
+var saveUrl = contextPath + "/security/save";
 var delUrl = contextPath + "/security/deleteUsers";
 var rolesUrl = contextPath + "/security/roles";
 
@@ -18,8 +18,8 @@ var service = {
             console.log(userVue.$data)
         })
     }
-    , modified:function (vue,user,successCallback) {
-        baseUtils.post(vue,modifiedUrl,user,function (response) {
+    , save:function (vue,user,successCallback) {
+        baseUtils.post(vue,saveUrl,user,function (response) {
             //返回数据相关处理
             console.log(response)
             if(response.body.status){
@@ -74,7 +74,7 @@ var userVue = new Vue({
             layer.confirm(msg, function (index) {
                 //此处请求后台程序，下方是成功后的前台处理……
                 var user = {"id":id,"status":status};
-                service.modified(vue,user,function (msg) {
+                service.save(vue,user,function (msg) {
                     $(event.target).parents("tr").find(".btn-status").toggle();
                     $(event.target).parents("tr").find(".label-status").toggle();
                     layer.close(index);

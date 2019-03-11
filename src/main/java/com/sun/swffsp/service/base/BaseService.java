@@ -5,8 +5,10 @@ import com.sun.swffsp.jpa.base.BaseRepository;
 import com.sun.swffsp.utils.ReflexUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,28 +37,6 @@ public abstract class BaseService<T> {
     public abstract void initBaseRepository();
 
     /**
-     * 检查数据并添加到数据库<br>
-     * 请实现check()方法检查数据
-     *
-     * @param entity
-     */
-    protected Map checkAndAdd(T entity) throws ReflectiveOperationException {
-        //检查新增的数据
-        Map fieldErr = new HashMap();
-        if (check(entity, fieldErr)) {
-            //id必须为空
-            String id = (String) ReflexUtils.getFieldValue(entity.getClass(), "id", entity);
-            if (null != id) {
-                throw new RuntimeException("新增方法：id必须为null");
-            }
-            //保存数据到数据库
-            baseRepository.save(entity);
-            return responseMap(true, "添加成功");
-        }
-        return responseMap(false, "添加的数据有误", fieldErr);
-    }
-
-    /**
      * 软删除 支持批量
      *
      * @param ids
@@ -68,26 +48,44 @@ public abstract class BaseService<T> {
     }
 
     /**
-     * 检查并修改不为空的字段
-     *
+     * 保存<br>
+     * id为空时,添加对象到数据库<br>
+     * id不为空时,修改对象不为空的字段到数据库
+     * @param entity
      * @return
+     * @throws ReflectiveOperationException
      */
-    protected Map checkAndModifiedNotNull(T entity) throws ReflectiveOperationException {
-        //检查需要修改的数据
-        Map fieldErr = new HashMap();
-        if (checkNotNullFields(entity, fieldErr)) {
-            //id必须为空
-            String id = (String) ReflexUtils.getFieldValue(entity.getClass(), "id", entity);
-            if (null == id) {
-                throw new RuntimeException("修改方法：id不能为null");
-            }
+    protected Map saveNotNull(T entity) throws ReflectiveOperationException {
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        String id = (String) ReflexUtils.getFieldValue(entity.getClass(), "id", entity);
+        if (null != id) {
             T query = baseRepository.findById(id).get();
             //把需要修改的实体中不为null的字段的值合并到查询出的实体
-            ReflexUtils.mergeNotNull(entity.getClass(), query, entity);
-            baseRepository.save(query);
+            entity = (T) ReflexUtils.mergeNotNull(entity.getClass(), query, entity);
+        } else {
+            ReflexUtils.setFieldValue(entity.getClass(),entity,"createBy",currentUser);
         }
-        return responseMap(false, "修改的数据有误", fieldErr);
+        ReflexUtils.setFieldValue(entity.getClass(),entity,"modifiedBy",currentUser);
+        baseRepository.save(entity);
+        return responseMap(true,"保存成功");
     }
+
+    /**
+     * 检查并保存对象保存<br>
+     * id为空时,添加对象到数据库<br>
+     * id不为空时,修改对象不为空的字段到数据库
+     * @param entity
+     * @return
+     * @throws ReflectiveOperationException
+     */
+    protected Map checkAndSaveNotNull(T entity) throws ReflectiveOperationException {
+        Map fieldMap = new HashMap();
+        if(check(entity,fieldMap)){
+            return saveNotNull(entity);
+        }
+        return responseMap(false,"保存失败",fieldMap);
+    }
+
 
     /**
      * 响应结果集
@@ -124,14 +122,5 @@ public abstract class BaseService<T> {
      * @return
      */
     protected abstract boolean check(T entity, Map fieldErr);
-
-    /**
-     * 检查不为空的字段
-     *
-     * @param entity
-     * @param fieldErr
-     * @return
-     */
-    protected abstract boolean checkNotNullFields(T entity, Map fieldErr);
 
 }
