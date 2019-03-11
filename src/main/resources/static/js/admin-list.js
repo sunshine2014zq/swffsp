@@ -140,14 +140,22 @@ var userEdit = new Vue({
         },
         validate:{
             rules:{
-                username:["required","isUsername","length(3,10)"]
-                ,nickName:["stringCheck","length(1,10)"]
-                ,password:["required","isRightfulString","length(6,16)"]
-                ,passwordRepeat:["equalTo(password)"]
-                ,phoneNum:["isMobile"]
-                ,email:["email"]
+                username:{
+                    required:true,
+                    isUsername:true,
+                    length:{
+                        min:3,
+                        max:10
+                    }
+                }
+                // username:["required","isUsername","length(3,10)"]
+                // ,nickName:["stringCheck","length(1,10)"]
+                // ,password:["required","isRightfulString","length(6,16)"]
+                // ,passwordRepeat:["equalTo(password)"]
+                // ,phoneNum:["isMobile"]
+                // ,email:["email"]
             }
-            ,message:{
+            ,messages:{
 
             }
         }
@@ -163,61 +171,3 @@ var userEdit = new Vue({
 
     }
 });
-
-
-// $(function(){
-//     $('.skin-minimal input').iCheck({
-//         checkboxClass: 'icheckbox-blue',
-//         radioClass: 'iradio-blue',
-//         increaseArea: '20%'
-//     });
-//
-//     $("#form-admin-add").validate({
-//         rules:{
-//             adminName:{
-//                 required:true,
-//                 minlength:4,
-//                 maxlength:16
-//             },
-//             password:{
-//                 required:true,
-//             },
-//             password2:{
-//                 required:true,
-//                 equalTo: "#password"
-//             },
-//             sex:{
-//                 required:true,
-//             },
-//             phone:{
-//                 required:true,
-//                 isPhone:true,
-//             },
-//             email:{
-//                 required:true,
-//                 email:true,
-//             },
-//             adminRole:{
-//                 required:true,
-//             },
-//         },
-//         onkeyup:false,
-//         focusCleanup:true,
-//         success:"valid",
-//         submitHandler:function(form){
-//             $(form).ajaxSubmit({
-//                 type: 'post',
-//                 url: "xxxxxxx" ,
-//                 success: function(data){
-//                     layer.msg('添加成功!',{icon:1,time:1000});
-//                 },
-//                 error: function(XmlHttpRequest, textStatus, errorThrown){
-//                     layer.msg('error!',{icon:1,time:1000});
-//                 }
-//             });
-//             var index = parent.layer.getFrameIndex(window.name);
-//             parent.$('.btn-refresh').click();
-//             parent.layer.close(index);
-//         }
-//     });
-// });
