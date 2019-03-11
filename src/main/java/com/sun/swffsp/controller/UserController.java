@@ -2,7 +2,7 @@ package com.sun.swffsp.controller;
 
 import com.sun.swffsp.dto.condition.UserCondition;
 import com.sun.swffsp.dto.db.UserEntity;
-import com.sun.swffsp.service.SecurityService;
+import com.sun.swffsp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,38 +13,38 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * 账户全选管理
+ * 用户模块
  *
  * @author sun
  * @date 2019/2/21 10:52
  */
 @RestController
-@RequestMapping("/security")
-public class SecurityController {
+@RequestMapping("/user")
+public class UserController {
 
     @Autowired
-    private SecurityService securityService;
+    private UserService userService;
 
-    @RequestMapping("/userInfo")
+    @RequestMapping("/info")
     @ResponseBody
     public Object info() {
-        return securityService.info();
+        return userService.info();
     }
 
-    @RequestMapping("/userList")
+    @RequestMapping("/list")
     @ResponseBody
     public Page<UserEntity> list(@RequestBody UserCondition userCondition){
-        return securityService.list(userCondition);
+        return userService.list(userCondition);
     }
 
-    @RequestMapping("/modifiedUser")
+    @RequestMapping("/modified")
     public Object modified(@RequestBody UserEntity userEntity){
-        return securityService.modified(userEntity);
+        return userService.modified(userEntity);
     }
 
-    @RequestMapping("/deleteUsers")
+    @RequestMapping("/delete")
     public Object delete(@RequestBody List<String> ids){
-        return securityService.delete(ids);
+        return userService.delete(ids);
     }
 
 

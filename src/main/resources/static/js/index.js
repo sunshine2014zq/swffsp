@@ -6,7 +6,7 @@
 
 // 全局变量
 var contextPath = "/swffsp"
-var getUserUrl = contextPath +"/security/userInfo";
+var getUserUrl = contextPath +"/user/info";
 
 // 业务方法处理
 var service = {

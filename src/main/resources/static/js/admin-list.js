@@ -4,9 +4,9 @@
 
 // 全局变量
 var contextPath = "/swffsp"
-var listUrl = contextPath +"/security/userList";
-var modifiedUrl = contextPath + "/security/modifiedUser";
-var delUrl = contextPath + "/security/deleteUsers";
+var listUrl = contextPath +"/user/list";
+var modifiedUrl = contextPath + "/user/modified";
+var delUrl = contextPath + "/user/delete";
 
 // 本页面业务方法
 var service = {

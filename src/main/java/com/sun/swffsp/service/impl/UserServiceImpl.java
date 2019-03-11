@@ -6,7 +6,7 @@ import com.sun.swffsp.dto.db.PrivilegeEntity;
 import com.sun.swffsp.dto.db.UserEntity;
 import com.sun.swffsp.jpa.UserRepository;
 import com.sun.swffsp.security.CustomGrantedAuthority;
-import com.sun.swffsp.service.SecurityService;
+import com.sun.swffsp.service.UserService;
 import com.sun.swffsp.service.base.BaseService;
 import com.sun.swffsp.service.base.PredicateUtils;
 import com.sun.swffsp.utils.StringUtils;
@@ -20,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ import java.util.Map;
  * @date 2019/1/10 14:20
  */
 @Service
-public class SecurityServiceImpl extends BaseService<UserEntity>implements SecurityService {
+public class UserServiceImpl extends BaseService<UserEntity>implements UserService {
 
     @Autowired
     private UserRepository userJPA;
