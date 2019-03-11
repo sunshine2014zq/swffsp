@@ -162,9 +162,9 @@ var userEdit = new Vue({
     },
     // 页面加载初始化函数
     mounted: function () {
-        $('#form-admin-edit input').on("focusout",function(event){
-            var name = $(event.target).attr("name");
-            $.vf_validate.validate(name,userEdit.$data.user,userEdit.$data.validate);
+        $('#form-admin-edit').validate({
+            rules: this.$data.validate.rules,
+            obj: this.$data.user
         });
     },
     methods: {

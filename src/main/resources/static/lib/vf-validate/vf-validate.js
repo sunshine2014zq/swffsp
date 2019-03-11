@@ -5,26 +5,42 @@
 (function ($) {
     $.extend({
         vf_validate :{
+            //定义每一种校验规则的校验方法
             methods: {
-
             },
+            //为插件添加校验方法
             addMethod: function( name, method, message ) {
                 $.vf_validate.methods[ name ] = method;
                 $.vf_validate.messages[ name ] = (message !== undefined ? message : $.vf_validate.messages[ name ]);
             },
+            //定义每一种校验规则对应的message
             messages: {
 
             },
-            validate:function (name,obj,validate) {
-                $("input[name='"+name+"']").parents(".row").find(".message").html("")
-                var value = obj[name];
-                var rules = validate.rules[name];
+            //定义表单具体需要校验的规则，以及自定义的方法
+            setting:{
+                obj:{},//需要验证的数据对象-vue 绑定的对象
+                rules:{},
+                messages:{},
+                selector:"input",//默认验证元素
+                event:"focusout",//
+                others:[{
+                    // select:"",
+                    // event:""
+                }],
+            },
+            validate:function (event) {
+                //清空上次提示信息
+                $(event.target).parents(".row").find(".message").html("")
+                var name = $(event.target).attr("name");
+                var value = $.vf_validate.setting.obj[name];
+                var rules = $.vf_validate.setting.rules[name];
                 var fail_icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-icon--jinggao"></use></svg>';
                 var ok_icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-ok"></use></svg>';
                 //保存插件对象
                 var self = this;
                 //先填充通过图标，校验不通过时失败图标覆盖该图标
-                $("input[name='"+name+"']").parents(".row").find(".message-icon").html(ok_icon);
+                $(event.target).parents(".row").find(".message-icon").html(ok_icon);
                 // 循环执行校验规则
                 $.each(rules,function (key,val) {
                     var method = $.vf_validate.methods[key];
@@ -39,8 +55,9 @@
                     var result = method.call(this,value,val);
                     if(!result){
                         var message;
-                        if(self.isUndefinedEmpty(validate.messages) || self.isUndefinedEmpty(validate.messages[name]) ||
-                            self.isUndefinedEmpty(validate.messages[name][key])){
+                        var cm = $.vf_validate.setting.messages;
+                        if(self.isUndefinedEmpty(cm) || self.isUndefinedEmpty(cm[name]) ||
+                            self.isUndefinedEmpty(cm[name][key])){
                             message = $.vf_validate.messages[key];
                         }else {
                             message = validate.messages[name][key];
@@ -49,8 +66,8 @@
                             message = self.paramInstall(message.split("format:")[1],val);
                         }
                         //错误提示
-                        $("input[name='"+name+"']").parents(".row").find(".message-icon").html(fail_icon);
-                        $("input[name='"+name+"']").parents(".row").find(".message").html(message);
+                        $(event.target).parents(".row").find(".message-icon").html(fail_icon);
+                        $(event.target).parents(".row").find(".message").html(message);
                         return false;
                     }
                 });
@@ -79,5 +96,34 @@
         }
     });
 
-
+    $.extend($.fn,{
+        validate: function (options) {
+            //设置参数
+            $.vf_validate.setting.rules = options.rules;
+            $.vf_validate.setting.messages = options.messages;
+            if(options.selector){
+                $.vf_validate.setting.selector = options.selector;
+            }
+            if(options.event){
+                $.vf_validate.setting.event = options.event;
+            }
+            if(options.others && $.isArray(options.others) && options.others.length > 0){
+                $.vf_validate.setting.others = options.others;
+            }
+            if(options.obj){
+                $.vf_validate.setting.obj = options.obj;
+            }
+            //绑定默认事件
+            this.find($.vf_validate.setting.selector).on($.vf_validate.setting.event,function (event) {
+                $.vf_validate.validate(event);
+            });
+            //绑定自定义事件
+            var others = $.vf_validate.setting.others;
+            for (var i = 0; i < others.length; i++) {
+                this.find(others[i].selector).on(others[i].event,function (event) {
+                    $.vf_validate.validate(event);
+                });
+            }
+        }
+    });
 })(jQuery);
