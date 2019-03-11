@@ -7,6 +7,8 @@ var contextPath = "/swffsp"
 var listUrl = contextPath +"/security/userList";
 var modifiedUrl = contextPath + "/security/modifiedUser";
 var delUrl = contextPath + "/security/deleteUsers";
+var rolesUrl = contextPath + "/security/roles";
+
 
 // 本页面业务方法
 var service = {
@@ -32,6 +34,12 @@ var service = {
             if(response.body.status){
                 successCallback()
             }
+        })
+    }
+    ,loadRoles: function (vue) {
+        baseUtils.post(vue,rolesUrl,{},function (response) {
+            console.log(response.body)
+            userEdit.$data.roles = response.body;
         })
     }
 }
@@ -104,6 +112,8 @@ var userVue = new Vue({
         }
         /*管理员-编辑*/
         ,admin_edit :function (title,w,h,index){
+            //加载角色信息
+            service.loadRoles(this);
             baseUtils.layer_show(1,title,$(".admin-edit"),w,h,function () {
                 baseUtils.clearValues(userEdit.$data.user);
                 $(".input-message .message").html("");
@@ -137,7 +147,9 @@ var userEdit = new Vue({
             ,passwordRepeat:""
             ,phoneNum:""
             ,email:""
+            ,roles:""
         },
+        roles:[],
         validate:{
             rules:{
                 username:{
@@ -172,6 +184,9 @@ var userEdit = new Vue({
                 },
                 email:{
                     email:true
+                },
+                roles:{
+                    required:true
                 }
             }
             ,messages:{
@@ -183,7 +198,8 @@ var userEdit = new Vue({
     mounted: function () {
         $('#form-admin-edit').validate({
             rules: this.$data.validate.rules,
-            obj: this.$data.user
+            obj: this.$data.user,
+            others:[{selector:"select",event:"change"}]
         });
     },
     methods: {
