@@ -1,6 +1,6 @@
 package com.sun.swffsp;
 
-import com.sun.swffsp.service.UserService;
+import com.sun.swffsp.service.SecurityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
 public class BaseServiceTest {
 
     @Autowired
-    private UserService userService;
+    private SecurityService userService;
 
     @Test
     public void test1(){

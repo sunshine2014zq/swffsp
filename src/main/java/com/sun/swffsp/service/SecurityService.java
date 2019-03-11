@@ -14,7 +14,7 @@ import java.util.Map;
  * @author sun
  * @date 2019/2/21 10:57
  */
-public interface UserService extends UserDetailsService {
+public interface SecurityService extends UserDetailsService {
 
     /**
      * 获取用户信息
