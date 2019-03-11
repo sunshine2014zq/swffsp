@@ -1,6 +1,7 @@
 package com.sun.swffsp.service;
 
 import com.sun.swffsp.dto.condition.UserCondition;
+import com.sun.swffsp.dto.db.RoleEntity;
 import com.sun.swffsp.dto.db.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,5 +40,16 @@ public interface SecurityService extends UserDetailsService {
      */
     Object modified(UserEntity userEntity);
 
+    /**
+     * 删除
+     * @param ids
+     * @return
+     */
     Map delete(List<String> ids);
+
+    /**
+     * 可用角色
+     * @return
+     */
+    List<RoleEntity> roles();
 }

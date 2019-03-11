@@ -3,7 +3,9 @@ package com.sun.swffsp.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.sun.swffsp.dto.condition.UserCondition;
 import com.sun.swffsp.dto.db.PrivilegeEntity;
+import com.sun.swffsp.dto.db.RoleEntity;
 import com.sun.swffsp.dto.db.UserEntity;
+import com.sun.swffsp.jpa.RoleRepository;
 import com.sun.swffsp.jpa.UserRepository;
 import com.sun.swffsp.security.CustomGrantedAuthority;
 import com.sun.swffsp.service.SecurityService;
@@ -23,6 +25,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,16 +45,19 @@ import java.util.Map;
 public class SecurityServiceImpl extends BaseService<UserEntity>implements SecurityService {
 
     @Autowired
-    private UserRepository userJPA;
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public void initBaseRepository() {
-        super.setBaseRepository(userJPA);
+        super.setBaseRepository(userRepository);
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        UserEntity user = userJPA.findByUsername(s);
+        UserEntity user = userRepository.findByUsername(s);
         if (user == null) {
             throw new UsernameNotFoundException("为查找到用户：" + s);
         }
@@ -85,7 +94,7 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
     public Page<UserEntity> list(UserCondition userCondition) {
         Pageable pageable = PageRequest.of(userCondition.getPage(), userCondition.getSize(),
                 Sort.Direction.DESC, "createTime");
-        Page<UserEntity> list = userJPA.findAll((Specification<UserEntity>) (root, criteriaQuery, criteriaBuilder) -> {
+        Page<UserEntity> list = userRepository.findAll((Specification<UserEntity>) (root, criteriaQuery, criteriaBuilder) -> {
             //like表达式
             String pattern = "%" + StringUtils.ifNullToEmptyStr(userCondition.getUsernameKey()) + "%";
             PredicateUtils pu = new PredicateUtils(root,criteriaQuery,criteriaBuilder);
@@ -100,17 +109,26 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
     @Transactional
     @Override
     public Object modified(UserEntity userEntity) {
-        UserEntity user = userJPA.findById(userEntity.getId()).get();
+        UserEntity user = userRepository.findById(userEntity.getId()).get();
         if (null != userEntity.getStatus()) {
             user.setStatus(userEntity.getStatus());
         }
-        userJPA.save(user);
+        userRepository.save(user);
         return responseMap(true, "修改成功!");
     }
 
     @Override
     public Map delete(List<String> ids) {
         return softDelete(ids);
+    }
+
+    @Override
+    public List<RoleEntity> roles() {
+        List<RoleEntity> roles = roleRepository.findAll((Specification<RoleEntity>) (root, query, criteriaBuilder) -> {
+            PredicateUtils pu = new PredicateUtils(root,query,criteriaBuilder);
+            return pu.equal("status",RoleEntity.STATUS_NORMAL);
+        });
+        return roles;
     }
 
     @Override
