@@ -1,5 +1,6 @@
 package com.sun.swffsp.config;
 
+import com.sun.swffsp.controller.SecurityController;
 import com.sun.swffsp.filter.CustomAuthenticationFilter;
 import com.sun.swffsp.handler.CustomAuthenticationFailureHandler;
 import com.sun.swffsp.handler.CustomAuthenticationSuccessHandler;

@@ -2,6 +2,7 @@ package com.sun.swffsp.service.base;
 
 
 import com.alibaba.druid.util.StringUtils;
+import org.aspectj.weaver.ast.Var;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -66,6 +67,16 @@ public class PredicateUtils {
     }
 
     /**
+     * 等值查询
+     * @param name
+     * @param val
+     * @return
+     */
+    public Predicate equal(String name,Object val){
+        return criteriaBuilder.equal(root.get(name),val);
+    }
+
+    /**
      * 连接Predicate
      *
      * @param predicate
@@ -77,6 +88,8 @@ public class PredicateUtils {
         }
         return this;
     }
+
+
 
     /**
      * 将所有已连接的Predicate装配成新的Predicate

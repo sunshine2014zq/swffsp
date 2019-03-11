@@ -1,6 +1,7 @@
 package com.sun.swffsp.controller;
 
 import com.sun.swffsp.dto.condition.UserCondition;
+import com.sun.swffsp.dto.db.RoleEntity;
 import com.sun.swffsp.dto.db.UserEntity;
 import com.sun.swffsp.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,27 +26,54 @@ public class SecurityController {
     @Autowired
     private SecurityService securityService;
 
+    /**
+     * 用户信息
+     * @return
+     */
     @RequestMapping("/userInfo")
-    @ResponseBody
     public Object info() {
         return securityService.info();
     }
 
+    /**
+     * 用户列表
+     * @param userCondition
+     * @return
+     */
     @RequestMapping("/userList")
-    @ResponseBody
     public Page<UserEntity> list(@RequestBody UserCondition userCondition){
         return securityService.list(userCondition);
     }
 
+    /**
+     * 用户修改
+     * @param userEntity
+     * @return
+     */
     @RequestMapping("/modifiedUser")
     public Object modified(@RequestBody UserEntity userEntity){
         return securityService.modified(userEntity);
     }
 
+    /**
+     * 用户删除
+     * @param ids
+     * @return
+     */
     @RequestMapping("/deleteUsers")
     public Object delete(@RequestBody List<String> ids){
         return securityService.delete(ids);
     }
+
+    /**
+     * 可用角色
+     * @return
+     */
+    @RequestMapping("/roles")
+    public List<RoleEntity> roles(){
+        return securityService.roles();
+    }
+
 
 
 }
