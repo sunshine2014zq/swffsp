@@ -150,62 +150,14 @@ var userEdit = new Vue({
             ,roles:""
         },
         roles:[],
-        validate:{
-            rules:{
-                username:{
-                    required:true,
-                    isUsername:true,
-                    length:{
-                        min:3,
-                        max:10
-                    }
-                },
-                nickName:{
-                    stringCheck:true,
-                    length:{
-                        min:1,
-                        max:10
-                    }
-                },
-                password:{
-                    required:true,
-                    isRightfulString: true,
-                    length:{
-                        min:6,
-                        max:16
-                    }
-                },
-                passwordRepeat:{
-                    required:true,
-                    equalTo:"password"
-                },
-                phoneNum:{
-                    isMobile:true
-                },
-                email:{
-                    email:true
-                },
-                roles:{
-                    required:true
-                }
-            }
-            ,messages:{
-
-            }
-        }
     },
     // 页面加载初始化函数
     mounted: function () {
-        $('#form-admin-edit').validate({
-            rules: this.$data.validate.rules,
-            obj: this.$data.user,
-            others:[{selector:"select",event:"change"}]
-        });
+        $('#form-admin-edit').validate(validate);
     },
     methods: {
         save: function () {
             $.vf_validate.each();
         }
-
     }
 });
