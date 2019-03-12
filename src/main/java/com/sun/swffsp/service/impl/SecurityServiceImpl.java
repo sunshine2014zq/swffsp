@@ -105,9 +105,12 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
     @Override
     public Object save(UserEntity userEntity) {
         try {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            String password = encoder.encode(userEntity.getPassword().trim());
-            userEntity.setPassword(password);
+            if(StringUtils.isEmpty(userEntity.getId())) {
+                //添加
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                String password = encoder.encode(userEntity.getPassword().trim());
+                userEntity.setPassword(password);
+            }
             return saveNotNull(userEntity);
         } catch (ReflectiveOperationException e) {
             e.printStackTrace();

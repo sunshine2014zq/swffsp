@@ -39,7 +39,7 @@ var validate = {
         email:{
             email:true
         },
-        roleCodes:{
+        roles:{
             required:true
         }
     }

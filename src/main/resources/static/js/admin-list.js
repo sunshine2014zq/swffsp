@@ -147,7 +147,7 @@ var userEdit = new Vue({
             ,passwordRepeat:""
             ,phoneNum:""
             ,email:""
-            ,roleCodes:[]
+            ,roles:[]
         },
         roles:[],
     },

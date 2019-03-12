@@ -176,9 +176,9 @@
             <label class="form-label col-xs-4 col-sm-2">角色：</label>
             <div class="formControls col-xs-4 col-sm-6">
 				<select class="select"  size="2" multiple="multiple" width="200px"
-						name="roleCodes" v-model="user.roleCodes">
+						name="roles" v-model="user.roles">
 						<!--<option value="">-请选择账号角色</option>-->
-						<option v-for="role in roles" :value="role.code">
+						<option v-for="role in roles" :value="role">
 							{{role.name}}
 						</option>
 						<!--<option value="0">超级管理员</option>-->
@@ -186,7 +186,8 @@
 						<!--<option value="2">栏目主辑</option>-->
 						<!--<option value="3">栏目编辑</option>-->
 				</select>
-				{{user.roleCodes}}
+				<span v-for="r in user.roles">{{r.name}}&nbsp;&nbsp;</span>
+				<!--{{user.roles}}-->
 
 			</div>
 			<div class="input-message col-xs-4 col-sm-4">
