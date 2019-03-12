@@ -80,6 +80,11 @@
                 }
                 return true;
             },
+            /**
+             * 循环校验
+             * @param names 不需要校验的字段数组
+             * @returns {*|boolean}
+             */
             each:function(names){
                 var self = this;
                 var tags = $($.vf_validate.setting.box).find($.vf_validate.setting.selector);

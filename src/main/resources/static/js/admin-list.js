@@ -123,6 +123,7 @@ var userVue = new Vue({
                 //修改
                 var current = userVue.$data.pageInfo.content[index];
                 baseUtils.copyValue(userEdit.$data.user,current);
+                userEdit.$data.index = index;
                 $("input[type='password']").parents(".row").hide();
             }else{
                 //添加
@@ -150,6 +151,7 @@ var userEdit = new Vue({
             ,roles:[]
         },
         roles:[],
+        index:""//修改的第几条记录
     },
     // 页面加载初始化函数
     mounted: function () {
@@ -165,7 +167,9 @@ var userEdit = new Vue({
                 service.save(this,this.$data.user,function () {
                     //更改列表显示数据
                     if(userEdit.$data.user.id != ""){
-
+                        //修改成功-更新显示数据
+                        baseUtils.copyValue(userVue.$data.pageInfo.content[userEdit.$data.index]
+                            ,userEdit.$data.user)
                     }else {
                         //添加时
                         var user = $.extend(true, {}, userEdit.$data.user);
