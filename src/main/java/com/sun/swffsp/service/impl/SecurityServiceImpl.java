@@ -57,6 +57,13 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
         if (user == null) {
             throw new UsernameNotFoundException("未查找到用户：" + s);
         }
+        if (user.getStatus() == UserEntity.STATUS_DELETED) {
+            throw new RuntimeException("账号不存在");
+        } else if (user.getStatus() == UserEntity.STATUS_INVALID) {
+            throw new RuntimeException("账号不可用");
+        } else if (user.getStatus() != UserEntity.STATUS_NORMAL) {
+            throw new RuntimeException("账号异常");
+        }
         return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }
 

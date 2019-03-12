@@ -4,6 +4,7 @@ import com.sun.swffsp.dto.resp.JSONObject;
 import com.sun.swffsp.dto.resp.ResponseFields;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
 
 import javax.servlet.ServletException;
@@ -22,11 +23,13 @@ public class CustomAuthenticationFailureHandler extends ExceptionMappingAuthenti
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         if (httpServletRequest.getContentType().equals(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 || httpServletRequest.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
+
             //JSON请求处理返回JSON
             httpServletResponse.setContentType("application/json;charset=utf-8");
+            String message = e instanceof UsernameNotFoundException ? "账号或密码错误" : e.getMessage();
             String str = new JSONObject()
                     .put(ResponseFields.Common.STATUS, false)
-                    .put(ResponseFields.Common.MESSAGE, "账号或密码错误")
+                    .put(ResponseFields.Common.MESSAGE, message)
                     .toJSONString();
             httpServletResponse.getWriter().println(str);
         } else {
