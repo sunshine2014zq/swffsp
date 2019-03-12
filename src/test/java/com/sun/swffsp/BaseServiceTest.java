@@ -1,5 +1,6 @@
 package com.sun.swffsp;
 
+import com.sun.swffsp.dto.db.UserEntity;
 import com.sun.swffsp.service.SecurityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,11 +24,19 @@ public class BaseServiceTest {
 
     @Test
     public void test1(){
-        List list = new ArrayList();
-        list.add("3");
-        list.add("4");
-        userService.delete(list);
+//        List list = new ArrayList();
+//        list.add("3");
+//        list.add("4");
+//        userService.delete(list);
 
+    }
+
+    @Test
+    public void test2(){
+        UserEntity userEntity = new UserEntity();
+//        userEntity.setUsername("adf");
+//        userEntity.setPassword("111111");
+//        userService.save(userEntity);
     }
 
 }

@@ -181,7 +181,7 @@ $(function(){
 	},"请输入正确车牌号");
 	//不能为空
 	$.vf_validate.addMethod("required",function (value) {
-	    return !isEmpty(value);
+	    return !isEmpty(value) && value.length >0;
     },"这是必填字段")
     //邮箱格式 -jquery-validate
     $.vf_validate.addMethod("email",function (value) {
@@ -268,7 +268,7 @@ $(function(){
  * @returns {boolean}
  */
 function isEmpty(val) {
-    return NaN == val || '' == val;
+    return NaN == val || '' == val || undefined == val;
 }
 
 //身份证号码的验证规则

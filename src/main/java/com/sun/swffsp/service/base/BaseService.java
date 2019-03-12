@@ -1,14 +1,15 @@
 package com.sun.swffsp.service.base;
 
+import com.sun.swffsp.dto.db.base.BaseEntity;
 import com.sun.swffsp.dto.resp.ResponseFields;
 import com.sun.swffsp.jpa.base.BaseRepository;
 import com.sun.swffsp.utils.ReflexUtils;
+import com.sun.swffsp.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,11 +59,13 @@ public abstract class BaseService<T> {
     protected Map saveNotNull(T entity) throws ReflectiveOperationException {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
         String id = (String) ReflexUtils.getFieldValue(entity.getClass(), "id", entity);
-        if (null != id) {
+        if (!StringUtils.isEmpty(id)) {
             T query = baseRepository.findById(id).get();
             //把需要修改的实体中不为null的字段的值合并到查询出的实体
             entity = (T) ReflexUtils.mergeNotNull(entity.getClass(), query, entity);
         } else {
+            //新增默认状态为1
+            ReflexUtils.setFieldValue(entity.getClass(),entity,"status",BaseEntity.STATUS_NORMAL);
             ReflexUtils.setFieldValue(entity.getClass(),entity,"createBy",currentUser);
         }
         ReflexUtils.setFieldValue(entity.getClass(),entity,"modifiedBy",currentUser);

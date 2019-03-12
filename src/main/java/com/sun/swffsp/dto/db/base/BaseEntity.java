@@ -1,6 +1,7 @@
 package com.sun.swffsp.dto.db.base;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -20,7 +21,8 @@ public abstract class BaseEntity implements Serializable {
      * 主键-UUID
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator="system_uuid")
+    @GenericGenerator(name="system_uuid",strategy="uuid")
     @Column(name = "id", length = 32)
     private String id;
 

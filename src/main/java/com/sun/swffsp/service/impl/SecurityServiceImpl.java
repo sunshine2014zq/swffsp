@@ -23,13 +23,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -59,7 +55,7 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(s);
         if (user == null) {
-            throw new UsernameNotFoundException("为查找到用户：" + s);
+            throw new UsernameNotFoundException("未查找到用户：" + s);
         }
         return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }
@@ -106,10 +102,12 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
         return list;
     }
 
-    @Transactional
     @Override
     public Object save(UserEntity userEntity) {
         try {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String password = encoder.encode(userEntity.getPassword().trim());
+            userEntity.setPassword(password);
             return saveNotNull(userEntity);
         } catch (ReflectiveOperationException e) {
             e.printStackTrace();

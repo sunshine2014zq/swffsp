@@ -110,7 +110,7 @@ var baseUtils = {
         if (type == null || type == '') {
             type = 1;
         }
-        layer.open({
+        var index = layer.open({
             type: type,
             area: [w + 'px', h + 'px'],
             fix: false, //不固定
@@ -120,6 +120,7 @@ var baseUtils = {
             content: content,
             end: closeCallback
         });
+        return index;
     },
     /**
      * 将第二个对象的值赋值给第一个对象<br>
@@ -140,8 +141,31 @@ var baseUtils = {
      */
     clearValues: function (obj) {
         $.each(obj,function (key, val) {
-            obj[key] = '';
+            if(obj[key].length != undefined){
+                //字符串和数组
+                if ($.isArray(obj[key])) {
+                    obj[key] = [];
+                } else {
+                    obj[key] = "";
+                }
+            } else {
+                obj[key] = {};
+            }
         })
+    },
+
+    full: function (s) {
+        return s < 10 ? '0' + s: s;
+    },
+    now: function () {
+        var myDate = new Date();
+        var year=myDate.getFullYear();        //获取当前年
+        var month=myDate.getMonth()+1;   //获取当前月
+        var date=myDate.getDate();            //获取当前日
+        var h=myDate.getHours();              //获取当前小时数(0-23)
+        var m=myDate.getMinutes();          //获取当前分钟数(0-59)
+        var s=myDate.getSeconds();
+        return year+'-'+this.full(month)+"-"+this.full(date)+" "+this.full(h)+':'+this.full(m)+":"+this.full(s);
     }
 }
 
@@ -181,4 +205,8 @@ String.prototype.startWith = function(str){
         return false;
     }
     return true;
+};
+
+Array.prototype.insert = function (index, item) {
+    this.splice(index, 0, item);
 };

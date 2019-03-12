@@ -4,6 +4,7 @@
  */
 
 var validate = {
+    obj:{},
     rules:{
         username:{
             required:true,
@@ -38,7 +39,7 @@ var validate = {
         email:{
             email:true
         },
-        roles:{
+        roleCodes:{
             required:true
         }
     }

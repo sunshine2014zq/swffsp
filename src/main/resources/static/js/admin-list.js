@@ -15,21 +15,20 @@ var service = {
     userPaging: function (vue,query) {
         baseUtils.post(vue, listUrl, query, function (response) {
             userVue.$data.pageInfo = response.body;
-            console.log(userVue.$data)
         })
     }
     , save:function (vue,user,successCallback) {
         baseUtils.post(vue,saveUrl,user,function (response) {
-            //返回数据相关处理
-            console.log(response)
             if(response.body.status){
                 successCallback(response.body.msg);//html组件相关处理
             }
+            //返回数据相关处理
+            baseUtils.reqTip(response.body.msg,response.body.status,1500);
+            layer.close(userVue.$data.edit)
         });
     }
     ,del:function (vue, ids,successCallback) {
         baseUtils.post(vue,delUrl,ids,function (response) {
-            console.log(response)
             baseUtils.reqTip(response.body.msg,response.body.status,1500);
             if(response.body.status){
                 successCallback()
@@ -57,6 +56,7 @@ var userVue = new Vue({
 
         }
         ,ids:[]
+        ,edit:""
     },
     // 页面加载初始化函数
     mounted: function () {
@@ -114,7 +114,7 @@ var userVue = new Vue({
         ,admin_edit :function (title,w,h,index){
             //加载角色信息
             service.loadRoles(this);
-            baseUtils.layer_show(1,title,$(".admin-edit"),w,h,function () {
+            userVue.$data.edit = baseUtils.layer_show(1,title,$(".admin-edit"),w,h,function () {
                 baseUtils.clearValues(userEdit.$data.user);
                 $(".input-message .message").html("");
                 $(".input-message .message-icon").html("");
@@ -147,17 +147,35 @@ var userEdit = new Vue({
             ,passwordRepeat:""
             ,phoneNum:""
             ,email:""
-            ,roles:""
+            ,roleCodes:[]
         },
         roles:[],
     },
     // 页面加载初始化函数
     mounted: function () {
+        validate.obj = this.$data.user
         $('#form-admin-edit').validate(validate);
     },
     methods: {
         save: function () {
-            $.vf_validate.each();
+            var result = $.vf_validate.each();
+            if(result){
+                console.log(this.$data.user)
+                service.save(this,this.$data.user,function () {
+                    //更改列表显示数据
+                    if(userEdit.$data.user.id != ""){
+
+                    }else {
+                        //添加时
+                        var user = $.extend(true, {}, userEdit.$data.user);
+                        user.status = 1;
+                        user.createTime = baseUtils.now();
+                        userVue.$data.pageInfo.content.insert(0,user);
+                        console.log(userVue.$data.pageInfo.content)
+                    }
+
+                })
+            }
         }
     }
 });

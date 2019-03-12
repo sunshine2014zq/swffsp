@@ -39,7 +39,7 @@
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 			<a href="javascript:;" @click="batch_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-			<a href="javascript:;" @click="admin_edit('添加账号','800','460')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
+			<a href="javascript:;" @click="admin_edit('添加账号','750','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
 		</span> <span class="r">
 		共有数据：<strong>54</strong> 条</span>
 	</div>
@@ -92,7 +92,7 @@
 							<i class="Hui-iconfont">&#xe631;</i>
 						</a>
 					</span>
-					<a title="编辑" href="javascript:;" @click="admin_edit('账号编辑','800','400',index)" class="ml-5" style="text-decoration:none">
+					<a title="编辑" href="javascript:;" @click="admin_edit('账号编辑','750','450',index)" class="ml-5" style="text-decoration:none">
 						<i class="Hui-iconfont">&#xe6df;</i>
 					</a>
 					<a title="删除" href="javascript:;" @click="admin_del($event,user.id)" class="ml-5" style="text-decoration:none">
@@ -175,15 +175,18 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">角色：</label>
             <div class="formControls col-xs-4 col-sm-6">
-				<span class="select-box" style="width:150px;">
-				<select class="select" name="roles" size="1" v-model="user.roles">
-					<option value="">-请选择账号角色</option>
-					<option v-for="role in roles" :value="role.code">{{role.name}}</option>
-					<!--<option value="0">超级管理员</option>-->
-					<!--<option value="1">总编</option>-->
-					<!--<option value="2">栏目主辑</option>-->
-					<!--<option value="3">栏目编辑</option>-->
-				</select></span>
+				<select class="select"  size="2" multiple="multiple" width="200px"
+						name="roleCodes" v-model="user.roleCodes">
+						<!--<option value="">-请选择账号角色</option>-->
+						<option v-for="role in roles" :value="role.code">
+							{{role.name}}
+						</option>
+						<!--<option value="0">超级管理员</option>-->
+						<!--<option value="1">总编</option>-->
+						<!--<option value="2">栏目主辑</option>-->
+						<!--<option value="3">栏目编辑</option>-->
+				</select>
+				{{user.roleCodes}}
 
 			</div>
 			<div class="input-message col-xs-4 col-sm-4">
@@ -213,8 +216,8 @@
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
 <script type="text/javascript" src="js/base/baseUtils.js"></script>
-<script type="text/javascript" src="js/admin-list.js"></script>
 <script type="text/javascript" src="js/admin-list-validate.js"></script>
+<script type="text/javascript" src="js/admin-list.js"></script>
 
 </body>
 </html>

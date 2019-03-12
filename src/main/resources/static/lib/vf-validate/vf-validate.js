@@ -44,10 +44,12 @@
                 tag.parents(".row").find(".message-icon").html(ok_icon);
                 // 循环执行校验规则
                 if(rules){
+                    var n = true;
                     $.each(rules,function (key,val) {
                         var method = $.vf_validate.methods[key];
                         if(undefined == method) {
                             console.log("错误规则" + key);
+                            return true;
                         }
                         //值为false的规则不校验
                         if(val instanceof Boolean && !val){
@@ -70,26 +72,34 @@
                             //错误提示
                             tag.parents(".row").find(".message-icon").html(fail_icon);
                             tag.parents(".row").find(".message").html(message);
+                            n = false;
                             return false;
                         }
                     });
+                    return n;
                 }
+                return true;
             },
             each:function(){
                 var self = this;
                 var tags = $($.vf_validate.setting.box).find($.vf_validate.setting.selector);
-                this.eachValidate(tags);
-                $.each($.vf_validate.setting.others,function (val) {
+                var flag = this.eachValidate(tags);
+                $.each($.vf_validate.setting.others,function (index,val) {
                     var tags = $($.vf_validate.setting.box).find(val.selector);
-                    self.eachValidate(tags);
+                    var result = self.eachValidate(tags);
+                    if(!result) flag = false;
                 })
+                return flag;
             },
             eachValidate: function(tags){
+                var flag = true;
                 if(tags != undefined) {
                     for (var i = 0; i< tags.length; i++) {
-                        this.validate($(tags[i]));
+                        var result = this.validate($(tags[i]));
+                        if(!result) flag = false;
                     }
                 }
+                return flag;
             },
             isUndefinedEmpty: function(val) {
                 return undefined == val || '' == val;
