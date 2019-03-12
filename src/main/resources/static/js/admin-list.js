@@ -158,7 +158,8 @@ var userEdit = new Vue({
     },
     methods: {
         save: function () {
-            var result = $.vf_validate.each();
+            var names = userEdit.$data.user.id == "" ? [] : ["password","passwordRepeat"];
+            var result = $.vf_validate.each(names);
             if(result){
                 console.log(this.$data.user)
                 service.save(this,this.$data.user,function () {

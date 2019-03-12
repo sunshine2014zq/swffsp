@@ -80,21 +80,25 @@
                 }
                 return true;
             },
-            each:function(){
+            each:function(names){
                 var self = this;
                 var tags = $($.vf_validate.setting.box).find($.vf_validate.setting.selector);
-                var flag = this.eachValidate(tags);
+                names = (names == undefined ? [] : names);
+                var flag = this.eachValidate(tags,names);
                 $.each($.vf_validate.setting.others,function (index,val) {
                     var tags = $($.vf_validate.setting.box).find(val.selector);
-                    var result = self.eachValidate(tags);
+                    var result = self.eachValidate(tags,names);
                     if(!result) flag = false;
                 })
                 return flag;
             },
-            eachValidate: function(tags){
+            eachValidate: function(tags,names){
                 var flag = true;
                 if(tags != undefined) {
                     for (var i = 0; i< tags.length; i++) {
+                        if($.inArray($(tags[i]).attr("name"),names) > -1){
+                            continue;
+                        }
                         var result = this.validate($(tags[i]));
                         if(!result) flag = false;
                     }
