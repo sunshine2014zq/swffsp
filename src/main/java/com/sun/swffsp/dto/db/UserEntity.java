@@ -2,6 +2,7 @@ package com.sun.swffsp.dto.db;
 
 import com.sun.swffsp.dto.db.base.BaseEntity;
 import com.sun.swffsp.security.CustomGrantedAuthority;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @Table(name = "user")
 @Entity
+@Data
 public class UserEntity extends BaseEntity implements Serializable, UserDetails {
 
     /**
@@ -103,79 +105,6 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
         }
         return auths;
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNum() {
-        return phoneNum;
-    }
-
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
-    }
-
-    public String getQqNum() {
-        return qqNum;
-    }
-
-    public void setQqNum(String qqNum) {
-        this.qqNum = qqNum;
-    }
-
-    public String getWxNum() {
-        return wxNum;
-    }
-
-    public void setWxNum(String wxNum) {
-        this.wxNum = wxNum;
-    }
-
-    public List<RoleEntity> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<RoleEntity> roles) {
-        this.roles = roles;
-    }
-
     @Override
     public String toString() {
         return "UserEntity{" +

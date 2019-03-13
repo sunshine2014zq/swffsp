@@ -1,6 +1,7 @@
 package com.sun.swffsp.dto.db;
 
 import com.sun.swffsp.dto.db.base.BaseEntity;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import java.io.Serializable;
  */
 @Table(name = "privilege")
 @Entity
+@Data
 public class PrivilegeEntity extends BaseEntity implements Serializable {
 
     /**
@@ -55,45 +57,6 @@ public class PrivilegeEntity extends BaseEntity implements Serializable {
     @Column(name = "parent_code", length = 32)
     private String parentCode;
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getParentCode() {
-        return parentCode;
-    }
-
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
-    }
 
     @Override
     public String toString() {

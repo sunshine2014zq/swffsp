@@ -1,11 +1,14 @@
 package com.sun.swffsp.dto.resp;
 
+import lombok.Data;
+
 /**
  * 接口响应实体
  *
  * @author sun
  * @date 2019/3/13 11:10
  */
+@Data
 public class Response {
 
     /**
@@ -85,43 +88,4 @@ public class Response {
         return this;
     }
 
-    /**
-     * 按照clazz的格式将数据装配到data区
-     * @param data
-     * @param clazz
-     * @return
-     */
-    public Response data(Object data, Class clazz){
-//        JSONObject.parseObject("");
-//        JSON.parseObject("")
-        return this;
-    }
-
-
-
-
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
 }

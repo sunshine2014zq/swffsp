@@ -1,6 +1,7 @@
 package com.sun.swffsp.dto.req;
 
 import com.sun.swffsp.dto.req.base.PageCondition;
+import lombok.Data;
 
 /**
  * 用户查询条件
@@ -8,6 +9,7 @@ import com.sun.swffsp.dto.req.base.PageCondition;
  * @author sun
  * @date 2019/2/26 10:22
  */
+@Data
 public class UserCondition extends PageCondition {
 
     /**
@@ -15,11 +17,4 @@ public class UserCondition extends PageCondition {
      */
     private String usernameKey;
 
-    public String getUsernameKey() {
-        return usernameKey;
-    }
-
-    public void setUsernameKey(String usernameKey) {
-        this.usernameKey = usernameKey;
-    }
 }
