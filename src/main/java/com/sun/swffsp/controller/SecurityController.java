@@ -1,6 +1,6 @@
 package com.sun.swffsp.controller;
 
-import com.sun.swffsp.dto.condition.UserCondition;
+import com.sun.swffsp.dto.req.UserCondition;
 import com.sun.swffsp.dto.db.RoleEntity;
 import com.sun.swffsp.dto.db.UserEntity;
 import com.sun.swffsp.service.SecurityService;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;

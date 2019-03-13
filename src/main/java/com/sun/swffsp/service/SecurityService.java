@@ -1,6 +1,6 @@
 package com.sun.swffsp.service;
 
-import com.sun.swffsp.dto.condition.UserCondition;
+import com.sun.swffsp.dto.req.UserCondition;
 import com.sun.swffsp.dto.db.RoleEntity;
 import com.sun.swffsp.dto.db.UserEntity;
 import org.springframework.data.domain.Page;

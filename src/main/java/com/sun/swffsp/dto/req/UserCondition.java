@@ -1,14 +1,14 @@
-package com.sun.swffsp.dto.condition;
+package com.sun.swffsp.dto.req;
 
-import com.sun.swffsp.dto.condition.base.BaseCondition;
+import com.sun.swffsp.dto.req.base.PageCondition;
 
 /**
- * 用户模块查询条件
+ * 用户查询条件
  *
  * @author sun
  * @date 2019/2/26 10:22
  */
-public class UserCondition extends BaseCondition {
+public class UserCondition extends PageCondition {
 
     /**
      * 用户名查找关键字

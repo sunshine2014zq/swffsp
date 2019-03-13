@@ -1,12 +1,12 @@
-package com.sun.swffsp.dto.condition.base;
+package com.sun.swffsp.dto.req.base;
 
 /**
- * 通用查询条件
+ * 分页请求通用参数
  *
  * @author sun
  * @date 2019/2/26 10:17
  */
-public class BaseCondition {
+public class PageCondition {
 
     /**
      * 页面

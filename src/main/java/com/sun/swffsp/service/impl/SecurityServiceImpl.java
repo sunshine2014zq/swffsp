@@ -1,7 +1,7 @@
 package com.sun.swffsp.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.sun.swffsp.dto.condition.UserCondition;
+import com.sun.swffsp.dto.req.UserCondition;
 import com.sun.swffsp.dto.db.PrivilegeEntity;
 import com.sun.swffsp.dto.db.RoleEntity;
 import com.sun.swffsp.dto.db.UserEntity;
