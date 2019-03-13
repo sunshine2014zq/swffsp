@@ -14,12 +14,12 @@ public class Response {
     private Integer status;
 
     /**
-     * 响应状态-请求成功
+     * 响应状态-操作成功
      */
     public static final Integer STATUS_OK = 200;
 
     /**
-     * 响应状态-请求失败
+     * 响应状态-操作失败
      */
     public static final Integer STATUS_FAIL = 400;
 
@@ -56,6 +56,14 @@ public class Response {
      */
     public static Response ok(String message){
         return create(STATUS_OK,message);
+    }
+
+    /**
+     * 创建一个无消息的成功请求
+     * @return
+     */
+    public static Response ok(){
+        return create(STATUS_OK,null);
     }
 
     /**

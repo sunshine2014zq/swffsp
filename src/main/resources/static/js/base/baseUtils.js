@@ -3,6 +3,8 @@
  * use jquery-1.9.1
  * use layer-2.4
  */
+//操作成功
+var OK = 200;
 
 var baseUtils = {
     /**
@@ -10,8 +12,18 @@ var baseUtils = {
      * @param item
      * @returns {boolean}
      */
-    isEmpty : function (item) {
+    isEmptyValue : function (item) {
         if (item.val() == '' || item.val() == undefined) {
+            return true;
+        }
+        return false;
+    },
+    /**
+     * 判断是否为空"",null,undefined
+     * @param val
+     */
+    isEmpty : function(val){
+        if (val == undefined || val == null || val == '') {
             return true;
         }
         return false;
@@ -19,73 +31,52 @@ var baseUtils = {
 
     /**
      * 消息提示框
-     * @param msg 为空提示：消息解析错误
+     * @param message 为空提示：消息解析错误
      * @param icon 1:成功 2:错误 3：疑问 4：锁定 5：哭脸，6：笑脸 7：警告
      * @param time 时间/毫秒
      */
-    tip: function (msg, icon, time) {
-        if(msg){
-            layer.msg(msg, {icon: icon, time: time});
-        }else {
-            layer.msg("消息解析错误", {icon: 2, time: time});
+    tip: function (message, icon, time) {
+        if(message){
+            layer.msg(message, {icon: icon, time: time});
         }
     },
 
-    reqTip: function(msg,status,time){
-        var icon = status ? 1 : 2;
-        this.tip(msg,icon,time);
+    reqTip: function(message,status,time){
+        var icon = status == OK ? 1 : 2;
+        this.tip(message,icon,time);
     },
 
     /**
-     * 包含加载遮罩层的post请求
+     *
+     * 包含加载遮罩层的post请求 -回调省略时会根据状态tip-message
      * @param vue vue对象
      * @param url 请求地址
      * @param data 请求参数
      * @param successCallBack 请求成功回到函数
-     * @param failCallBack 如未传入回调函数,请求失败提示“系统繁忙!请稍后重试”
+     * @param failCallBack 失败回调
      */
     post: function (vue, url, data, successCallBack, failCallBack) {
         var loading = layer.load(0, {shade: [0.5, '#949494']}); //0代表加载的风格，支持0-2
         vue.$http.post(url, data).then(function (response) {
             layer.close(loading);
-            //回调
-            successCallBack(response);
-        }, function (response) {
-            console.log(response)
-            layer.close(loading);
-            if($.isFunction(failCallBack)){
-                //回调
-                failCallBack(response)
-            }else {
-                baseUtils.tip("系统繁忙!请稍后重试",2,1500);
+            baseUtils.reqTip(response.body.message, response.body.status, 1500);
+            if (response.body.status == OK) {
+                if ($.isFunction(successCallBack)) {
+                    //data:数据
+                    successCallBack(response.body.data);
+                }
+            } else {
+                if ($.isFunction(failCallBack)) {
+                    //status:错误码,data:数据
+                    failCallBack(response.body.status, response.body.data)
+                }
             }
+        }, function () {
+            layer.close(loading);
+            baseUtils.tip("系统繁忙!请稍后重试", 2, 1500);
         });
     },
 
-    /**
-     * 包含加载遮罩层的get请求
-     * @param vue vue对象
-     * @param url 请求地址
-     * @param successCallBack 请求成功回到函数
-     * @param failCallBack 如未传入回调函数,请求失败提示“系统繁忙!请稍后重试”
-     */
-    get: function (vue, url, successCallBack, failCallBack) {
-        var loading = layer.load(0, {shade: [0.5, '#949494']}, "#addPanel"); //0代表加载的风格，支持0-2
-        vue.get(url).then(function (response) {
-            //回调
-            successCallBack(response);
-            layer.close(loading);
-        }, function (response) {
-            console.log(response)
-            layer.close(loading);
-            if($.isFunction(failCallBack)){
-                //回调
-                failCallBack(response)
-            }else {
-                baseUtils.tip("系统繁忙!请稍后重试",2,1500);
-            }
-        });
-    },
     /**
      * layer弹框
      * @param type 弹框类型 1页面层(content为请求内容) ; 2iframe层(content为请求URL)

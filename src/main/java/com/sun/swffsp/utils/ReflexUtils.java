@@ -140,7 +140,7 @@ public class ReflexUtils {
             clazz = clazz.getSuperclass();
             if(clazz != null) {
                 try {
-                    clazz.getDeclaredField(name);
+                    field = clazz.getDeclaredField(name);
                 } catch (NoSuchFieldException e) {
                     field = null;
                 }

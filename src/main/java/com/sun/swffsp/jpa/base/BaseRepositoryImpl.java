@@ -30,7 +30,7 @@ public class BaseRepositoryImpl<T> extends SimpleJpaRepository<T, String> implem
         StringBuffer sb = new StringBuffer().append("update ").append(tableName)
                 .append(" set status = -1 where id in (");
         ids.forEach(id -> {
-            sb.append(id).append(",");
+            sb.append("'").append(id).append("'").append(",");
         });
         String sql = sb.substring(0, sb.length() - 1) + ")";
         return entityManager.createNativeQuery(sql).executeUpdate();

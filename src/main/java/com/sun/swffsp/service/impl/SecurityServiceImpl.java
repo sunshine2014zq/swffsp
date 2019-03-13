@@ -5,6 +5,8 @@ import com.sun.swffsp.dto.db.PrivilegeEntity;
 import com.sun.swffsp.dto.db.RoleEntity;
 import com.sun.swffsp.dto.db.UserEntity;
 import com.sun.swffsp.dto.req.UserCondition;
+import com.sun.swffsp.dto.resp.Response;
+import com.sun.swffsp.dto.resp.data.UserInfo;
 import com.sun.swffsp.jpa.RoleRepository;
 import com.sun.swffsp.jpa.UserRepository;
 import com.sun.swffsp.security.CustomGrantedAuthority;
@@ -66,10 +68,12 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
 
 
     @Override
-    public Object info() {
-        Map result = new HashMap();
+    public UserInfo info() {
+        UserInfo info = new UserInfo();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        result.put("username", auth.getName());
+        info.setUsername(auth.getName());
+        UserEntity user = userRepository.findByUsername(auth.getName());
+        info.setNickName(user.getNickName());
         //合并所有权限-去重
         List<PrivilegeEntity> privileges = new ArrayList<>();
         List<String> codes = new ArrayList<>();
@@ -85,9 +89,9 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
             }
         }
         //将权限排成树形菜单
-        List<Map> menus = menuTree(privileges);
-        result.put("menus", menus);
-        return result;
+        List<UserInfo.Menu> menus = menuTree(privileges);
+        info.setMenus(menus);
+        return info;
     }
 
     @Override
@@ -107,7 +111,7 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
     }
 
     @Override
-    public Object save(UserEntity userEntity) {
+    public Response save(UserEntity userEntity) {
         try {
             if(StringUtils.isEmpty(userEntity.getId())) {
                 //添加
@@ -118,12 +122,12 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
             return saveNotNull(userEntity);
         } catch (ReflectiveOperationException e) {
             e.printStackTrace();
-            return responseMap(false,"系统繁忙!请稍后重试");
+            return Response.fail("服务繁忙!请稍后重试");
         }
     }
 
     @Override
-    public Map delete(List<String> ids) {
+    public Response delete(List<String> ids) {
         return softDelete(ids);
     }
 
@@ -147,24 +151,24 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
      * @param privileges
      * @return
      */
-    private List<Map> menuTree(List<PrivilegeEntity> privileges) {
-        List<Map> menus = new ArrayList<>();
+    private List<UserInfo.Menu> menuTree(List<PrivilegeEntity> privileges) {
+        List<UserInfo.Menu> menus = new ArrayList<>();
         Iterator<PrivilegeEntity> iterator = privileges.iterator();
         Gson gson = new Gson();
         while (iterator.hasNext()) {
             PrivilegeEntity privilege = iterator.next();
             if (privilege.getType().equals(PrivilegeEntity.TYPE_MENU_1)) {
                 //一级菜单
-                Map object = gson.fromJson(gson.toJson(privilege), HashMap.class);
+                UserInfo.Menu menu = gson.fromJson(gson.toJson(privilege), UserInfo.Menu.class);
                  //为一级菜单查找子菜单
-                List<PrivilegeEntity> subMenus = new ArrayList<>();
+                List<UserInfo.Menu> subMenus = new ArrayList<>();
                 privileges.forEach(p -> {
                     if (privilege.getCode().equals(p.getParentCode())) {
-                        subMenus.add(p);
+                        subMenus.add(gson.fromJson(gson.toJson(p), UserInfo.Menu.class));
                     }
                 });
-                object.put("subMenus", subMenus);
-                menus.add(object);
+                menu.setSubMenus(subMenus);
+                menus.add(menu);
                 iterator.remove();
 //                privileges.removeAll(subMenus);
             }

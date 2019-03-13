@@ -3,6 +3,8 @@ package com.sun.swffsp.service;
 import com.sun.swffsp.dto.req.UserCondition;
 import com.sun.swffsp.dto.db.RoleEntity;
 import com.sun.swffsp.dto.db.UserEntity;
+import com.sun.swffsp.dto.resp.Response;
+import com.sun.swffsp.dto.resp.data.UserInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -22,7 +24,7 @@ public interface SecurityService extends UserDetailsService {
      *
      * @return username, menu
      */
-    Object info();
+    UserInfo info();
 
     /**
      * 用户列表
@@ -39,14 +41,14 @@ public interface SecurityService extends UserDetailsService {
      * @param userEntity
      * @return
      */
-    Object save(UserEntity userEntity);
+    Response save(UserEntity userEntity);
 
     /**
      * 删除
      * @param ids
      * @return
      */
-    Map delete(List<String> ids);
+    Response delete(List<String> ids);
 
     /**
      * 可用角色

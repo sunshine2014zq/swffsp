@@ -12,35 +12,8 @@ var rolesUrl = contextPath + "/security/roles";
 
 // 本页面业务方法
 var service = {
-    userPaging: function (vue,query) {
-        baseUtils.post(vue, listUrl, query, function (response) {
-            userVue.$data.pageInfo = response.body;
-        })
-    }
-    , save:function (vue,user,successCallback) {
-        baseUtils.post(vue,saveUrl,user,function (response) {
-            if(response.body.status){
-                successCallback(response.body.msg);//html组件相关处理
-            }
-            //返回数据相关处理
-            baseUtils.reqTip(response.body.msg,response.body.status,1500);
-            layer.close(userVue.$data.edit)
-        });
-    }
-    ,del:function (vue, ids,successCallback) {
-        baseUtils.post(vue,delUrl,ids,function (response) {
-            baseUtils.reqTip(response.body.msg,response.body.status,1500);
-            if(response.body.status){
-                successCallback()
-            }
-        })
-    }
-    ,loadRoles: function (vue) {
-        baseUtils.post(vue,rolesUrl,{},function (response) {
-            console.log(response.body)
-            userEdit.$data.roles = response.body;
-        })
-    }
+
+
 }
 
 //用户列表模块
@@ -60,12 +33,16 @@ var userVue = new Vue({
     },
     // 页面加载初始化函数
     mounted: function () {
-        service.userPaging(this,this.$data.query);
+        baseUtils.post(this, listUrl, this.$data.query,function (data) {
+            userVue.$data.pageInfo = data;
+        });
     },
     methods:{
         // vue element 范围内触发事件处理
         search: function () {
-            service.userPaging(this, this.$data.query);
+            baseUtils.post(this,listUrl,this.$data.query,function (data) {
+                userVue.$data.pageInfo = data;
+            });
         }
         //修改状态
         ,statusModified: function (event, id, status) {
@@ -74,11 +51,10 @@ var userVue = new Vue({
             layer.confirm(msg, function (index) {
                 //此处请求后台程序，下方是成功后的前台处理……
                 var user = {"id":id,"status":status};
-                service.save(vue,user,function (msg) {
+                baseUtils.post(vue,saveUrl,user,function () {
                     $(event.target).parents("tr").find(".btn-status").toggle();
                     $(event.target).parents("tr").find(".label-status").toggle();
                     layer.close(index);
-                    baseUtils.tip(msg,1,1500)
                 })
             });
         }
@@ -88,7 +64,7 @@ var userVue = new Vue({
             var ids = [];
             ids.push(id);
             layer.confirm('确认要删除吗？',function(index){
-                service.del(vue,ids,function () {
+                baseUtils.post(vue,delUrl,ids,function () {
                     $(event.target).parents("tr").remove();
                 })
             });
@@ -156,7 +132,9 @@ var userEdit = new Vue({
         validate.obj = this.$data.user
         $('#form-admin-edit').validate(validate);
         //加载角色信息
-        service.loadRoles(this);
+        baseUtils.post(this,rolesUrl,{},function (data) {
+            userEdit.$data.roles = data;
+        })
     },
     methods: {
         save: function () {
@@ -164,7 +142,7 @@ var userEdit = new Vue({
             var result = $.vf_validate.each(names);
             if(result){
                 console.log(this.$data.user)
-                service.save(this,this.$data.user,function () {
+                baseUtils.post(this,saveUrl,this.$data.user,function () {
                     //更改列表显示数据
                     if(userEdit.$data.user.id != ""){
                         //修改成功-更新显示数据
@@ -178,7 +156,7 @@ var userEdit = new Vue({
                         userVue.$data.pageInfo.content.insert(0,user);
                         console.log(userVue.$data.pageInfo.content)
                     }
-
+                    layer.close(userVue.$data.edit)
                 })
             }
         }

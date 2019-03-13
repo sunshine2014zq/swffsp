@@ -2,11 +2,9 @@
  * Created by sun on 2019/2/21 15:38
  */
 
-
-
 // 全局变量
 var contextPath = "/swffsp"
-var getUserUrl = contextPath +"/security/userInfo";
+var userInfoUrl = contextPath +"/security/userInfo";
 
 // 业务方法处理
 var service = {
@@ -21,13 +19,11 @@ var menu = new Vue({
     },
     // vue加载初始化函数
     mounted: function () {
-        baseUtils.post(new Vue(), getUserUrl, {}, function (response) {
-            console.log(response.body)
-            $(".username").html(response.body.username)
-            menu.$data.menus = response.body.menus
-            console.log(menu.$data.menus)
+        baseUtils.post(new Vue(), userInfoUrl, {}, function (data) {
+            var name = baseUtils.isEmpty(data.nickName) ? data.username : data.nickName;
+            $(".username").html(name)
+            menu.$data.menus = data.menus
         })
-
     },
     methods: {
         // vue element 范围内触发事件处理

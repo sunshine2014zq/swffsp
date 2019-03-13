@@ -1,6 +1,7 @@
 package com.sun.swffsp.service.base;
 
 import com.sun.swffsp.dto.db.base.BaseEntity;
+import com.sun.swffsp.dto.resp.Response;
 import com.sun.swffsp.jpa.base.BaseRepository;
 import com.sun.swffsp.utils.ReflexUtils;
 import com.sun.swffsp.utils.StringUtils;
@@ -42,9 +43,9 @@ public abstract class BaseService<T> {
      * @param ids
      * @return
      */
-    protected Map softDelete(List ids) {
+    protected Response softDelete(List ids) {
         int i = baseRepository.softDelete("user", ids);
-        return responseMap(true, "成功删除" + i + "条数据");
+        return Response.ok("成功删除" + i + "条数据");
     }
 
     /**
@@ -55,7 +56,7 @@ public abstract class BaseService<T> {
      * @return
      * @throws ReflectiveOperationException
      */
-    protected Map saveNotNull(T entity) throws ReflectiveOperationException {
+    protected Response saveNotNull(T entity) throws ReflectiveOperationException {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
         String id = (String) ReflexUtils.getFieldValue(entity.getClass(), "id", entity);
         if (!StringUtils.isEmpty(id)) {
@@ -69,7 +70,7 @@ public abstract class BaseService<T> {
         }
         ReflexUtils.setFieldValue(entity.getClass(),entity,"modifiedBy",currentUser);
         baseRepository.save(entity);
-        return responseMap(true,"保存成功");
+        return Response.ok("保存成功");
     }
 
     /**
@@ -80,43 +81,13 @@ public abstract class BaseService<T> {
      * @return
      * @throws ReflectiveOperationException
      */
-    protected Map checkAndSaveNotNull(T entity) throws ReflectiveOperationException {
+    protected Response checkAndSaveNotNull(T entity) throws ReflectiveOperationException {
         Map fieldMap = new HashMap();
         if(check(entity,fieldMap)){
             return saveNotNull(entity);
         }
-        return responseMap(false,"保存失败",fieldMap);
+        return Response.fail("保存失败").data(fieldMap);
     }
-
-
-    /**
-     * 响应结果集
-     *
-     * @param result 请求结果 成功/失败
-     * @param msg    消息
-     * @return
-     */
-    protected Map responseMap(boolean result, String msg) {
-        Map map = new HashMap();
-//        map.put(Protocol.CRUD.STATUS, result);
-//        map.put(Protocol.CRUD.MESSAGE, msg);
-        return map;
-    }
-
-    /**
-     * 响应结果集
-     *
-     * @param result   请求结果 成功/失败
-     * @param msg      消息
-     * @param fieldErr 字段错误消息
-     * @return
-     */
-    protected Map responseMap(boolean result, String msg, Map fieldErr) {
-        Map map = responseMap(result, msg);
-//        map.put(Protocol.CRUD.FIELD_ERROR, fieldErr);
-        return map;
-    }
-
 
     /**
      * 检查需要新增的数据正确性
