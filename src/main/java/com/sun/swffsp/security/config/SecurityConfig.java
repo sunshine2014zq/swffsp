@@ -1,8 +1,8 @@
-package com.sun.swffsp.config;
+package com.sun.swffsp.security.config;
 
-import com.sun.swffsp.filter.CustomAuthenticationFilter;
-import com.sun.swffsp.handler.CustomAuthenticationFailureHandler;
-import com.sun.swffsp.handler.CustomAuthenticationSuccessHandler;
+import com.sun.swffsp.security.filter.CustomAuthenticationFilter;
+import com.sun.swffsp.security.handler.CustomAuthenticationFailureHandler;
+import com.sun.swffsp.security.handler.CustomAuthenticationSuccessHandler;
 import com.sun.swffsp.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

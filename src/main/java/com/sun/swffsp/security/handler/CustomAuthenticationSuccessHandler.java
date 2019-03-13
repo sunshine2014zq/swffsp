@@ -1,4 +1,4 @@
-package com.sun.swffsp.handler;
+package com.sun.swffsp.security.handler;
 
 import com.sun.swffsp.dto.resp.JSONObject;
 import com.sun.swffsp.dto.resp.ResponseFields;

@@ -1,4 +1,4 @@
-package com.sun.swffsp.filter;
+package com.sun.swffsp.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.swffsp.dto.db.UserEntity;
