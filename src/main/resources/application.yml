@@ -63,7 +63,7 @@ spring:
     #配置自动建表：updata:没有表新建，有表更新操作,控制台显示建表语句
     hibernate:
       ddl-auto: update
-  jackson:
+  gson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 

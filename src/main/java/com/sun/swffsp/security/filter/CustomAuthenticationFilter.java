@@ -1,6 +1,6 @@
 package com.sun.swffsp.security.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.sun.swffsp.dto.db.UserEntity;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * 自定义支持表单登录和JSON登录的Spring security 认证拦截器
@@ -26,11 +27,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         //判断是否是Json请求
         if (request.getContentType().equals(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 || request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
-            //use jackson to deserialize json
-            ObjectMapper mapper = new ObjectMapper();
+            //use gson to deserialize json
             UsernamePasswordAuthenticationToken authRequest = null;
             try (InputStream is = request.getInputStream()) {
-                UserEntity userEntity = mapper.readValue(is, UserEntity.class);
+                UserEntity userEntity = new Gson().fromJson(new InputStreamReader(is), UserEntity.class);
                 authRequest = new UsernamePasswordAuthenticationToken(
                         userEntity.getUsername(), userEntity.getPassword());
             } catch (IOException e) {

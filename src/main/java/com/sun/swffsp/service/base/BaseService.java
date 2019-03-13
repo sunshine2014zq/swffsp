@@ -1,7 +1,6 @@
 package com.sun.swffsp.service.base;
 
 import com.sun.swffsp.dto.db.base.BaseEntity;
-import com.sun.swffsp.dto.resp.ResponseFields;
 import com.sun.swffsp.jpa.base.BaseRepository;
 import com.sun.swffsp.utils.ReflexUtils;
 import com.sun.swffsp.utils.StringUtils;
@@ -99,8 +98,8 @@ public abstract class BaseService<T> {
      */
     protected Map responseMap(boolean result, String msg) {
         Map map = new HashMap();
-        map.put(ResponseFields.CRUD.STATUS, result);
-        map.put(ResponseFields.CRUD.MESSAGE, msg);
+//        map.put(Protocol.CRUD.STATUS, result);
+//        map.put(Protocol.CRUD.MESSAGE, msg);
         return map;
     }
 
@@ -114,7 +113,7 @@ public abstract class BaseService<T> {
      */
     protected Map responseMap(boolean result, String msg, Map fieldErr) {
         Map map = responseMap(result, msg);
-        map.put(ResponseFields.CRUD.FIELD_ERROR, fieldErr);
+//        map.put(Protocol.CRUD.FIELD_ERROR, fieldErr);
         return map;
     }
 

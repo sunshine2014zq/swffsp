@@ -1,7 +1,7 @@
 package com.sun.swffsp.security.handler;
 
-import com.sun.swffsp.dto.resp.JSONObject;
-import com.sun.swffsp.dto.resp.ResponseFields;
+import com.google.gson.Gson;
+import com.sun.swffsp.dto.resp.Response;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,10 +27,7 @@ public class CustomAuthenticationFailureHandler extends ExceptionMappingAuthenti
             //JSON请求处理返回JSON
             httpServletResponse.setContentType("application/json;charset=utf-8");
             String message = e instanceof UsernameNotFoundException ? "账号或密码错误" : e.getMessage();
-            String str = new JSONObject()
-                    .put(ResponseFields.Common.STATUS, false)
-                    .put(ResponseFields.Common.MESSAGE, message)
-                    .toJSONString();
+            String str = new Gson().toJson(Response.fail(message));
             httpServletResponse.getWriter().println(str);
         } else {
             //非JSON请求采用默认处理-跳转页面

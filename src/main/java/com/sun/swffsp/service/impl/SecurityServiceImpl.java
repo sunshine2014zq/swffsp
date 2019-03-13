@@ -1,10 +1,10 @@
 package com.sun.swffsp.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.sun.swffsp.dto.req.UserCondition;
+import com.google.gson.Gson;
 import com.sun.swffsp.dto.db.PrivilegeEntity;
 import com.sun.swffsp.dto.db.RoleEntity;
 import com.sun.swffsp.dto.db.UserEntity;
+import com.sun.swffsp.dto.req.UserCondition;
 import com.sun.swffsp.jpa.RoleRepository;
 import com.sun.swffsp.jpa.UserRepository;
 import com.sun.swffsp.security.CustomGrantedAuthority;
@@ -26,10 +26,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用户业务
@@ -70,7 +67,7 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
 
     @Override
     public Object info() {
-        JSONObject result = new JSONObject();
+        Map result = new HashMap();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         result.put("username", auth.getName());
         //合并所有权限-去重
@@ -88,7 +85,7 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
             }
         }
         //将权限排成树形菜单
-        List<JSONObject> menus = menuTree(privileges);
+        List<Map> menus = menuTree(privileges);
         result.put("menus", menus);
         return result;
     }
@@ -150,15 +147,16 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
      * @param privileges
      * @return
      */
-    private List<JSONObject> menuTree(List<PrivilegeEntity> privileges) {
-        List<JSONObject> menus = new ArrayList<>();
+    private List<Map> menuTree(List<PrivilegeEntity> privileges) {
+        List<Map> menus = new ArrayList<>();
         Iterator<PrivilegeEntity> iterator = privileges.iterator();
+        Gson gson = new Gson();
         while (iterator.hasNext()) {
             PrivilegeEntity privilege = iterator.next();
             if (privilege.getType().equals(PrivilegeEntity.TYPE_MENU_1)) {
                 //一级菜单
-                JSONObject object = JSONObject.parseObject(JSONObject.toJSONString(privilege));
-                //为一级菜单查找子菜单
+                Map object = gson.fromJson(gson.toJson(privilege), HashMap.class);
+                 //为一级菜单查找子菜单
                 List<PrivilegeEntity> subMenus = new ArrayList<>();
                 privileges.forEach(p -> {
                     if (privilege.getCode().equals(p.getParentCode())) {
