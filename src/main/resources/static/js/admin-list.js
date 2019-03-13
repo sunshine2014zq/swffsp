@@ -112,8 +112,6 @@ var userVue = new Vue({
         }
         /*管理员-编辑*/
         ,admin_edit :function (title,w,h,index){
-            //加载角色信息
-            service.loadRoles(this);
             userVue.$data.edit = baseUtils.layer_show(1,title,$(".admin-edit"),w,h,function () {
                 baseUtils.clearValues(userEdit.$data.user);
                 $(".input-message .message").html("");
@@ -157,6 +155,8 @@ var userEdit = new Vue({
     mounted: function () {
         validate.obj = this.$data.user
         $('#form-admin-edit').validate(validate);
+        //加载角色信息
+        service.loadRoles(this);
     },
     methods: {
         save: function () {
