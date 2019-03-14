@@ -1,12 +1,9 @@
 package com.sun.swffsp.controller;
 
-import com.google.gson.Gson;
-import com.sun.swffsp.dto.db.PrivilegeEntity;
-import com.sun.swffsp.dto.db.RoleEntity;
-import com.sun.swffsp.dto.db.UserEntity;
-import com.sun.swffsp.dto.req.UserCondition;
-import com.sun.swffsp.dto.resp.Response;
-import com.sun.swffsp.dto.resp.data.UserInfo;
+import com.sun.swffsp.dto.core.RoleEntity;
+import com.sun.swffsp.dto.core.UserEntity;
+import com.sun.swffsp.dto.admin.query.UserCondition;
+import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

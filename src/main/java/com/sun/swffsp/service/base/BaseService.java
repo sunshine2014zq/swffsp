@@ -1,7 +1,7 @@
 package com.sun.swffsp.service.base;
 
-import com.sun.swffsp.dto.db.base.BaseEntity;
-import com.sun.swffsp.dto.resp.Response;
+import com.sun.swffsp.dto.core.base.BaseEntity;
+import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.jpa.base.BaseRepository;
 import com.sun.swffsp.utils.ReflexUtils;
 import com.sun.swffsp.utils.StringUtils;

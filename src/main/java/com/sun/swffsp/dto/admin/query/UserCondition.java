@@ -1,6 +1,6 @@
-package com.sun.swffsp.dto.req;
+package com.sun.swffsp.dto.admin.query;
 
-import com.sun.swffsp.dto.req.base.PageCondition;
+import com.sun.swffsp.dto.admin.query.base.PageCondition;
 import lombok.Data;
 
 /**

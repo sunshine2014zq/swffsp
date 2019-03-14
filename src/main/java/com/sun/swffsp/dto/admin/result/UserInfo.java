@@ -1,4 +1,4 @@
-package com.sun.swffsp.dto.resp.data;
+package com.sun.swffsp.dto.admin.result;
 
 import lombok.Data;
 

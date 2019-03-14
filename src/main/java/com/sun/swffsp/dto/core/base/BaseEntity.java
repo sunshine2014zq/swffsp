@@ -1,4 +1,4 @@
-package com.sun.swffsp.dto.db.base;
+package com.sun.swffsp.dto.core.base;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,8 +23,8 @@ public abstract class BaseEntity implements Serializable {
      * 主键-UUID
      */
     @Id
-    @GeneratedValue(generator="system_uuid")
-    @GenericGenerator(name="system_uuid",strategy="uuid")
+    @GeneratedValue(generator = "system_uuid")
+    @GenericGenerator(name = "system_uuid", strategy = "uuid")
     @Column(name = "id", length = 32)
     private String id;
 
@@ -60,7 +60,6 @@ public abstract class BaseEntity implements Serializable {
     @Column(name = "status")
     private Integer status;
 
-
     /**
      * 正常状态
      */
@@ -74,7 +73,6 @@ public abstract class BaseEntity implements Serializable {
      * 该状态数据任何时候不计入查询等其他操作,除了恢复数据时
      */
     public static final Integer STATUS_DELETED = -1;
-
 
     @Version
     @Column(name = "version")

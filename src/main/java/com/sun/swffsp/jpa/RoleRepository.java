@@ -1,6 +1,6 @@
 package com.sun.swffsp.jpa;
 
-import com.sun.swffsp.dto.db.RoleEntity;
+import com.sun.swffsp.dto.core.RoleEntity;
 import com.sun.swffsp.jpa.base.BaseRepository;
 
 /**

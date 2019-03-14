@@ -1,4 +1,4 @@
-package com.sun.swffsp.dto.req.base;
+package com.sun.swffsp.dto.admin.query.base;
 
 import lombok.Data;
 

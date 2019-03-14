@@ -1,15 +1,14 @@
 package com.sun.swffsp.service;
 
-import com.sun.swffsp.dto.req.UserCondition;
-import com.sun.swffsp.dto.db.RoleEntity;
-import com.sun.swffsp.dto.db.UserEntity;
-import com.sun.swffsp.dto.resp.Response;
-import com.sun.swffsp.dto.resp.data.UserInfo;
+import com.sun.swffsp.dto.admin.query.UserCondition;
+import com.sun.swffsp.dto.core.RoleEntity;
+import com.sun.swffsp.dto.core.UserEntity;
+import com.sun.swffsp.dto.admin.result.base.Response;
+import com.sun.swffsp.dto.admin.result.UserInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户模块相关业务接口

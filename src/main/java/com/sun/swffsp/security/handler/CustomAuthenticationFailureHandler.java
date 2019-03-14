@@ -1,7 +1,7 @@
 package com.sun.swffsp.security.handler;
 
 import com.google.gson.Gson;
-import com.sun.swffsp.dto.resp.Response;
+import com.sun.swffsp.dto.admin.result.base.Response;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

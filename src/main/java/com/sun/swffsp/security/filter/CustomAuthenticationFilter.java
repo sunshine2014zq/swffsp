@@ -1,7 +1,7 @@
 package com.sun.swffsp.security.filter;
 
 import com.google.gson.Gson;
-import com.sun.swffsp.dto.db.UserEntity;
+import com.sun.swffsp.dto.core.UserEntity;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

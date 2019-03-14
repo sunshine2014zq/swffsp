@@ -1,12 +1,12 @@
 package com.sun.swffsp.service.impl;
 
 import com.google.gson.Gson;
-import com.sun.swffsp.dto.db.PrivilegeEntity;
-import com.sun.swffsp.dto.db.RoleEntity;
-import com.sun.swffsp.dto.db.UserEntity;
-import com.sun.swffsp.dto.req.UserCondition;
-import com.sun.swffsp.dto.resp.Response;
-import com.sun.swffsp.dto.resp.data.UserInfo;
+import com.sun.swffsp.dto.core.PrivilegeEntity;
+import com.sun.swffsp.dto.core.RoleEntity;
+import com.sun.swffsp.dto.core.UserEntity;
+import com.sun.swffsp.dto.admin.query.UserCondition;
+import com.sun.swffsp.dto.admin.result.base.Response;
+import com.sun.swffsp.dto.admin.result.UserInfo;
 import com.sun.swffsp.jpa.RoleRepository;
 import com.sun.swffsp.jpa.UserRepository;
 import com.sun.swffsp.security.CustomGrantedAuthority;

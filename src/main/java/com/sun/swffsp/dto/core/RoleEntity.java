@@ -1,6 +1,6 @@
-package com.sun.swffsp.dto.db;
+package com.sun.swffsp.dto.core;
 
-import com.sun.swffsp.dto.db.base.BaseEntity;
+import com.sun.swffsp.dto.core.base.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.*;

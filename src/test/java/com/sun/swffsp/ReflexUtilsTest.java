@@ -1,10 +1,10 @@
 package com.sun.swffsp;
 
 import com.google.gson.Gson;
-import com.sun.swffsp.dto.db.PrivilegeEntity;
-import com.sun.swffsp.dto.db.RoleEntity;
-import com.sun.swffsp.dto.db.UserEntity;
-import com.sun.swffsp.dto.resp.Response;
+import com.sun.swffsp.dto.core.PrivilegeEntity;
+import com.sun.swffsp.dto.core.RoleEntity;
+import com.sun.swffsp.dto.core.UserEntity;
+import com.sun.swffsp.dto.admin.result.base.Response;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -86,7 +86,7 @@ public class ReflexUtilsTest {
         //对象中包含数组 -包含的数组是对象数组不行
 
 
-//        UserInfo userInfo = com.sun.swffsp.dto.resp.JSON.recursiveObject(
+//        UserInfo userInfo = com.sun.swffsp.dto.admin.result.JSON.recursiveObject(
 //                JSON.toJSONString(userEntity), UserInfo.class);
 
         Gson gson = new Gson();

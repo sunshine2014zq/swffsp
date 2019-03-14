@@ -1,6 +1,6 @@
 package com.sun.swffsp.security;
 
-import com.sun.swffsp.dto.db.RoleEntity;
+import com.sun.swffsp.dto.core.RoleEntity;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
