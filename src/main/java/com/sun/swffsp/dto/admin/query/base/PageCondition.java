@@ -3,7 +3,7 @@ package com.sun.swffsp.dto.admin.query.base;
 import lombok.Data;
 
 /**
- * 分页请求通用参数
+ * 分页查询条件
  *
  * @author sun
  * @date 2019/2/26 10:17

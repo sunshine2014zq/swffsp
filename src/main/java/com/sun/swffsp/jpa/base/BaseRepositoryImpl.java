@@ -28,7 +28,7 @@ public class BaseRepositoryImpl<T> extends SimpleJpaRepository<T, String> implem
     @Override
     public int softDelete(String tableName, List ids) {
         StringBuffer sb = new StringBuffer().append("update ").append(tableName)
-                .append(" set status = -1 where id in (");
+                .append(" set code = -1 where id in (");
         ids.forEach(id -> {
             sb.append("'").append(id).append("'").append(",");
         });

@@ -1,6 +1,6 @@
 package com.sun.swffsp.jpa;
 
-import com.sun.swffsp.dto.core.RoleEntity;
+import com.sun.swffsp.dto.core.RoleDto;
 import com.sun.swffsp.jpa.base.BaseRepository;
 
 /**
@@ -9,5 +9,5 @@ import com.sun.swffsp.jpa.base.BaseRepository;
  * @author sun
  * @date 2019/3/11 15:57
  */
-public interface RoleRepository extends BaseRepository<RoleEntity> {
+public interface RoleRepository extends BaseRepository<RoleDto> {
 }

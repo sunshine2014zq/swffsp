@@ -1,7 +1,7 @@
 package com.sun.swffsp.security.filter;
 
 import com.google.gson.Gson;
-import com.sun.swffsp.dto.core.UserEntity;
+import com.sun.swffsp.dto.core.UserDto;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,9 +30,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             //use gson to deserialize json
             UsernamePasswordAuthenticationToken authRequest = null;
             try (InputStream is = request.getInputStream()) {
-                UserEntity userEntity = new Gson().fromJson(new InputStreamReader(is), UserEntity.class);
+                UserDto user = new Gson().fromJson(new InputStreamReader(is), UserDto.class);
                 authRequest = new UsernamePasswordAuthenticationToken(
-                        userEntity.getUsername(), userEntity.getPassword());
+                        user.getUsername(), user.getPassword());
             } catch (IOException e) {
                 e.printStackTrace();
                 authRequest = new UsernamePasswordAuthenticationToken(

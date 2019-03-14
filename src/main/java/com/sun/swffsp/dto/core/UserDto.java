@@ -1,6 +1,6 @@
 package com.sun.swffsp.dto.core;
 
-import com.sun.swffsp.dto.core.base.BaseEntity;
+import com.sun.swffsp.dto.core.base.BaseDto;
 import com.sun.swffsp.security.CustomGrantedAuthority;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +21,7 @@ import java.util.List;
 @Table(name = "user")
 @Entity
 @Data
-public class UserEntity extends BaseEntity implements Serializable, UserDetails {
+public class UserDto extends BaseDto implements Serializable, UserDetails {
 
     /**
      * 用户名
@@ -75,8 +75,7 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_code", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(name = "role_code", referencedColumnName = "code"))
-    private List<RoleEntity> roles;
-
+    private List<RoleDto> roles;
     @Override
     public boolean isAccountNonExpired() {
         return false;
@@ -100,14 +99,14 @@ public class UserEntity extends BaseEntity implements Serializable, UserDetails 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>();
-        for (RoleEntity role : roles) {
+        for (RoleDto role : roles) {
             auths.add(new CustomGrantedAuthority(role));
         }
         return auths;
     }
     @Override
     public String toString() {
-        return "UserEntity{" +
+        return "UserDto{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", type=" + type +

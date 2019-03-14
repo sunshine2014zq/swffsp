@@ -4,7 +4,7 @@
  * use layer-2.4
  */
 //操作成功
-var OK = 200;
+var SUCCESS = "success";
 
 var baseUtils = {
     /**
@@ -41,8 +41,8 @@ var baseUtils = {
         }
     },
 
-    reqTip: function(message,status,time){
-        var icon = status == OK ? 1 : 2;
+    reqTip: function(message,code,time){
+        var icon = code == SUCCESS ? 1 : 2;
         this.tip(message,icon,time);
     },
 
@@ -59,16 +59,16 @@ var baseUtils = {
         var loading = layer.load(0, {shade: [0.5, '#949494']}); //0代表加载的风格，支持0-2
         vue.$http.post(url, data).then(function (response) {
             layer.close(loading);
-            baseUtils.reqTip(response.body.message, response.body.status, 1500);
-            if (response.body.status == OK) {
+            baseUtils.reqTip(response.body.message, response.body.code, 1500);
+            if (response.body.code == SUCCESS) {
                 if ($.isFunction(successCallBack)) {
                     //data:数据
                     successCallBack(response.body.data);
                 }
             } else {
                 if ($.isFunction(failCallBack)) {
-                    //status:错误码,data:数据
-                    failCallBack(response.body.status, response.body.data)
+                    //code:错误码,data:数据
+                    failCallBack(response.body.code, response.body.data)
                 }
             }
         }, function () {

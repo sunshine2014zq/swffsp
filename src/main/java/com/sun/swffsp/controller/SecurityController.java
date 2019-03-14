@@ -1,8 +1,8 @@
 package com.sun.swffsp.controller;
 
-import com.sun.swffsp.dto.core.RoleEntity;
-import com.sun.swffsp.dto.core.UserEntity;
-import com.sun.swffsp.dto.admin.query.UserCondition;
+import com.sun.swffsp.dto.admin.query.base.PageCondition;
+import com.sun.swffsp.dto.core.RoleDto;
+import com.sun.swffsp.dto.core.UserDto;
 import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,28 +32,28 @@ public class SecurityController {
      */
     @RequestMapping("/userInfo")
     public Object info() {
-        return Response.ok().data(securityService.info());
+        return Response.success().data(securityService.info());
     }
 
     /**
      * 用户列表
-     * @param userCondition
+     * @param pageCondition
      * @return
      */
     @RequestMapping("/userList")
-    public Object list(@RequestBody UserCondition userCondition){
-        Page<UserEntity> list = securityService.list(userCondition);
-        return Response.ok().data(list);
+    public Object list(@RequestBody PageCondition pageCondition,String usernameKey){
+        Page<UserDto> list = securityService.list(pageCondition,usernameKey);
+        return Response.success().data(list);
     }
 
     /**
      * 用户修改
-     * @param userEntity
+     * @param user
      * @return
      */
     @RequestMapping("/save")
-    public Object save(@RequestBody UserEntity userEntity){
-        return securityService.save(userEntity);
+    public Object save(@RequestBody UserDto user){
+        return securityService.save(user);
     }
 
     /**
@@ -72,8 +72,8 @@ public class SecurityController {
      */
     @RequestMapping("/roles")
     public Object roles(){
-        List<RoleEntity> roles = securityService.roles();
-        return Response.ok().data(roles);
+        List<RoleDto> roles = securityService.roles();
+        return Response.success().data(roles);
     }
 
 

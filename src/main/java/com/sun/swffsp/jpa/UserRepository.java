@@ -1,6 +1,6 @@
 package com.sun.swffsp.jpa;
 
-import com.sun.swffsp.dto.core.UserEntity;
+import com.sun.swffsp.dto.core.UserDto;
 import com.sun.swffsp.jpa.base.BaseRepository;
 
 /**
@@ -9,7 +9,7 @@ import com.sun.swffsp.jpa.base.BaseRepository;
  * @author sun
  * @date 2019/1/8 13:32
  */
-public interface UserRepository extends BaseRepository<UserEntity> {
+public interface UserRepository extends BaseRepository<UserDto> {
 
     /**
      * 通过用户名查找用户
@@ -17,7 +17,7 @@ public interface UserRepository extends BaseRepository<UserEntity> {
      * @param username
      * @return
      */
-    public UserEntity findByUsername(String username);
+    public UserDto findByUsername(String username);
 
 
 }

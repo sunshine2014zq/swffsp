@@ -1,10 +1,10 @@
 package com.sun.swffsp.service;
 
-import com.sun.swffsp.dto.admin.query.UserCondition;
-import com.sun.swffsp.dto.core.RoleEntity;
-import com.sun.swffsp.dto.core.UserEntity;
+import com.sun.swffsp.dto.admin.query.base.PageCondition;
+import com.sun.swffsp.dto.admin.result.UserInfoResult;
+import com.sun.swffsp.dto.core.RoleDto;
+import com.sun.swffsp.dto.core.UserDto;
 import com.sun.swffsp.dto.admin.result.base.Response;
-import com.sun.swffsp.dto.admin.result.UserInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -23,27 +23,28 @@ public interface SecurityService extends UserDetailsService {
      *
      * @return username, menu
      */
-    UserInfo info();
+    UserInfoResult info();
 
     /**
      * 用户列表
      *
-     * @param userCondition
+     * @param pageCondition
      * @return
      */
-    Page<UserEntity> list(UserCondition userCondition);
+    Page<UserDto> list(PageCondition pageCondition, String usernameKey);
 
     /**
      * 保存<br>
      * id为空添加,不为空修改对象，值为空的属性不会被修改
      *
-     * @param userEntity
+     * @param user
      * @return
      */
-    Response save(UserEntity userEntity);
+    Response save(UserDto user);
 
     /**
      * 删除
+     *
      * @param ids
      * @return
      */
@@ -51,7 +52,8 @@ public interface SecurityService extends UserDetailsService {
 
     /**
      * 可用角色
+     *
      * @return
      */
-    List<RoleEntity> roles();
+    List<RoleDto> roles();
 }

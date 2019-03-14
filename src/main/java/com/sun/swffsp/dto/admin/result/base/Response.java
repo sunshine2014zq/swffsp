@@ -9,22 +9,22 @@ import lombok.Data;
  * @date 2019/3/13 11:10
  */
 @Data
-public class Response {
+public class Response<T> {
 
     /**
-     * 响应状态
+     * 响应代码
      */
-    private Integer status;
+    private String code;
 
     /**
-     * 响应状态-操作成功
+     * 响应代码-成功
      */
-    public static final Integer STATUS_OK = 200;
+    public static final String CODE_SUCCESS = "success";
 
     /**
-     * 响应状态-操作失败
+     * 响应代码-失败
      */
-    public static final Integer STATUS_FAIL = 400;
+    public static final String CODE_FAIL = "fail";
 
     /**
      * 响应消息
@@ -34,20 +34,20 @@ public class Response {
     /**
      * 响应数据
      */
-    private Object data;
+    private T data;
 
     private Response() {
     }
 
     /**
      * 根据响应状态和消息创建一个对象
-     * @param status
+     * @param code
      * @param message
      * @return
      */
-    public static Response create(Integer status, String message){
+    public static Response create(String code, String message){
         Response response = new Response();
-        response.status = status;
+        response.code = code;
         response.message = message;
         return response;
     }
@@ -57,16 +57,16 @@ public class Response {
      * @param message
      * @return
      */
-    public static Response ok(String message){
-        return create(STATUS_OK,message);
+    public static Response success(String message){
+        return create(CODE_SUCCESS,message);
     }
 
     /**
      * 创建一个无消息的成功请求
      * @return
      */
-    public static Response ok(){
-        return create(STATUS_OK,null);
+    public static Response success(){
+        return create(CODE_SUCCESS,null);
     }
 
     /**
@@ -75,7 +75,15 @@ public class Response {
      * @return
      */
     public static Response fail(String message){
-        return create(STATUS_FAIL,message);
+        return create(CODE_FAIL,message);
+    }
+
+    /**
+     * 创建一个无消息的成功请求
+     * @return
+     */
+    public static Response fail(){
+        return create(CODE_FAIL,null);
     }
 
     /**
@@ -83,7 +91,7 @@ public class Response {
      * @param data
      * @return
      */
-    public Response data(Object data){
+    public Response data(T data){
         this.data = data;
         return this;
     }

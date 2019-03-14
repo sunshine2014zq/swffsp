@@ -1,6 +1,6 @@
 package com.sun.swffsp.security;
 
-import com.sun.swffsp.dto.core.RoleEntity;
+import com.sun.swffsp.dto.core.RoleDto;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
@@ -11,17 +11,17 @@ import org.springframework.security.core.GrantedAuthority;
  */
 public class CustomGrantedAuthority implements GrantedAuthority {
 
-    private RoleEntity role;
+    private RoleDto role;
 
-    public CustomGrantedAuthority(RoleEntity role) {
+    public CustomGrantedAuthority(RoleDto role) {
         this.role = role;
     }
 
-    public RoleEntity getRole() {
+    public RoleDto getRole() {
         return role;
     }
 
-    public void setRole(RoleEntity role) {
+    public void setRole(RoleDto role) {
         this.role = role;
     }
 

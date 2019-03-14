@@ -1,10 +1,10 @@
 package com.sun.swffsp;
 
 import com.google.gson.Gson;
-import com.sun.swffsp.dto.core.PrivilegeEntity;
-import com.sun.swffsp.dto.core.RoleEntity;
-import com.sun.swffsp.dto.core.UserEntity;
+import com.sun.swffsp.dto.core.PrivilegeDto;
+import com.sun.swffsp.dto.core.RoleDto;
 import com.sun.swffsp.dto.admin.result.base.Response;
+import com.sun.swffsp.dto.core.UserDto;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,40 +19,40 @@ public class ReflexUtilsTest {
 
     @Test
     public void test1() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-//        UserEntity user = new UserEntity();
+//        UserDto user = new UserDto();
 //        user.setMail(null);
-//        String mail = (String) ReflexUtils.getFieldValue(UserEntity.class, "mail", user);
+//        String mail = (String) ReflexUtils.getFieldValue(UserDto.class, "mail", user);
 ////        System.out.println(mail.length());
 //        System.out.println(mail);
 //        System.out.println("123".substring(0,2));
 
-        Response.ok("ok").data("***");
+        Response.success("success").data("***");
 
     }
 
     @Test
     public void test2(){
-        PrivilegeEntity p1 = new PrivilegeEntity();
+        PrivilegeDto p1 = new PrivilegeDto();
         p1.setName("权限1");
         p1.setCode("q1");
 
-        PrivilegeEntity p2 = new PrivilegeEntity();
+        PrivilegeDto p2 = new PrivilegeDto();
         p2.setName("权限2");
         p2.setCode("q2");
 
-        PrivilegeEntity p3 = new PrivilegeEntity();
+        PrivilegeDto p3 = new PrivilegeDto();
         p3.setName("权限3");
         p3.setCode("q3");
 
-        RoleEntity role1 = new RoleEntity();
+        RoleDto role1 = new RoleDto();
         role1.setName("角色1");
         role1.setCode("role1");
 
-        RoleEntity role2 = new RoleEntity();
+        RoleDto role2 = new RoleDto();
         role2.setName("角色2");
         role2.setCode("role2");
 
-        UserEntity userEntity = new UserEntity();
+        UserDto userEntity = new UserDto();
         userEntity.setUsername("admin");
         userEntity.setNickName("管理员");
         userEntity.setEmail("11@qq.com");
@@ -60,11 +60,11 @@ public class ReflexUtilsTest {
 
 
 
-        List<PrivilegeEntity> ps1 = new ArrayList<>();
+        List<PrivilegeDto> ps1 = new ArrayList<>();
         ps1.add(p1);
         ps1.add(p3);
 
-        List<PrivilegeEntity> ps2 = new ArrayList<>();
+        List<PrivilegeDto> ps2 = new ArrayList<>();
         ps2.add(p2);
         ps2.add(p3);
 
@@ -72,7 +72,7 @@ public class ReflexUtilsTest {
         role1.setPrivileges(ps1);
         role2.setPrivileges(ps2);
 
-        List<RoleEntity> roles = new ArrayList<>();
+        List<RoleDto> roles = new ArrayList<>();
 
         roles.add(role1);
         roles.add(role2);
@@ -86,13 +86,13 @@ public class ReflexUtilsTest {
         //对象中包含数组 -包含的数组是对象数组不行
 
 
-//        UserInfo userInfo = com.sun.swffsp.dto.admin.result.JSON.recursiveObject(
-//                JSON.toJSONString(userEntity), UserInfo.class);
+//        UserInfoResult userInfo = com.sun.swffsp.dto.admin.result.JSON.recursiveObject(
+//                JSON.toJSONString(userEntity), UserInfoResult.class);
 
         Gson gson = new Gson();
-//        UserInfo userInfo1 = gson.fromJson(JSON.toJSONString(userEntity), UserInfo.class);
+//        UserInfoResult userInfo1 = gson.fromJson(JSON.toJSONString(userEntity), UserInfoResult.class);
 //        String s1 = gson.toJson(userInfo);
-//        UserInfo userInfo1 = gson.fromJson(s1, UserInfo.class);
+//        UserInfoResult userInfo1 = gson.fromJson(s1, UserInfoResult.class);
         System.out.println();
 
 
@@ -111,7 +111,7 @@ public class ReflexUtilsTest {
 
 
 
-//        UserInfo userInfo = JSON.parseObject(JSON.toJSONString(userEntity), UserInfo.class);
+//        UserInfoResult userInfo = JSON.parseObject(JSON.toJSONString(userEntity), UserInfoResult.class);
 //        JSONArray array = JSON.parseObject(JSON.toJSONString(userEntity)).getJSONArray("roles");
 //        array.
 //        System.out.println(userInfo);

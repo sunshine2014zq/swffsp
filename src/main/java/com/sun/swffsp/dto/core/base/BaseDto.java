@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @MappedSuperclass
 @Data
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseDto implements Serializable {
 
     /**
      * 主键-UUID
@@ -57,7 +57,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 状态
      */
-    @Column(name = "status")
+    @Column(name = "code")
     private Integer status;
 
     /**

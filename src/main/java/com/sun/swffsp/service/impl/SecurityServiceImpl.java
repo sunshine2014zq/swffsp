@@ -1,12 +1,12 @@
 package com.sun.swffsp.service.impl;
 
 import com.google.gson.Gson;
-import com.sun.swffsp.dto.core.PrivilegeEntity;
-import com.sun.swffsp.dto.core.RoleEntity;
-import com.sun.swffsp.dto.core.UserEntity;
-import com.sun.swffsp.dto.admin.query.UserCondition;
+import com.sun.swffsp.dto.admin.query.base.PageCondition;
+import com.sun.swffsp.dto.admin.result.UserInfoResult;
+import com.sun.swffsp.dto.core.PrivilegeDto;
+import com.sun.swffsp.dto.core.RoleDto;
+import com.sun.swffsp.dto.core.UserDto;
 import com.sun.swffsp.dto.admin.result.base.Response;
-import com.sun.swffsp.dto.admin.result.UserInfo;
 import com.sun.swffsp.jpa.RoleRepository;
 import com.sun.swffsp.jpa.UserRepository;
 import com.sun.swffsp.security.CustomGrantedAuthority;
@@ -37,7 +37,7 @@ import java.util.*;
  * @date 2019/1/10 14:20
  */
 @Service
-public class SecurityServiceImpl extends BaseService<UserEntity>implements SecurityService {
+public class SecurityServiceImpl extends BaseService<UserDto>implements SecurityService {
 
     @Autowired
     private UserRepository userRepository;
@@ -52,15 +52,15 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUsername(s);
+        UserDto user = userRepository.findByUsername(s);
         if (user == null) {
             throw new UsernameNotFoundException("未查找到用户：" + s);
         }
-        if (user.getStatus() == UserEntity.STATUS_DELETED) {
+        if (user.getStatus() == UserDto.STATUS_DELETED) {
             throw new RuntimeException("账号不存在");
-        } else if (user.getStatus() == UserEntity.STATUS_INVALID) {
+        } else if (user.getStatus() == UserDto.STATUS_INVALID) {
             throw new RuntimeException("账号不可用");
-        } else if (user.getStatus() != UserEntity.STATUS_NORMAL) {
+        } else if (user.getStatus() != UserDto.STATUS_NORMAL) {
             throw new RuntimeException("账号异常");
         }
         return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
@@ -68,20 +68,20 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
 
 
     @Override
-    public UserInfo info() {
-        UserInfo info = new UserInfo();
+    public UserInfoResult info() {
+        UserInfoResult info = new UserInfoResult();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         info.setUsername(auth.getName());
-        UserEntity user = userRepository.findByUsername(auth.getName());
+        UserDto user = userRepository.findByUsername(auth.getName());
         info.setNickName(user.getNickName());
         //合并所有权限-去重
-        List<PrivilegeEntity> privileges = new ArrayList<>();
+        List<PrivilegeDto> privileges = new ArrayList<>();
         List<String> codes = new ArrayList<>();
         List<CustomGrantedAuthority> authorities = (List<CustomGrantedAuthority>) auth.getAuthorities();
         for (CustomGrantedAuthority authority : authorities) {
-            List<PrivilegeEntity> privilegeList = authority.getRole().getPrivileges();
+            List<PrivilegeDto> privilegeList = authority.getRole().getPrivileges();
             if (privilegeList != null) {
-                for (PrivilegeEntity privilege : privilegeList) {
+                for (PrivilegeDto privilege : privilegeList) {
                     if (!codes.contains(privilege.getCode())) {
                         privileges.add(privilege);
                     }
@@ -89,37 +89,37 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
             }
         }
         //将权限排成树形菜单
-        List<UserInfo.Menu> menus = menuTree(privileges);
+        List<UserInfoResult.Menu> menus = menuTree(privileges);
         info.setMenus(menus);
         return info;
     }
 
     @Override
-    public Page<UserEntity> list(UserCondition userCondition) {
-        Pageable pageable = PageRequest.of(userCondition.getPage(), userCondition.getSize(),
+    public Page<UserDto> list(PageCondition pageCondition,String usernameKey) {
+        Pageable pageable = PageRequest.of(pageCondition.getPage(), pageCondition.getSize(),
                 Sort.Direction.DESC, "createTime");
-        Page<UserEntity> list = userRepository.findAll((Specification<UserEntity>) (root, criteriaQuery, criteriaBuilder) -> {
+        Page<UserDto> list = userRepository.findAll((Specification<UserDto>) (root, criteriaQuery, criteriaBuilder) -> {
             //like表达式
-            String pattern = "%" + StringUtils.ifNullToEmptyStr(userCondition.getUsernameKey()) + "%";
+            String pattern = "%" + StringUtils.ifNullToEmptyStr(usernameKey) + "%";
             PredicateUtils pu = new PredicateUtils(root,criteriaQuery,criteriaBuilder);
             return pu
                     .and(pu.like("username",pattern))
-                    .and(pu.notIn("status",UserEntity.STATUS_DELETED))
+                    .and(pu.notIn("code",UserDto.STATUS_DELETED))
                     .getPredicate();
         }, pageable);
         return list;
     }
 
     @Override
-    public Response save(UserEntity userEntity) {
+    public Response save(UserDto user) {
         try {
-            if(StringUtils.isEmpty(userEntity.getId())) {
+            if(StringUtils.isEmpty(user.getId())) {
                 //添加
                 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-                String password = encoder.encode(userEntity.getPassword().trim());
-                userEntity.setPassword(password);
+                String password = encoder.encode(user.getPassword().trim());
+                user.setPassword(password);
             }
-            return saveNotNull(userEntity);
+            return saveNotNull(user);
         } catch (ReflectiveOperationException e) {
             e.printStackTrace();
             return Response.fail("服务繁忙!请稍后重试");
@@ -132,16 +132,16 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
     }
 
     @Override
-    public List<RoleEntity> roles() {
-        List<RoleEntity> roles = roleRepository.findAll((Specification<RoleEntity>) (root, query, criteriaBuilder) -> {
+    public List<RoleDto> roles() {
+        List<RoleDto> roles = roleRepository.findAll((Specification<RoleDto>) (root, query, criteriaBuilder) -> {
             PredicateUtils pu = new PredicateUtils(root,query,criteriaBuilder);
-            return pu.equal("status",RoleEntity.STATUS_NORMAL);
+            return pu.equal("code",RoleDto.STATUS_NORMAL);
         });
         return roles;
     }
 
     @Override
-    protected boolean check(UserEntity entity, Map fieldErr) {
+    protected boolean check(UserDto user, Map fieldErr) {
         return false;
     }
 
@@ -151,20 +151,20 @@ public class SecurityServiceImpl extends BaseService<UserEntity>implements Secur
      * @param privileges
      * @return
      */
-    private List<UserInfo.Menu> menuTree(List<PrivilegeEntity> privileges) {
-        List<UserInfo.Menu> menus = new ArrayList<>();
-        Iterator<PrivilegeEntity> iterator = privileges.iterator();
+    private List<UserInfoResult.Menu> menuTree(List<PrivilegeDto> privileges) {
+        List<UserInfoResult.Menu> menus = new ArrayList<>();
+        Iterator<PrivilegeDto> iterator = privileges.iterator();
         Gson gson = new Gson();
         while (iterator.hasNext()) {
-            PrivilegeEntity privilege = iterator.next();
-            if (privilege.getType().equals(PrivilegeEntity.TYPE_MENU_1)) {
+            PrivilegeDto privilege = iterator.next();
+            if (privilege.getType().equals(PrivilegeDto.TYPE_MENU_1)) {
                 //一级菜单
-                UserInfo.Menu menu = gson.fromJson(gson.toJson(privilege), UserInfo.Menu.class);
+                UserInfoResult.Menu menu = gson.fromJson(gson.toJson(privilege), UserInfoResult.Menu.class);
                  //为一级菜单查找子菜单
-                List<UserInfo.Menu> subMenus = new ArrayList<>();
+                List<UserInfoResult.Menu> subMenus = new ArrayList<>();
                 privileges.forEach(p -> {
                     if (privilege.getCode().equals(p.getParentCode())) {
-                        subMenus.add(gson.fromJson(gson.toJson(p), UserInfo.Menu.class));
+                        subMenus.add(gson.fromJson(gson.toJson(p), UserInfoResult.Menu.class));
                     }
                 });
                 menu.setSubMenus(subMenus);

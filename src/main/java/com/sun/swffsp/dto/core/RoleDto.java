@@ -1,6 +1,6 @@
 package com.sun.swffsp.dto.core;
 
-import com.sun.swffsp.dto.core.base.BaseEntity;
+import com.sun.swffsp.dto.core.base.BaseDto;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "role")
 @Data
-public class RoleEntity extends BaseEntity implements Serializable {
+public class RoleDto extends BaseDto implements Serializable {
 
     /**
      * 角色代码
@@ -33,11 +33,11 @@ public class RoleEntity extends BaseEntity implements Serializable {
     @JoinTable(name = "role_privilege",
             joinColumns = @JoinColumn(name = "role_code", referencedColumnName = "code"),
             inverseJoinColumns = @JoinColumn(name = "privilege_code", referencedColumnName = "code"))
-    private List<PrivilegeEntity> privileges;
+    private List<PrivilegeDto> privileges;
 
     @Override
     public String toString() {
-        return "RoleEntity{" +
+        return "RoleDto{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 '}';

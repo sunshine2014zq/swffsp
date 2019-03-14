@@ -1,6 +1,6 @@
 package com.sun.swffsp;
 
-import com.sun.swffsp.dto.core.UserEntity;
+import com.sun.swffsp.dto.core.UserDto;
 import com.sun.swffsp.service.SecurityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class BaseServiceTest {
 
     @Test
     public void test2(){
-        UserEntity userEntity = new UserEntity();
+        UserDto userEntity = new UserDto();
 //        userEntity.setUsername("adf");
 //        userEntity.setPassword("111111");
 //        userService.save(userEntity);

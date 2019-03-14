@@ -1,6 +1,6 @@
 package com.sun.swffsp.dto.core;
 
-import com.sun.swffsp.dto.core.base.BaseEntity;
+import com.sun.swffsp.dto.core.base.BaseDto;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Table(name = "privilege")
 @Entity
 @Data
-public class PrivilegeEntity extends BaseEntity implements Serializable {
+public class PrivilegeDto extends BaseDto implements Serializable {
 
     /**
      * 权限代码
@@ -60,7 +60,7 @@ public class PrivilegeEntity extends BaseEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "PrivilegeEntity{" +
+        return "PrivilegeDto{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", type=" + type +

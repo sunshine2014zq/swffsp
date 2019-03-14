@@ -5,12 +5,12 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * /security/userInfo请求data
+ * /security/userInfo请求结果data
  * @author sun
  * @date 2019/3/13 12:40
  */
 @Data
-public class UserInfo {
+public class UserInfoResult {
 
     /**
      * 用户名

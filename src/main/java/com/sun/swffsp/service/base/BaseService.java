@@ -1,6 +1,6 @@
 package com.sun.swffsp.service.base;
 
-import com.sun.swffsp.dto.core.base.BaseEntity;
+import com.sun.swffsp.dto.core.base.BaseDto;
 import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.jpa.base.BaseRepository;
 import com.sun.swffsp.utils.ReflexUtils;
@@ -45,7 +45,7 @@ public abstract class BaseService<T> {
      */
     protected Response softDelete(List ids) {
         int i = baseRepository.softDelete("user", ids);
-        return Response.ok("成功删除" + i + "条数据");
+        return Response.success("成功删除" + i + "条数据");
     }
 
     /**
@@ -65,12 +65,12 @@ public abstract class BaseService<T> {
             entity = (T) ReflexUtils.mergeNotNull(entity.getClass(), query, entity);
         } else {
             //新增默认状态为1
-            ReflexUtils.setFieldValue(entity.getClass(),entity,"status",BaseEntity.STATUS_NORMAL);
+            ReflexUtils.setFieldValue(entity.getClass(),entity,"code",BaseDto.STATUS_NORMAL);
             ReflexUtils.setFieldValue(entity.getClass(),entity,"createBy",currentUser);
         }
         ReflexUtils.setFieldValue(entity.getClass(),entity,"modifiedBy",currentUser);
         baseRepository.save(entity);
-        return Response.ok("保存成功");
+        return Response.success("保存成功");
     }
 
     /**

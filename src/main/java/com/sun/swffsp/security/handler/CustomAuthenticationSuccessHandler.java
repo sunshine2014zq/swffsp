@@ -24,7 +24,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 || httpServletRequest.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)) {
             //JSON请求处理返回JSON
             httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-            String str = new Gson().toJson(Response.ok("登录成功!欢迎" + authentication.getName()));
+            String str = new Gson().toJson(Response.success("登录成功!欢迎" + authentication.getName()));
             httpServletResponse.getWriter().println(str);
         } else {
             //非JSON请求采用默认处理-跳转页面
