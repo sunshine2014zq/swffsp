@@ -1,4 +1,4 @@
-package com.sun.swffsp.security.filter;
+package com.sun.swffsp.security;
 
 import com.google.gson.Gson;
 import com.sun.swffsp.dto.core.UserDto;

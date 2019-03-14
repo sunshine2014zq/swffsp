@@ -1,4 +1,4 @@
-package com.sun.swffsp.security.handler;
+package com.sun.swffsp.security;
 
 import com.google.gson.Gson;
 import com.sun.swffsp.dto.admin.result.base.Response;
