@@ -65,7 +65,7 @@ public abstract class BaseService<T> {
             entity = (T) ReflexUtils.mergeNotNull(entity.getClass(), query, entity);
         } else {
             //新增默认状态为1
-            ReflexUtils.setFieldValue(entity.getClass(),entity,"code",BaseDto.STATUS_NORMAL);
+            ReflexUtils.setFieldValue(entity.getClass(),entity,"status",BaseDto.STATUS_NORMAL);
             ReflexUtils.setFieldValue(entity.getClass(),entity,"createBy",currentUser);
         }
         ReflexUtils.setFieldValue(entity.getClass(),entity,"modifiedBy",currentUser);

@@ -1,5 +1,6 @@
 package com.sun.swffsp.controller;
 
+import com.sun.swffsp.dto.admin.query.UserCondition;
 import com.sun.swffsp.dto.admin.query.base.PageCondition;
 import com.sun.swffsp.dto.core.RoleDto;
 import com.sun.swffsp.dto.core.UserDto;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,12 +39,12 @@ public class SecurityController {
 
     /**
      * 用户列表
-     * @param pageCondition
+     * @param condition
      * @return
      */
     @RequestMapping("/userList")
-    public Object list(@RequestBody PageCondition pageCondition,String usernameKey){
-        Page<UserDto> list = securityService.list(pageCondition,usernameKey);
+    public Object list(@RequestBody UserCondition condition){
+        Page<UserDto> list = securityService.list(condition);
         return Response.success().data(list);
     }
 

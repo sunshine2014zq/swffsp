@@ -1,6 +1,7 @@
 package com.sun.swffsp.service.impl;
 
 import com.google.gson.Gson;
+import com.sun.swffsp.dto.admin.query.UserCondition;
 import com.sun.swffsp.dto.admin.query.base.PageCondition;
 import com.sun.swffsp.dto.admin.result.UserInfoResult;
 import com.sun.swffsp.dto.core.PrivilegeDto;
@@ -95,16 +96,16 @@ public class SecurityServiceImpl extends BaseService<UserDto>implements Security
     }
 
     @Override
-    public Page<UserDto> list(PageCondition pageCondition,String usernameKey) {
-        Pageable pageable = PageRequest.of(pageCondition.getPage(), pageCondition.getSize(),
+    public Page<UserDto> list(UserCondition condition) {
+        Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize(),
                 Sort.Direction.DESC, "createTime");
         Page<UserDto> list = userRepository.findAll((Specification<UserDto>) (root, criteriaQuery, criteriaBuilder) -> {
             //like表达式
-            String pattern = "%" + StringUtils.ifNullToEmptyStr(usernameKey) + "%";
+            String pattern = "%" + StringUtils.ifNullToEmptyStr(condition.getUsernameKey()) + "%";
             PredicateUtils pu = new PredicateUtils(root,criteriaQuery,criteriaBuilder);
             return pu
                     .and(pu.like("username",pattern))
-                    .and(pu.notIn("code",UserDto.STATUS_DELETED))
+                    .and(pu.notIn("status",UserDto.STATUS_DELETED))
                     .getPredicate();
         }, pageable);
         return list;
@@ -135,7 +136,7 @@ public class SecurityServiceImpl extends BaseService<UserDto>implements Security
     public List<RoleDto> roles() {
         List<RoleDto> roles = roleRepository.findAll((Specification<RoleDto>) (root, query, criteriaBuilder) -> {
             PredicateUtils pu = new PredicateUtils(root,query,criteriaBuilder);
-            return pu.equal("code",RoleDto.STATUS_NORMAL);
+            return pu.equal("status",RoleDto.STATUS_NORMAL);
         });
         return roles;
     }

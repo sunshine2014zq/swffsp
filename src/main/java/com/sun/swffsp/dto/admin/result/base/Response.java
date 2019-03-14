@@ -2,6 +2,8 @@ package com.sun.swffsp.dto.admin.result.base;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 接口响应实体
  *
@@ -9,7 +11,7 @@ import lombok.Data;
  * @date 2019/3/13 11:10
  */
 @Data
-public class Response<T> {
+public class Response<T> implements Serializable {
 
     /**
      * 响应代码

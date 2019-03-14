@@ -56,16 +56,4 @@ public class PrivilegeDto extends BaseDto implements Serializable {
      */
     @Column(name = "parent_code", length = 32)
     private String parentCode;
-
-
-    @Override
-    public String toString() {
-        return "PrivilegeDto{" +
-                "code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", url='" + url + '\'' +
-                ", parentCode='" + parentCode + '\'' +
-                '}';
-    }
 }

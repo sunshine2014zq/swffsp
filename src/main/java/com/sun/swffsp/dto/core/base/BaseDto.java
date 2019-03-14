@@ -57,7 +57,7 @@ public abstract class BaseDto implements Serializable {
     /**
      * 状态
      */
-    @Column(name = "code")
+    @Column(name = "status")
     private Integer status;
 
     /**

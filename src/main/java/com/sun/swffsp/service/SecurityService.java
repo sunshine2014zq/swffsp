@@ -1,5 +1,6 @@
 package com.sun.swffsp.service;
 
+import com.sun.swffsp.dto.admin.query.UserCondition;
 import com.sun.swffsp.dto.admin.query.base.PageCondition;
 import com.sun.swffsp.dto.admin.result.UserInfoResult;
 import com.sun.swffsp.dto.core.RoleDto;
@@ -28,10 +29,10 @@ public interface SecurityService extends UserDetailsService {
     /**
      * 用户列表
      *
-     * @param pageCondition
+     * @param condition
      * @return
      */
-    Page<UserDto> list(PageCondition pageCondition, String usernameKey);
+    Page<UserDto> list(UserCondition condition);
 
     /**
      * 保存<br>

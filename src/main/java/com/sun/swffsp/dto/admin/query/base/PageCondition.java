@@ -2,6 +2,8 @@ package com.sun.swffsp.dto.admin.query.base;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 分页查询条件
  *
@@ -9,7 +11,7 @@ import lombok.Data;
  * @date 2019/2/26 10:17
  */
 @Data
-public class PageCondition {
+public class PageCondition implements Serializable {
 
     /**
      * 页面
@@ -21,4 +23,7 @@ public class PageCondition {
      */
     private Integer size;
 
+    public Integer getPage() {
+        return (page > 0) ? (page - 1) : 0;
+    }
 }

@@ -2,6 +2,7 @@ package com.sun.swffsp.dto.admin.result;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @date 2019/3/13 12:40
  */
 @Data
-public class UserInfoResult {
+public class UserInfoResult implements Serializable {
 
     /**
      * 用户名
