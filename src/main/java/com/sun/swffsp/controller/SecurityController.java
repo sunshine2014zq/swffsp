@@ -1,16 +1,14 @@
 package com.sun.swffsp.controller;
 
 import com.sun.swffsp.dto.admin.query.UserCondition;
-import com.sun.swffsp.dto.admin.query.base.PageCondition;
+import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.dto.core.RoleDto;
 import com.sun.swffsp.dto.core.UserDto;
-import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;

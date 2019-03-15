@@ -6,6 +6,7 @@ import com.sun.swffsp.dto.core.RoleDto;
 import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.dto.core.UserDto;
 import com.sun.swffsp.utils.StringUtils;
+import lombok.ToString;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -96,6 +97,15 @@ public class ReflexUtilsTest {
 
         System.out.println(StringUtils.isBlank("   "));
         System.out.println(StringUtils.isBlank("   1  "));
+    }
+
+    @Test
+    public void test4(){
+//        PrivilegeDto p = new PrivilegeDto();
+//        p.setName(null);
+//        p.setName("ddddddddddddddddddddddddddddddddddddddddddd");
+
+
     }
 
 }

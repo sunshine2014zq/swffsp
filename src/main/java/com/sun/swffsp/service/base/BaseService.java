@@ -1,7 +1,8 @@
 package com.sun.swffsp.service.base;
 
-import com.sun.swffsp.dto.core.base.BaseDto;
+import com.sun.swffsp.dto.admin.result.FieldErrorsResult;
 import com.sun.swffsp.dto.admin.result.base.Response;
+import com.sun.swffsp.dto.core.base.BaseDto;
 import com.sun.swffsp.jpa.base.BaseRepository;
 import com.sun.swffsp.utils.ReflexUtils;
 import com.sun.swffsp.utils.StringUtils;
@@ -10,9 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 通用业务
@@ -20,7 +24,7 @@ import java.util.Map;
  * @author sun
  * @date 2019/2/27 11:47
  */
-public abstract class BaseService<T> {
+public abstract class BaseService<T extends BaseDto> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -59,17 +63,16 @@ public abstract class BaseService<T> {
      */
     protected Response saveNotNull(T entity) throws ReflectiveOperationException {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        String id = (String) ReflexUtils.getFieldValue(entity.getClass(), "id", entity);
-        if (!StringUtils.isEmpty(id)) {
-            T query = baseRepository.findById(id).get();
+        if (!isAdd(entity)) {
+            T query = baseRepository.findById(entity.getId()).get();
             //把需要修改的实体中不为null的字段的值合并到查询出的实体
             entity = (T) ReflexUtils.mergeNotNull(entity.getClass(), query, entity);
         } else {
             //新增默认状态为1
-            ReflexUtils.setFieldValue(entity.getClass(), entity, "status", BaseDto.STATUS_NORMAL);
-            ReflexUtils.setFieldValue(entity.getClass(), entity, "createdBy", currentUser);
+            entity.setStatus(BaseDto.STATUS_NORMAL);
+            entity.setCreatedBy(currentUser);
         }
-        ReflexUtils.setFieldValue(entity.getClass(), entity, "modifiedBy", currentUser);
+        entity.setModifiedBy(currentUser);
         baseRepository.save(entity);
         return Response.success("保存成功");
     }
@@ -83,19 +86,62 @@ public abstract class BaseService<T> {
      * @return
      * @throws ReflectiveOperationException
      */
-    protected Response checkAndSaveNotNull(T entity) throws ReflectiveOperationException {
-        Map fieldMap = new HashMap();
-        if (check(entity, fieldMap)) {
-            return saveNotNull(entity);
+    protected Response validateAndSaveNotNull(T entity) throws ReflectiveOperationException {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<T>> violations;
+        if (isAdd(entity)) {
+            //新增
+            violations = validator.validate(entity, BaseDto.Add.class);
+        } else {
+            //校验值不为空的字段
+            violations = validator.validate(entity, BaseDto.Update.class);
         }
-        return Response.fail("保存失败").data(fieldMap);
+        if (!violations.isEmpty()) {
+            //封装错误消息
+            List<FieldErrorsResult> errors = new ArrayList<>();
+            violations.forEach(violation -> {
+                addError(errors, violation.getPropertyPath().toString(), violation.getMessage());
+            });
+            return Response.fail("保存失败").data(errors);
+        }
+        //验证通过
+        return saveNotNull(entity);
     }
 
     /**
-     * 检查需要新增的数据正确性
+     * 如果字段在errors中存在则将message加入到对象的对象中<br>
+     * 不存在则新建对象添加到errors中
      *
+     * @param errors
+     * @param field
+     * @param message
+     */
+    private void addError(List<FieldErrorsResult> errors, String field, String message) {
+        AtomicBoolean flag = new AtomicBoolean(true);
+        errors.forEach(error -> {
+            if (error.getField().equals(field)) {
+                error.addMessage(message);
+                flag.set(false);
+            }
+        });
+        if (flag.get()) {
+            FieldErrorsResult error = new FieldErrorsResult();
+            error.setField(field);
+            error.addMessage(message);
+            errors.add(error);
+        }
+    }
+
+    /**
+     * 根据实体id判断是否是新增数据<br>
+     * 新增数据id为空
+     *
+     * @param entity
      * @return
      */
-    protected abstract boolean check(T entity, Map fieldErr);
+    public boolean isAdd(T entity) {
+        return StringUtils.isEmpty(entity.getId());
+    }
 
 }

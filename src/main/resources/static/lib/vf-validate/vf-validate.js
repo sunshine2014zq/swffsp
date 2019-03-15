@@ -21,6 +21,7 @@
             setting:{
                 box:"",
                 obj:{},//需要验证的数据对象-vue 绑定的对象
+                errors:{},
                 rules:{},
                 messages:{},
                 selector:"input",//默认验证元素
@@ -31,9 +32,10 @@
                 }],
             },
             validate:function (tag) {
-                //清空上次提示信息
-                tag.parents(".row").find(".message").html("")
                 var name = tag.attr("name");
+                //清空上次提示信息
+                $.vf_validate.setting.errors[name + "Err"] = "";
+
                 var value = $.vf_validate.setting.obj[name];
                 var rules = $.vf_validate.setting.rules[name];
                 var fail_icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-icon--jinggao"></use></svg>';
@@ -71,7 +73,7 @@
                             }
                             //错误提示
                             tag.parents(".row").find(".message-icon").html(fail_icon);
-                            tag.parents(".row").find(".message").html(message);
+                            $.vf_validate.setting.errors[name + "Err"] = message;
                             n = false;
                             return false;
                         }
@@ -151,6 +153,9 @@
             }
             if(options.obj){
                 $.vf_validate.setting.obj = options.obj;
+            }
+            if(options.errors){
+                $.vf_validate.setting.errors = options.errors;
             }
             //绑定默认事件
             this.find($.vf_validate.setting.selector).on($.vf_validate.setting.event,function (event) {

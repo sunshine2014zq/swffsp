@@ -1,11 +1,10 @@
 package com.sun.swffsp.service;
 
 import com.sun.swffsp.dto.admin.query.UserCondition;
-import com.sun.swffsp.dto.admin.query.base.PageCondition;
 import com.sun.swffsp.dto.admin.result.UserInfoResult;
+import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.dto.core.RoleDto;
 import com.sun.swffsp.dto.core.UserDto;
-import com.sun.swffsp.dto.admin.result.base.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

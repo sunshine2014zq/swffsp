@@ -124,12 +124,22 @@ var userEdit = new Vue({
             ,email:""
             ,roles:[]
         },
+        errors:{
+            usernameErr:""
+            ,nickNameErr:""
+            ,passwordErr:""
+            ,passwordRepeatErr:""
+            ,phoneNumErr:""
+            ,emailErr:""
+            ,rolesErr:""
+        },
         roles:[],
         index:""//修改的第几条记录
     },
     // 页面加载初始化函数
     mounted: function () {
-        validate.obj = this.$data.user
+        validate.obj = this.$data.user;
+        validate.errors = this.$data.errors;
         $('#form-admin-edit').validate(validate);
         //加载角色信息
         baseUtils.post(this,rolesUrl,{},function (data) {
@@ -157,6 +167,14 @@ var userEdit = new Vue({
                         console.log(userVue.$data.pageInfo.content)
                     }
                     layer.close(userVue.$data.edit)
+                },function (code, data) {
+                    $.each(data,function (index,el) {
+                        var msg = "";
+                        $.each(el.messages,function (index,message) {
+                            msg += (message+"<br>")
+                        })
+                        userEdit.$data.errors[el.field + "Err"] = msg;
+                    })
                 })
             }
         }

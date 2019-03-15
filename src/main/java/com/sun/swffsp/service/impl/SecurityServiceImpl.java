@@ -27,7 +27,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Predicate;
 import java.util.*;
 
 /**
@@ -116,7 +115,7 @@ public class SecurityServiceImpl extends BaseService<UserDto> implements Securit
                 String password = encoder.encode(user.getPassword().trim());
                 user.setPassword(password);
             }
-            return saveNotNull(user);
+            return validateAndSaveNotNull(user);
         } catch (ReflectiveOperationException e) {
             e.printStackTrace();
             return Response.fail("服务繁忙!请稍后重试");
@@ -134,11 +133,6 @@ public class SecurityServiceImpl extends BaseService<UserDto> implements Securit
                 (root, query, criteriaBuilder) ->
                         criteriaBuilder.equal(root.get("status"), RoleDto.STATUS_NORMAL));
         return roles;
-    }
-
-    @Override
-    protected boolean check(UserDto user, Map fieldErr) {
-        return false;
     }
 
     /**

@@ -77,4 +77,14 @@ public abstract class BaseDto implements Serializable {
     @Version
     @Column(name = "version")
     private Long version;
+
+    /**
+     * 新增时需要校验的规则
+     */
+    public interface Add{}
+
+    /**
+     * 修改时需要校验的规则
+     */
+    public interface Update{}
 }
