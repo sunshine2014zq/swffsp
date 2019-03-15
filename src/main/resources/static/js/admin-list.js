@@ -152,7 +152,7 @@ var userEdit = new Vue({
                         //添加时
                         var user = $.extend(true, {}, userEdit.$data.user);
                         user.status = 1;
-                        user.createTime = baseUtils.now();
+                        user.createdTime = baseUtils.now();
                         userVue.$data.pageInfo.content.insert(0,user);
                         console.log(userVue.$data.pageInfo.content)
                     }

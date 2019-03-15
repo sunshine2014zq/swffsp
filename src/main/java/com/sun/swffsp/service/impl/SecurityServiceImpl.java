@@ -97,7 +97,7 @@ public class SecurityServiceImpl extends BaseService<UserDto> implements Securit
     @Override
     public Page<UserDto> list(UserCondition condition) {
         Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize(),
-                Sort.Direction.DESC, "createTime");
+                Sort.Direction.DESC, "createdTime");
         Page<UserDto> list = userRepository.findAll((Specification<UserDto>) (root, criteriaQuery, criteriaBuilder) -> {
             //like表达式
             String pattern = "%" + StringUtils.ifNullToEmptyStr(condition.getUsernameKey()) + "%";

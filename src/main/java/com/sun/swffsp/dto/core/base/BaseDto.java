@@ -32,8 +32,8 @@ public abstract class BaseDto implements Serializable {
      * 创建时间
      */
     @CreationTimestamp
-    @Column(name = "create_time", nullable = false)
-    private Date createTime;
+    @Column(name = "created_time", nullable = false)
+    private Date createdTime;
 
     /**
      * 修改时间
@@ -45,8 +45,8 @@ public abstract class BaseDto implements Serializable {
     /**
      * 创建者
      */
-    @Column(name = "create_by", length = 32, nullable = false)
-    private String createBy;
+    @Column(name = "created_by", length = 32, nullable = false)
+    private String createdBy;
 
     /**
      * 修改人
