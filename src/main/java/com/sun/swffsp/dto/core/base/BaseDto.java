@@ -87,4 +87,6 @@ public abstract class BaseDto implements Serializable {
      * 修改时需要校验的规则
      */
     public interface Update{}
+
+    public static final String LENGTH_MAX_MESSAGE = "长度不能大于{max}";
 }

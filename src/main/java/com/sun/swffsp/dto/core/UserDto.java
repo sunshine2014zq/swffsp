@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,15 +32,14 @@ public class UserDto extends BaseDto implements Serializable, UserDetails {
      */
     @Column(name = "username", length = 32, nullable = false, unique = true)
     @NotBlank(groups = {Add.class})
-    @Length(max = 32,groups = {Add.class,Update.class})
-//    @Unique
+    @Length(max = 32, message = LENGTH_MAX_MESSAGE, groups = {Add.class, Update.class})
     private String username;
 
     /**
      * 密码
      */
     @Column(name = "password", length = 64)
-    @Length(max = 64,groups = {Add.class,Update.class})
+    @Length(max = 64, message = LENGTH_MAX_MESSAGE, groups = {Add.class, Update.class})
     private String password;
 
     /**
@@ -54,35 +52,35 @@ public class UserDto extends BaseDto implements Serializable, UserDetails {
      * 昵称
      */
     @Column(name = "nick_name", length = 16)
-    @Length(max = 16,groups = {Add.class,Update.class})
+    @Length(max = 16, message = LENGTH_MAX_MESSAGE, groups = {Add.class, Update.class})
     private String nickName;
 
     /**
      * 邮箱
      */
     @Column(name = "email", length = 32)
-    @Length(max = 32,groups = {Add.class,Update.class})
+    @Length(max = 32, message = LENGTH_MAX_MESSAGE, groups = {Add.class, Update.class})
     private String email;
 
     /**
      * 手机号
      */
     @Column(name = "phone_num", length = 16)
-    @Length(max = 16,groups = {Add.class,Update.class})
+    @Length(max = 16, message = LENGTH_MAX_MESSAGE, groups = {Add.class, Update.class})
     private String phoneNum;
 
     /**
      * qq号
      */
     @Column(name = "qq_num", length = 16)
-    @Length(max = 16,groups = {Add.class,Update.class})
+    @Length(max = 16, message = LENGTH_MAX_MESSAGE, groups = {Add.class, Update.class})
     private String qqNum;
 
     /**
      * 微信号
      */
     @Column(name = "wx_num", length = 16)
-    @Length(max = 16,groups = {Add.class,Update.class})
+    @Length(max = 16, message = LENGTH_MAX_MESSAGE, groups = {Add.class, Update.class})
     private String wxNum;
 
     @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
