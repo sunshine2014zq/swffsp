@@ -73,8 +73,8 @@ public abstract class BaseService<T extends BaseDto> {
             entity.setCreatedBy(currentUser);
         }
         entity.setModifiedBy(currentUser);
-        baseRepository.save(entity);
-        return Response.success("保存成功");
+        T save = baseRepository.save(entity);
+        return Response.success("保存成功").data(save.getId());
     }
 
     /**

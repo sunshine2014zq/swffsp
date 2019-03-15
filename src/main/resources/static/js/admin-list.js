@@ -73,9 +73,9 @@ var userVue = new Vue({
         ,batch_del:function () {
             var vue = this;
             layer.confirm('确认要删除吗？',function(index){
-                service.del(vue,userVue.$data.ids,function () {
+                baseUtils.post(vue,delUrl,userVue.$data.ids,function () {
                     //显示处理
-                    $(userVue.$data.pageInfo.content).each(function (index,user) {
+                    $(userVue.$data.pageInfo.content).each(function () {
                         //隐藏多选框选中的行
                         $("input[name='ids']").each(function (index, el) {
                             if(el.checked){
@@ -152,15 +152,16 @@ var userEdit = new Vue({
             var result = $.vf_validate.each(names);
             if(result){
                 console.log(this.$data.user)
-                baseUtils.post(this,saveUrl,this.$data.user,function () {
+                baseUtils.post(this,saveUrl,this.$data.user,function (data) {
                     //更改列表显示数据
                     if(userEdit.$data.user.id != ""){
                         //修改成功-更新显示数据
-                        baseUtils.copyValue(userVue.$data.pageInfo.content[userEdit.$data.index]
-                            ,userEdit.$data.user)
+                        var current = userVue.$data.pageInfo.content[userEdit.$data.index];
+                        baseUtils.copyValue(current, userEdit.$data.user)
                     }else {
                         //添加时
                         var user = $.extend(true, {}, userEdit.$data.user);
+                        user.id = data;
                         user.status = 1;
                         user.createdTime = baseUtils.now();
                         userVue.$data.pageInfo.content.insert(0,user);
