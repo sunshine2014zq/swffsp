@@ -5,6 +5,7 @@ import com.sun.swffsp.dto.core.PrivilegeDto;
 import com.sun.swffsp.dto.core.RoleDto;
 import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.dto.core.UserDto;
+import com.sun.swffsp.utils.StringUtils;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -84,40 +85,17 @@ public class ReflexUtilsTest {
 
         //对象中包含对象
         //对象中包含数组 -包含的数组是对象数组不行
-
-
-//        UserInfoResult userInfo = com.sun.swffsp.dto.admin.result.JSON.recursiveObject(
-//                JSON.toJSONString(userEntity), UserInfoResult.class);
-
-        Gson gson = new Gson();
-//        UserInfoResult userInfo1 = gson.fromJson(JSON.toJSONString(userEntity), UserInfoResult.class);
-//        String s1 = gson.toJson(userInfo);
-//        UserInfoResult userInfo1 = gson.fromJson(s1, UserInfoResult.class);
-        System.out.println();
-
-
-
-
-
-//        gson.
-//        System.out.println(userInfo);
-
-//        String s = JSON.toJSONString(userInfo);
-//        System.out.println(s);
-
-
-//        JSON.ParseJ
-//        JSON.parseObject("",this.getClass())
-
-
-
-//        UserInfoResult userInfo = JSON.parseObject(JSON.toJSONString(userEntity), UserInfoResult.class);
-//        JSONArray array = JSON.parseObject(JSON.toJSONString(userEntity)).getJSONArray("roles");
-//        array.
-//        System.out.println(userInfo);
-
-
     }
 
+    @Test
+    public void test3(){
+        System.out.println(StringUtils.isBlank(" \r"));
+        System.out.println(StringUtils.isBlank("\n "));
+        System.out.println(StringUtils.isBlank(" \t "));
+        System.out.println(StringUtils.isBlank("\f"));
+
+        System.out.println(StringUtils.isBlank("   "));
+        System.out.println(StringUtils.isBlank("   1  "));
+    }
 
 }

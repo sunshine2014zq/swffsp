@@ -2,7 +2,6 @@ package com.sun.swffsp.service.impl;
 
 import com.google.gson.Gson;
 import com.sun.swffsp.dto.admin.query.UserCondition;
-import com.sun.swffsp.dto.admin.query.base.PageCondition;
 import com.sun.swffsp.dto.admin.result.UserInfoResult;
 import com.sun.swffsp.dto.core.PrivilegeDto;
 import com.sun.swffsp.dto.core.RoleDto;
@@ -13,7 +12,6 @@ import com.sun.swffsp.jpa.UserRepository;
 import com.sun.swffsp.security.CustomGrantedAuthority;
 import com.sun.swffsp.service.SecurityService;
 import com.sun.swffsp.service.base.BaseService;
-import com.sun.swffsp.service.base.PredicateUtils;
 import com.sun.swffsp.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +27,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
 import java.util.*;
 
 /**
@@ -102,11 +101,8 @@ public class SecurityServiceImpl extends BaseService<UserDto>implements Security
         Page<UserDto> list = userRepository.findAll((Specification<UserDto>) (root, criteriaQuery, criteriaBuilder) -> {
             //like表达式
             String pattern = "%" + StringUtils.ifNullToEmptyStr(condition.getUsernameKey()) + "%";
-            PredicateUtils pu = new PredicateUtils(root,criteriaQuery,criteriaBuilder);
-            return pu
-                    .and(pu.like("username",pattern))
-                    .and(pu.notIn("status",UserDto.STATUS_DELETED))
-                    .getPredicate();
+            return criteriaBuilder.and(criteriaBuilder.like(root.get("username"), pattern),
+                    criteriaBuilder.not(root.get("status").in(UserDto.STATUS_DELETED)));
         }, pageable);
         return list;
     }
@@ -134,10 +130,9 @@ public class SecurityServiceImpl extends BaseService<UserDto>implements Security
 
     @Override
     public List<RoleDto> roles() {
-        List<RoleDto> roles = roleRepository.findAll((Specification<RoleDto>) (root, query, criteriaBuilder) -> {
-            PredicateUtils pu = new PredicateUtils(root,query,criteriaBuilder);
-            return pu.equal("status",RoleDto.STATUS_NORMAL);
-        });
+        List<RoleDto> roles = roleRepository.findAll((Specification<RoleDto>)
+                (root, query, criteriaBuilder) ->
+                        criteriaBuilder.equal(root.get("status"), RoleDto.STATUS_NORMAL));
         return roles;
     }
 

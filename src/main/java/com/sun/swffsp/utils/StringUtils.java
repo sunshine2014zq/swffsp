@@ -16,4 +16,8 @@ public class StringUtils extends org.springframework.util.StringUtils {
     public static String ifNullToEmptyStr(String obj) {
         return obj == null ? "" : obj;
     }
+
+    public static boolean isBlank(String obj){
+        return isEmpty(obj) || isEmpty(obj.trim().replace("[\\t \\n \\f \\r]",""));
+    }
 }
