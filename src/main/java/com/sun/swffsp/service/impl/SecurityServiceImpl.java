@@ -37,7 +37,7 @@ import java.util.*;
  * @date 2019/1/10 14:20
  */
 @Service
-public class SecurityServiceImpl extends BaseService<UserDto>implements SecurityService {
+public class SecurityServiceImpl extends BaseService<UserDto> implements SecurityService {
 
     @Autowired
     private UserRepository userRepository;
@@ -110,7 +110,7 @@ public class SecurityServiceImpl extends BaseService<UserDto>implements Security
     @Override
     public Response save(UserDto user) {
         try {
-            if(StringUtils.isEmpty(user.getId())) {
+            if (StringUtils.isEmpty(user.getId())) {
                 //添加
                 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
                 String password = encoder.encode(user.getPassword().trim());
@@ -156,7 +156,7 @@ public class SecurityServiceImpl extends BaseService<UserDto>implements Security
             if (privilege.getType().equals(PrivilegeDto.TYPE_MENU_1)) {
                 //一级菜单
                 UserInfoResult.Menu menu = gson.fromJson(gson.toJson(privilege), UserInfoResult.Menu.class);
-                 //为一级菜单查找子菜单
+                //为一级菜单查找子菜单
                 List<UserInfoResult.Menu> subMenus = new ArrayList<>();
                 privileges.forEach(p -> {
                     if (privilege.getCode().equals(p.getParentCode())) {

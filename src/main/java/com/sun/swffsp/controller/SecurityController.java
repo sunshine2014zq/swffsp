@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * 账户全选管理
+ * 账户管理
  *
  * @author sun
  * @date 2019/2/21 10:52
@@ -30,6 +30,7 @@ public class SecurityController {
 
     /**
      * 用户信息
+     *
      * @return
      */
     @RequestMapping("/userInfo")
@@ -39,45 +40,48 @@ public class SecurityController {
 
     /**
      * 用户列表
+     *
      * @param condition
      * @return
      */
     @RequestMapping("/userList")
-    public Object list(@RequestBody UserCondition condition){
+    public Object list(@RequestBody UserCondition condition) {
         Page<UserDto> list = securityService.list(condition);
         return Response.success().data(list);
     }
 
     /**
      * 用户修改
+     *
      * @param user
      * @return
      */
     @RequestMapping("/save")
-    public Object save(@RequestBody UserDto user){
+    public Object save(@RequestBody UserDto user) {
         return securityService.save(user);
     }
 
     /**
      * 用户删除
+     *
      * @param ids
      * @return
      */
     @RequestMapping("/deleteUsers")
-    public Object delete(@RequestBody List<String> ids){
+    public Object delete(@RequestBody List<String> ids) {
         return securityService.delete(ids);
     }
 
     /**
      * 可用角色
+     *
      * @return
      */
     @RequestMapping("/roles")
-    public Object roles(){
+    public Object roles() {
         List<RoleDto> roles = securityService.roles();
         return Response.success().data(roles);
     }
-
 
 
 }

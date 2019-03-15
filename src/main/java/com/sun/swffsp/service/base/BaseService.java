@@ -52,6 +52,7 @@ public abstract class BaseService<T> {
      * 保存<br>
      * id为空时,添加对象到数据库<br>
      * id不为空时,修改对象不为空的字段到数据库
+     *
      * @param entity
      * @return
      * @throws ReflectiveOperationException
@@ -65,10 +66,10 @@ public abstract class BaseService<T> {
             entity = (T) ReflexUtils.mergeNotNull(entity.getClass(), query, entity);
         } else {
             //新增默认状态为1
-            ReflexUtils.setFieldValue(entity.getClass(),entity,"status",BaseDto.STATUS_NORMAL);
-            ReflexUtils.setFieldValue(entity.getClass(),entity,"createBy",currentUser);
+            ReflexUtils.setFieldValue(entity.getClass(), entity, "status", BaseDto.STATUS_NORMAL);
+            ReflexUtils.setFieldValue(entity.getClass(), entity, "createBy", currentUser);
         }
-        ReflexUtils.setFieldValue(entity.getClass(),entity,"modifiedBy",currentUser);
+        ReflexUtils.setFieldValue(entity.getClass(), entity, "modifiedBy", currentUser);
         baseRepository.save(entity);
         return Response.success("保存成功");
     }
@@ -77,13 +78,14 @@ public abstract class BaseService<T> {
      * 检查并保存对象保存<br>
      * id为空时,添加对象到数据库<br>
      * id不为空时,修改对象不为空的字段到数据库
+     *
      * @param entity
      * @return
      * @throws ReflectiveOperationException
      */
     protected Response checkAndSaveNotNull(T entity) throws ReflectiveOperationException {
         Map fieldMap = new HashMap();
-        if(check(entity,fieldMap)){
+        if (check(entity, fieldMap)) {
             return saveNotNull(entity);
         }
         return Response.fail("保存失败").data(fieldMap);

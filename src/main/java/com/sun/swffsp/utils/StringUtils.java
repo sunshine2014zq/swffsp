@@ -10,6 +10,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
 
     /**
      * 把Null转为空字符串
+     *
      * @param obj
      * @return
      */
@@ -17,7 +18,13 @@ public class StringUtils extends org.springframework.util.StringUtils {
         return obj == null ? "" : obj;
     }
 
-    public static boolean isBlank(String obj){
-        return isEmpty(obj) || isEmpty(obj.trim().replace("[\\t \\n \\f \\r]",""));
+    /**
+     * 去除前后空格\t\n\f\r再做isEmpty判断
+     *
+     * @param obj
+     * @return
+     */
+    public static boolean isBlank(String obj) {
+        return isEmpty(obj) || isEmpty(obj.trim().replace("[\\t \\n \\f \\r]", ""));
     }
 }

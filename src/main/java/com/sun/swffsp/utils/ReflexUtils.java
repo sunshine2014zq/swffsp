@@ -32,16 +32,17 @@ public class ReflexUtils {
 
     /**
      * 反射设置字段的值
+     *
      * @param clazz
      * @param object
      * @param name
      * @param val
      * @throws ReflectiveOperationException
      */
-    public static void setFieldValue(Class clazz, Object object,String name,Object val) throws ReflectiveOperationException {
-        Field field = getField(clazz,name);
+    public static void setFieldValue(Class clazz, Object object, String name, Object val) throws ReflectiveOperationException {
+        Field field = getField(clazz, name);
         field.setAccessible(true);
-        field.set(object,val);
+        field.set(object, val);
     }
 
     /**
@@ -58,7 +59,7 @@ public class ReflexUtils {
     public static Object mergeNotNull(Class clazz, Object b1, Object b2) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Field[] fields = getFieldsNoStatic(clazz);
         for (Field field : fields) {
-            if(field == null) {
+            if (field == null) {
                 continue;
             }
             String fieldName = field.getName();
@@ -66,7 +67,7 @@ public class ReflexUtils {
             String getMethodName = "get" + toFirstLetterUpperCase(fieldName);
             Object value = invokeMethod(getMethod(clazz, getMethodName), b2);
             if (null != value) {
-                invokeMethod(getMethod(clazz, setMethodName,field.getType()), b1, value);
+                invokeMethod(getMethod(clazz, setMethodName, field.getType()), b1, value);
             }
         }
         return b1;
@@ -91,10 +92,11 @@ public class ReflexUtils {
 
     /**
      * 获取非静态的所有字段-包括父类的
+     *
      * @param clazz
      * @return
      */
-    public static Field[] getFieldsNoStatic(Class clazz){
+    public static Field[] getFieldsNoStatic(Class clazz) {
         Field[] fields = getFields(clazz);
         List<Field> result = new ArrayList<>();
         for (Field field : fields) {
@@ -108,14 +110,15 @@ public class ReflexUtils {
 
     /**
      * 获取所有字段-包括父类的-包括类型private,public,protected...
+     *
      * @param clazz
      * @return
      */
-    public static Field[] getFields(Class clazz){
+    public static Field[] getFields(Class clazz) {
         List<Field> fieldList = new ArrayList<>();
 
         while (clazz != null) {//当父类为null的时候说明到达了最上层的父类(Object类).
-            fieldList.addAll(Arrays.asList(clazz .getDeclaredFields()));
+            fieldList.addAll(Arrays.asList(clazz.getDeclaredFields()));
             clazz = clazz.getSuperclass(); //得到父类,然后赋给自己
         }
         Field[] result = new Field[fieldList.size()];
@@ -124,21 +127,22 @@ public class ReflexUtils {
 
     /**
      * 根据name获取字段-包括父类的，以及所有的类型。
+     *
      * @param clazz
      * @param name
      * @return
      * @throws NoSuchFieldException
      */
-    public static Field getField(Class clazz, String name){
+    public static Field getField(Class clazz, String name) {
         Field field = null;
         try {
             field = clazz.getDeclaredField(name);
         } catch (NoSuchFieldException e) {
             field = null;
         }
-        while (field == null){
+        while (field == null) {
             clazz = clazz.getSuperclass();
-            if(clazz != null) {
+            if (clazz != null) {
                 try {
                     field = clazz.getDeclaredField(name);
                 } catch (NoSuchFieldException e) {
@@ -180,10 +184,11 @@ public class ReflexUtils {
 
     /**
      * 获取字段泛型class数组
+     *
      * @param field
      * @return
      */
-    public static Class<?>[] getGenericClass(Field field){
+    public static Class<?>[] getGenericClass(Field field) {
         // 获取f字段的通用类型
         Type fc = field.getGenericType(); // 关键的地方得到其Generic的类型
         if (fc != null && fc instanceof ParameterizedType) {
@@ -200,12 +205,6 @@ public class ReflexUtils {
         return null;
     }
 }
-
-
-
-
-
-
 
 
 //    /**

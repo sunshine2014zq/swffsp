@@ -43,11 +43,12 @@ public class Response<T> implements Serializable {
 
     /**
      * 根据响应状态和消息创建一个对象
+     *
      * @param code
      * @param message
      * @return
      */
-    public static Response create(String code, String message){
+    public static Response create(String code, String message) {
         Response response = new Response();
         response.code = code;
         response.message = message;
@@ -56,44 +57,49 @@ public class Response<T> implements Serializable {
 
     /**
      * 根据消息创建一个状态为:请求成功 的对象
+     *
      * @param message
      * @return
      */
-    public static Response success(String message){
-        return create(CODE_SUCCESS,message);
+    public static Response success(String message) {
+        return create(CODE_SUCCESS, message);
     }
 
     /**
      * 创建一个无消息的成功请求
+     *
      * @return
      */
-    public static Response success(){
-        return create(CODE_SUCCESS,null);
+    public static Response success() {
+        return create(CODE_SUCCESS, null);
     }
 
     /**
      * 根据消息创建一个状态为：请求失败 的对象
+     *
      * @param message
      * @return
      */
-    public static Response fail(String message){
-        return create(CODE_FAIL,message);
+    public static Response fail(String message) {
+        return create(CODE_FAIL, message);
     }
 
     /**
      * 创建一个无消息的成功请求
+     *
      * @return
      */
-    public static Response fail(){
-        return create(CODE_FAIL,null);
+    public static Response fail() {
+        return create(CODE_FAIL, null);
     }
 
     /**
      * 装配data区数据
+     *
      * @param data
      * @return
      */
-    public Response data(T data){
+    public Response data(T data) {
         this.data = data;
         return this;
     }

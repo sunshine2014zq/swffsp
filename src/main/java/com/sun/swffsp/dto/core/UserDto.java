@@ -76,6 +76,7 @@ public class UserDto extends BaseDto implements Serializable, UserDetails {
             joinColumns = @JoinColumn(name = "user_code", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(name = "role_code", referencedColumnName = "code"))
     private List<RoleDto> roles;
+
     @Override
     public boolean isAccountNonExpired() {
         return false;
@@ -103,18 +104,5 @@ public class UserDto extends BaseDto implements Serializable, UserDetails {
             auths.add(new CustomGrantedAuthority(role));
         }
         return auths;
-    }
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", type=" + type +
-                ", nickName='" + nickName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNum='" + phoneNum + '\'' +
-                ", qqNum='" + qqNum + '\'' +
-                ", wxNum='" + wxNum + '\'' +
-                '}';
     }
 }

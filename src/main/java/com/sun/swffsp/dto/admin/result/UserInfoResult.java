@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * /security/userInfo请求结果data
+ *
  * @author sun
  * @date 2019/3/13 12:40
  */
