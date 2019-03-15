@@ -126,10 +126,7 @@ public abstract class BaseService<T extends BaseDto> {
             }
         });
         if (flag.get()) {
-            FieldErrorsResult error = new FieldErrorsResult();
-            error.setField(field);
-            error.addMessage(message);
-            errors.add(error);
+            errors.add(new FieldErrorsResult(field,message));
         }
     }
 

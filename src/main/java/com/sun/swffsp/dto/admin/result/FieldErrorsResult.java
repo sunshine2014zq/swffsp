@@ -24,6 +24,20 @@ public class FieldErrorsResult implements Serializable {
      */
     private List<String> messages = new ArrayList<>();
 
+    public FieldErrorsResult(String field, String message) {
+        this.field = field;
+        addMessage(message);
+    }
+
+    public FieldErrorsResult(String field, List<String> messages) {
+        this.field = field;
+        this.messages = messages;
+    }
+
+    public FieldErrorsResult(String field) {
+        this.field = field;
+    }
+
     /**
      * 将消息加入到消息集合
      *

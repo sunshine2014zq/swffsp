@@ -2,6 +2,7 @@ package com.sun.swffsp.service.impl;
 
 import com.google.gson.Gson;
 import com.sun.swffsp.dto.admin.query.UserCondition;
+import com.sun.swffsp.dto.admin.result.FieldErrorsResult;
 import com.sun.swffsp.dto.admin.result.UserInfoResult;
 import com.sun.swffsp.dto.core.PrivilegeDto;
 import com.sun.swffsp.dto.core.RoleDto;
@@ -27,6 +28,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.*;
 
 /**
@@ -109,6 +114,13 @@ public class SecurityServiceImpl extends BaseService<UserDto> implements Securit
     @Override
     public Response save(UserDto user) {
         try {
+            //用户名重复检测
+            List<UserDto> users = userRepository.findAll(uniqueSpecification(user));
+            if(users != null && !users.isEmpty()){
+                String msg = user.getUsername() + "已存在";
+                return Response.fail("保存失败").data(new FieldErrorsResult[]
+                        {new FieldErrorsResult("username",msg)});
+            }
             if (StringUtils.isEmpty(user.getId())) {
                 //添加
                 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -120,6 +132,23 @@ public class SecurityServiceImpl extends BaseService<UserDto> implements Securit
             e.printStackTrace();
             return Response.fail("服务繁忙!请稍后重试");
         }
+    }
+
+    /**
+     * 用户名唯一性校验的Specification
+     * @param user
+     * @return
+     */
+    private Specification<UserDto> uniqueSpecification(UserDto user){
+        return (Specification<UserDto>) (root, query, criteriaBuilder) -> {
+
+            Predicate p = criteriaBuilder.and(criteriaBuilder.notEqual(root.get("status"),UserDto.STATUS_DELETED),
+                    criteriaBuilder.equal(root.get("username"), user.getUsername()));
+            if (!StringUtils.isEmpty(user.getId())){
+                return criteriaBuilder.and(p,criteriaBuilder.notEqual(root.get("id"),user.getId()));
+            }
+            return p;
+        };
     }
 
     @Override
