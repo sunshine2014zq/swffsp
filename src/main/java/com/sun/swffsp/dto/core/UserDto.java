@@ -3,6 +3,7 @@ package com.sun.swffsp.dto.core;
 import com.sun.swffsp.dto.core.base.BaseDto;
 import com.sun.swffsp.security.CustomGrantedAuthority;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,6 +22,7 @@ import java.util.List;
 @Table(name = "user")
 @Entity
 @Data
+@ToString(exclude = {"roles"})
 public class UserDto extends BaseDto implements Serializable, UserDetails {
 
     /**

@@ -2,6 +2,7 @@ package com.sun.swffsp.dto.core;
 
 import com.sun.swffsp.dto.core.base.BaseDto;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "role")
 @Data
+@ToString(exclude = {"privileges"})
 public class RoleDto extends BaseDto implements Serializable {
 
     /**
@@ -34,12 +36,4 @@ public class RoleDto extends BaseDto implements Serializable {
             joinColumns = @JoinColumn(name = "role_code", referencedColumnName = "code"),
             inverseJoinColumns = @JoinColumn(name = "privilege_code", referencedColumnName = "code"))
     private List<PrivilegeDto> privileges;
-
-    @Override
-    public String toString() {
-        return "RoleDto{" +
-                "code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }
