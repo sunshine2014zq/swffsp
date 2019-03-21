@@ -12,8 +12,33 @@ var rolesUrl = contextPath + "/security/roles";
 
 // 本页面业务方法
 var service = {
+    laypage:function (total,vue,vuedata) {
+        layui.use('laypage', function(){
+            var laypage = layui.laypage;
+            laypage.render({
+                elem: 'layPage'
+                ,count: total
+                ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                ,jump: function(obj, first){
+                    console.log(obj)
+                    vuedata.query.page = obj.curr;
+                    vuedata.query.size = obj.limit;
+                    if(!first){
+                        baseUtils.post(vue, listUrl, vuedata.query,function (data) {
+                            vuedata.pageInfo = data;
+                        });
+                    }
 
-
+                }
+            });
+        });
+    },
+    getList:function (vue,vuedata) {
+        baseUtils.post(vue, listUrl, vuedata.query,function (data) {
+            vuedata.pageInfo = data;
+            service.laypage(data.total,vue,vuedata);
+        });
+    }
 }
 
 //用户列表模块
@@ -25,7 +50,7 @@ var userVue = new Vue({
         ,query:{
             usernameKey:""
             ,page:1
-            ,size:15
+            ,size:10
 
         }
         ,ids:[]
@@ -33,9 +58,8 @@ var userVue = new Vue({
     },
     // 页面加载初始化函数
     mounted: function () {
-        baseUtils.post(this, listUrl, this.$data.query,function (data) {
-            userVue.$data.pageInfo = data;
-        });
+        service.getList(this,this.$data)
+        // service.list(this,this.$data);
     },
     methods:{
         // vue element 范围内触发事件处理
@@ -182,3 +206,14 @@ var userEdit = new Vue({
         //methods...
     }
 });
+
+
+//
+// laypage.render({
+//     elem: 'layPage'
+//     ,count: 100
+//     ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+//     ,jump: function(obj){
+//         console.log(obj)
+//     }
+// });
