@@ -179,5 +179,6 @@ var userEdit = new Vue({
                 })
             }
         }
+        //methods...
     }
 });

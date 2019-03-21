@@ -30,7 +30,7 @@ public class UserDto extends BaseDto implements Serializable, UserDetails {
     /**
      * 用户名
      */
-    @Column(name = "username", length = 32, nullable = false, unique = true)
+    @Column(name = "username", length = 32, nullable = false)
     @NotBlank(groups = {Add.class})
     @Length(max = 32, message = LENGTH_MAX_MESSAGE, groups = {Add.class, Update.class})
     private String username;
