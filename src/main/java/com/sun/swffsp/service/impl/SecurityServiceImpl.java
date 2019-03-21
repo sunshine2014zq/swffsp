@@ -116,10 +116,10 @@ public class SecurityServiceImpl extends BaseService<UserDto> implements Securit
         try {
             //用户名重复检测
             List<UserDto> users = userRepository.findAll(uniqueSpecification(user));
-            if(users != null && !users.isEmpty()){
+            if (users != null && !users.isEmpty()) {
                 String msg = user.getUsername() + "已存在";
                 return Response.fail("保存失败").data(new FieldErrorsResult[]
-                        {new FieldErrorsResult("username",msg)});
+                        {new FieldErrorsResult("username", msg)});
             }
             if (StringUtils.isEmpty(user.getId())) {
                 //添加
@@ -136,16 +136,17 @@ public class SecurityServiceImpl extends BaseService<UserDto> implements Securit
 
     /**
      * 用户名唯一性校验的Specification
+     *
      * @param user
      * @return
      */
-    private Specification<UserDto> uniqueSpecification(UserDto user){
+    private Specification<UserDto> uniqueSpecification(UserDto user) {
         return (Specification<UserDto>) (root, query, criteriaBuilder) -> {
 
-            Predicate p = criteriaBuilder.and(criteriaBuilder.notEqual(root.get("status"),UserDto.STATUS_DELETED),
+            Predicate p = criteriaBuilder.and(criteriaBuilder.notEqual(root.get("status"), UserDto.STATUS_DELETED),
                     criteriaBuilder.equal(root.get("username"), user.getUsername()));
-            if (!StringUtils.isEmpty(user.getId())){
-                return criteriaBuilder.and(p,criteriaBuilder.notEqual(root.get("id"),user.getId()));
+            if (!StringUtils.isEmpty(user.getId())) {
+                return criteriaBuilder.and(p, criteriaBuilder.notEqual(root.get("id"), user.getId()));
             }
             return p;
         };
