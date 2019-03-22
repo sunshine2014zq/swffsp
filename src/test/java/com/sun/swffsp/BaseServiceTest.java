@@ -1,7 +1,7 @@
 package com.sun.swffsp;
 
 import com.sun.swffsp.dto.core.UserDto;
-import com.sun.swffsp.service.SecurityService;
+import com.sun.swffsp.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class BaseServiceTest {
 
     @Autowired
-    private SecurityService userService;
+    private UserService userService;
 
     @Test
     public void test1(){

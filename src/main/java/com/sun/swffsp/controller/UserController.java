@@ -4,7 +4,7 @@ import com.sun.swffsp.dto.admin.query.UserCondition;
 import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.dto.core.RoleDto;
 import com.sun.swffsp.dto.core.UserDto;
-import com.sun.swffsp.service.SecurityService;
+import com.sun.swffsp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,19 +20,19 @@ import java.util.List;
  * @date 2019/2/21 10:52
  */
 @RestController
-@RequestMapping("/security")
-public class SecurityController {
+@RequestMapping("/user")
+public class UserController {
 
     @Autowired
-    private SecurityService securityService;
+    private UserService securityService;
 
     /**
      * 用户信息
      *
      * @return
      */
-    @RequestMapping("/userInfo")
-    public Object info() {
+    @RequestMapping("/info")
+    public Object userInfo() {
         return Response.success().data(securityService.info());
     }
 
@@ -42,21 +42,21 @@ public class SecurityController {
      * @param condition
      * @return
      */
-    @RequestMapping("/userList")
+    @RequestMapping("/list")
     public Object list(@RequestBody UserCondition condition) {
         Page<UserDto> list = securityService.list(condition);
         return Response.success().data(list);
     }
 
     /**
-     * 用户修改
+     * 用户保存
      *
      * @param user
      * @return
      */
-    @RequestMapping("/saveUser")
-    public Object saveUser(@RequestBody UserDto user) {
-        return securityService.saveUser(user);
+    @RequestMapping("/save")
+    public Object save(@RequestBody UserDto user) {
+        return securityService.save(user);
     }
 
     /**
@@ -69,6 +69,10 @@ public class SecurityController {
     public Object delete(@RequestBody List<String> ids) {
         return securityService.delete(ids);
     }
+
+
+
+
 
 
 

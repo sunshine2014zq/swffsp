@@ -4,10 +4,11 @@
 
 // 全局变量
 var contextPath = "/swffsp";
-var listUrl = contextPath +"/security/userList";
-var saveUrl = contextPath + "/security/saveUser";
-var delUrl = contextPath + "/security/deleteUsers";
-var rolesUrl = contextPath + "/security/roles";
+var modelPath = "/user";
+var listUrl = contextPath + modelPath +"/list";
+var saveUrl = contextPath + modelPath + "/save";
+var delUrl = contextPath + modelPath + "/delete";
+var rolesUrl = contextPath + modelPath + "/roles";
 
 
 // 本页面业务方法

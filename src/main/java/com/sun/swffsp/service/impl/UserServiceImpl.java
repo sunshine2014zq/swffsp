@@ -11,7 +11,7 @@ import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.jpa.RoleRepository;
 import com.sun.swffsp.jpa.UserRepository;
 import com.sun.swffsp.security.CustomGrantedAuthority;
-import com.sun.swffsp.service.SecurityService;
+import com.sun.swffsp.service.UserService;
 import com.sun.swffsp.service.base.BaseService;
 import com.sun.swffsp.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.*;
 
 /**
@@ -41,7 +38,7 @@ import java.util.*;
  * @date 2019/1/10 14:20
  */
 @Service
-public class SecurityServiceImpl extends BaseService<UserDto> implements SecurityService {
+public class UserServiceImpl extends BaseService<UserDto> implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -112,7 +109,7 @@ public class SecurityServiceImpl extends BaseService<UserDto> implements Securit
     }
 
     @Override
-    public Response saveUser(UserDto user) {
+    public Response save(UserDto user) {
         try {
             //用户名重复检测
             List<UserDto> users = userRepository.findAll(uniqueSpecification(user));

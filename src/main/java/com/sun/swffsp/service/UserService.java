@@ -16,7 +16,7 @@ import java.util.List;
  * @author sun
  * @date 2019/2/21 10:57
  */
-public interface SecurityService extends UserDetailsService {
+public interface UserService extends UserDetailsService {
 
     /**
      * 获取用户信息
@@ -40,7 +40,7 @@ public interface SecurityService extends UserDetailsService {
      * @param user
      * @return
      */
-    Response saveUser(UserDto user);
+    Response save(UserDto user);
 
     /**
      * 删除
