@@ -65,7 +65,7 @@ public class UserController {
      * @param ids
      * @return
      */
-    @RequestMapping("/deleteUsers")
+    @RequestMapping("/delete")
     public Object delete(@RequestBody List<String> ids) {
         return securityService.delete(ids);
     }

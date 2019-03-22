@@ -88,6 +88,7 @@ var userVue = new Vue({
             layer.confirm('确认要删除吗？',function(index){
                 baseUtils.post(vue,delUrl,ids,function () {
                     $(event.target).parents("tr").remove();
+                    userVue.$data.pageInfo.total -=1;
                 })
             });
         }
@@ -97,11 +98,15 @@ var userVue = new Vue({
             layer.confirm('确认要删除吗？',function(index){
                 baseUtils.post(vue,delUrl,userVue.$data.ids,function () {
                     //显示处理
+                    // baseUtils.removeObjectByAttr(
+                    //     userVue.$data.pageInfo.content,"id",userVue.$data.ids);
+                    // console.log(userVue.$data.pageInfo.content)
                     $(userVue.$data.pageInfo.content).each(function () {
                         //隐藏多选框选中的行
                         $("input[name='ids']").each(function (index, el) {
                             if(el.checked){
                                 $(el).parents("tr").remove();
+                                userVue.$data.pageInfo.total -=1;
                             }
                         })
                     })
@@ -188,6 +193,7 @@ var userEdit = new Vue({
                         user.status = 1;
                         user.createdTime = baseUtils.now();
                         userVue.$data.pageInfo.content.insert(0,user);
+                        userVue.$data.pageInfo.total +=1;
                         console.log(userVue.$data.pageInfo.content)
                     }
                     layer.close(userVue.$data.edit)
