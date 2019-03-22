@@ -38,6 +38,19 @@ var service = {
             vuedata.pageInfo = data;
             service.laypage(data.total,vue,vuedata);
         });
+    },
+    del:function (vue,ids) {
+        baseUtils.post(vue,delUrl,ids,function () {
+            // 显示处理
+            var pageInfo = userVue.$data.pageInfo;
+            var ids = userVue.$data.ids;
+            //移除已删除的数据
+            pageInfo.content = baseUtils.removeObjectByAttr(pageInfo.content,"id",ids);
+            //改变总记录条数
+            pageInfo.total -=ids.length;
+            //多选框复位
+            userVue.$data.ids = [];
+        })
     }
 }
 
@@ -83,34 +96,16 @@ var userVue = new Vue({
         //删除
         ,admin_del:function (event,id) {
             var vue = this;
-            var ids = [];
-            ids.push(id);
+            userVue.$data.ids.push(id);
             layer.confirm('确认要删除吗？',function(index){
-                baseUtils.post(vue,delUrl,ids,function () {
-                    $(event.target).parents("tr").remove();
-                    userVue.$data.pageInfo.total -=1;
-                })
+                service.del(vue,userVue.$data.ids)
             });
         }
         //批量删除
         ,batch_del:function () {
             var vue = this;
             layer.confirm('确认要删除吗？',function(index){
-                baseUtils.post(vue,delUrl,userVue.$data.ids,function () {
-                    //显示处理
-                    // baseUtils.removeObjectByAttr(
-                    //     userVue.$data.pageInfo.content,"id",userVue.$data.ids);
-                    // console.log(userVue.$data.pageInfo.content)
-                    $(userVue.$data.pageInfo.content).each(function () {
-                        //隐藏多选框选中的行
-                        $("input[name='ids']").each(function (index, el) {
-                            if(el.checked){
-                                $(el).parents("tr").remove();
-                                userVue.$data.pageInfo.total -=1;
-                            }
-                        })
-                    })
-                })
+                service.del(vue,userVue.$data.ids);
             });
         }
         /*管理员-编辑*/

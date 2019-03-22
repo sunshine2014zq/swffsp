@@ -147,6 +147,29 @@ var baseUtils = {
         })
     },
 
+    /**
+     * 将对象数组array中移除属性名是attrName,值不在attrValue中的对象返回。
+     * @param array
+     * @param attrName
+     * @param attrValue 可以是数组
+     */
+    removeObjectByAttr: function(array,attrName,attrValue){
+        var result = [];
+        for (var i = 0;i < array.length; i++) {
+            if($.isArray(attrValue)){
+                if($.inArray(array[i][attrName],attrValue) < 0) {
+                    result.push(array[i])
+                }
+            }else {
+                if(array[i][attrName] != attrValue) {
+                    result.push(array[i])
+                }
+            }
+        }
+        return result;
+    },
+
+
     full: function (s) {
         return s < 10 ? '0' + s: s;
     },
