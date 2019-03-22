@@ -84,6 +84,8 @@ var baseUtils = {
      * @param content 内容
      * @param w 宽
      * @param h 高
+     * @param closeCallback 弹框关闭回调
+     * @returns {*} index
      */
     layer_show: function (type, title, content, w, h,closeCallback) {
         if (title == null || title == '') {

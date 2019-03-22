@@ -29,7 +29,6 @@ var service = {
                             vuedata.pageInfo = data;
                         });
                     }
-
                 }
             });
         });
@@ -65,9 +64,7 @@ var userVue = new Vue({
     methods:{
         // vue element 范围内触发事件处理
         search: function () {
-            baseUtils.post(this,listUrl,this.$data.query,function (data) {
-                userVue.$data.pageInfo = data;
-            });
+            service.getList(this,this.$data)
         }
         //修改状态
         ,statusModified: function (event, id, status) {
@@ -114,6 +111,7 @@ var userVue = new Vue({
         /*管理员-编辑*/
         ,admin_edit :function (title,w,h,index){
             userVue.$data.edit = baseUtils.layer_show(1,title,$(".admin-edit"),w,h,function () {
+                //编辑框关闭回调
                 baseUtils.clearValues(userEdit.$data.user);
                 $(".input-message .message").html("");
                 $(".input-message .message-icon").html("");
