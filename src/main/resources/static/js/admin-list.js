@@ -5,51 +5,42 @@
 // 全局变量
 var contextPath = "/swffsp";
 var modelPath = "/user";
-var listUrl = contextPath + modelPath +"/list";
+var listUrl = contextPath + modelPath + "/list";
 var saveUrl = contextPath + modelPath + "/save";
 var delUrl = contextPath + modelPath + "/delete";
 var rolesUrl = contextPath + modelPath + "/roles";
 
-
 // 本页面业务方法
 var service = {
-    laypage:function (total,vue,vuedata) {
-        layui.use('laypage', function(){
-            var laypage = layui.laypage;
-            laypage.render({
-                elem: 'layPage'
-                ,count: total
-                ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                ,jump: function(obj, first){
-                    console.log(obj)
-                    vuedata.query.page = obj.curr;
-                    vuedata.query.size = obj.limit;
-                    if(!first){
-                        baseUtils.post(vue, listUrl, vuedata.query,function (data) {
-                            vuedata.pageInfo = data;
-                        });
-                    }
-                }
-            });
+    /**
+     * 分页插件加载
+     */
+    laypageLoad: function (vue) {
+        baseUtils.laypage("layPage",listUrl, vue);
+    },
+    /**
+     * 初始化页面数据,并加载分页插件
+     * @param vue 列表所在的vue对象
+     */
+    list: function (vue) {
+        var vueData = vue.$data;
+        baseUtils.post(vue, listUrl, vueData.query, function (data) {
+            vueData.pageInfo = data;
+            service.laypageLoad(vue);
         });
     },
-    getList:function (vue,vuedata) {
-        baseUtils.post(vue, listUrl, vuedata.query,function (data) {
-            vuedata.pageInfo = data;
-            service.laypage(data.total,vue,vuedata);
-        });
-    },
-    del:function (vue,ids) {
-        baseUtils.post(vue,delUrl,ids,function () {
-            // 显示处理
+    /**
+     * 删除
+     */
+    del: function () {
+        var ids = userVue.$data.ids;
+        baseUtils.post(userVue, delUrl, ids, function () {
             var pageInfo = userVue.$data.pageInfo;
-            var ids = userVue.$data.ids;
             //移除已删除的数据
-            pageInfo.content = baseUtils.removeObjectByAttr(pageInfo.content,"id",ids);
-            //改变总记录条数
-            pageInfo.total -=ids.length;
-            //多选框复位
-            userVue.$data.ids = [];
+            pageInfo.content = baseUtils.removeObjectByAttr(pageInfo.content, "id", ids);
+            pageInfo.total -= ids.length; //改变总记录条数
+            userVue.$data.ids = []; //多选框复位
+            service.laypageLoad(userVue); //重新加载分页插件
         })
     }
 }
@@ -57,76 +48,74 @@ var service = {
 //用户列表模块
 var userVue = new Vue({
     el: ".page-container",
-    // 内部参数定义
     data: {
-        pageInfo:{}
-        ,query:{
-            usernameKey:""
-            ,page:1
-            ,size:10
-
-        }
-        ,ids:[]
-        ,edit:""
+        pageInfo: {}, //页面数据
+        //查询条件
+        query: {
+            usernameKey: "",
+            page: 1,
+            size: 10
+        },
+        ids: [], //复选框
+        edit: "" //添加，修改弹窗index
     },
-    // 页面加载初始化函数
     mounted: function () {
-        service.getList(this,this.$data)
-        // service.list(this,this.$data);
+        // 页面初始化
+        service.list(this)
     },
     methods:{
-        // vue element 范围内触发事件处理
         search: function () {
-            service.getList(this,this.$data)
-        }
+            service.list(this)
+        },
         //修改状态
-        ,statusModified: function (event, id, status) {
+        statusToggle: function (event, id, status) {
             var vue = this;
-            var msg = status == 1 ?  "确定启用吗?" :"确定停用吗?";
+            var msg = status == 1 ? "确定启用吗?" : "确定停用吗?";
             layer.confirm(msg, function (index) {
                 //此处请求后台程序，下方是成功后的前台处理……
-                var user = {"id":id,"status":status};
-                baseUtils.post(vue,saveUrl,user,function () {
+                var user = {"id": id, "status": status};
+                baseUtils.post(vue, saveUrl, user, function () {
                     $(event.target).parents("tr").find(".btn-status").toggle();
                     $(event.target).parents("tr").find(".label-status").toggle();
                     layer.close(index);
                 })
             });
-        }
+        },
         //删除
-        ,admin_del:function (event,id) {
+        admin_del: function (event, id) {
             var vue = this;
             userVue.$data.ids.push(id);
-            layer.confirm('确认要删除吗？',function(index){
-                service.del(vue,userVue.$data.ids)
+            layer.confirm('确认要删除吗？', function (index) {
+                service.del(vue, userVue.$data.ids)
             });
-        }
+        },
         //批量删除
-        ,batch_del:function () {
+        batch_del: function () {
             var vue = this;
-            layer.confirm('确认要删除吗？',function(index){
-                service.del(vue,userVue.$data.ids);
+            layer.confirm('确认要删除吗？', function (index) {
+                service.del(vue, userVue.$data.ids);
             });
-        }
+        },
         /*管理员-编辑*/
-        ,admin_edit :function (title,w,h,index){
-            userVue.$data.edit = baseUtils.layer_show(1,title,$(".admin-edit"),w,h,function () {
+        admin_edit: function (title, w, h, index) {
+            userVue.$data.edit = baseUtils.layer_show(1, title, $(".admin-edit"), w, h, function () {
                 //编辑框关闭回调
-                baseUtils.clearValues(userEdit.$data.user);
-                $(".input-message .message").html("");
-                $(".input-message .message-icon").html("");
+                baseUtils.clearValues(userEdit.$data.user);  //清空输入框数据
+                baseUtils.clearValues(userEdit.$data.errors);  //清空错误提示
+                $(".input-message .message-icon").html("");  //清空验证图标
             });
-            if(index != undefined){
+            if (index != undefined) {
                 //修改
                 var current = userVue.$data.pageInfo.content[index];
-                baseUtils.copyValue(userEdit.$data.user,current);
+                baseUtils.copyValue(userEdit.$data.user, current);//加载数据到表单作为默认值
                 userEdit.$data.index = index;
-                $("input[type='password']").parents(".row").hide();
-            }else{
+                $("input[type='password']").parents(".row").hide(); //修改页面不能修改密码
+            } else {
                 //添加
-                $("input[type='password']").parents(".row").show();
+                $("input[type='password']").parents(".row").show();  //添加页面-密码
             }
         }
+        //methods...
     }
 });
 
@@ -135,9 +124,8 @@ var userVue = new Vue({
  */
 var userEdit = new Vue({
     el: ".admin-edit",
-    // 内部参数定义
     data: {
-        user:{
+        user:{ //表单
             id:""
             ,username:""
             ,nickName:""
@@ -147,7 +135,7 @@ var userEdit = new Vue({
             ,email:""
             ,roles:[]
         },
-        errors:{
+        errors:{ //错误提示
             usernameErr:""
             ,nickNameErr:""
             ,passwordErr:""
@@ -157,13 +145,13 @@ var userEdit = new Vue({
             ,rolesErr:""
         },
         roles:[],
-        index:""//修改的第几条记录
+        index:"" //修改的第几条记录
     },
-    // 页面加载初始化函数
     mounted: function () {
+        //初始化
         validate.obj = this.$data.user;
         validate.errors = this.$data.errors;
-        $('#form-admin-edit').validate(validate);
+        $('#form-admin-edit').validate(validate); //开启数据校验
         //加载角色信息
         baseUtils.post(this,rolesUrl,{},function (data) {
             userEdit.$data.roles = data;
@@ -172,13 +160,13 @@ var userEdit = new Vue({
     methods: {
         save: function () {
             var names = userEdit.$data.user.id == "" ? [] : ["password","passwordRepeat"];
-            var result = $.vf_validate.each(names);
+            var result = $.vf_validate.each(names); //检查整个表单数据
             if(result){
-                console.log(this.$data.user)
+                //表单校验通过
                 baseUtils.post(this,saveUrl,this.$data.user,function (data) {
                     //更改列表显示数据
                     if(userEdit.$data.user.id != ""){
-                        //修改成功-更新显示数据
+                        //修改成功-修改内容同步到列表
                         var current = userVue.$data.pageInfo.content[userEdit.$data.index];
                         baseUtils.copyValue(current, userEdit.$data.user)
                     }else {
@@ -187,9 +175,10 @@ var userEdit = new Vue({
                         user.id = data;
                         user.status = 1;
                         user.createdTime = baseUtils.now();
+                        //添加的数据同步到列表
                         userVue.$data.pageInfo.content.insert(0,user);
-                        userVue.$data.pageInfo.total +=1;
-                        console.log(userVue.$data.pageInfo.content)
+                        userVue.$data.pageInfo.total += 1;
+                        service.laypageLoad(userVue);
                     }
                     layer.close(userVue.$data.edit)
                 },function (code, data) {
@@ -206,14 +195,3 @@ var userEdit = new Vue({
         //methods...
     }
 });
-
-
-//
-// laypage.render({
-//     elem: 'layPage'
-//     ,count: 100
-//     ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-//     ,jump: function(obj){
-//         console.log(obj)
-//     }
-// });

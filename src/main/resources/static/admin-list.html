@@ -41,8 +41,7 @@
 		<span class="l">
 			<a href="javascript:;" @click="batch_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
 			<a href="javascript:;" @click="admin_edit('添加账号','750','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
-		</span> <span class="r">
-		共有数据：<strong>{{pageInfo.total}}</strong> 条</span>
+		</span>
 	</div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
@@ -84,12 +83,12 @@
 				</td>
 				<td class="td-manage">
 					<span class="btn-status" v-show="user.status==0">
-						<a style="text-decoration:none" @click="statusModified($event,user.id,1)" href="javascript:;" title="启用">
+						<a style="text-decoration:none" @click="statusToggle($event,user.id,1)" href="javascript:;" title="启用">
 							<i class="Hui-iconfont">&#xe615;</i>
 						</a>
 					</span>
 					<span class="btn-status" v-show="user.status==1">
-						<a style="text-decoration:none" @click="statusModified($event,user.id,0)" href="javascript:;" title="停用">
+						<a style="text-decoration:none" @click="statusToggle($event,user.id,0)" href="javascript:;" title="停用">
 							<i class="Hui-iconfont">&#xe631;</i>
 						</a>
 					</span>

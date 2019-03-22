@@ -169,6 +169,38 @@ var baseUtils = {
         return result;
     },
 
+    /**
+     * 加载分页插件
+     * @param elem 放置分页控件的元素ID,注意：不要带#
+     * @param total 数据总条数
+     * @param listUrl 分页接口地址
+     * @param vue vue对象
+     * @param vueData 数据<br>
+     *     --vueData.query-分解接口查询条件<br>
+     *     ----vueData.query.page/size 页码，每页数据<br>
+     *     --vueData.pageInfo 分页接口返回的数据<br>
+     */
+    laypage: function(elem,listUrl,vue){
+        var vueData = vue.$data;
+        layui.use('laypage', function(){
+            var laypage = layui.laypage;
+            laypage.render({
+                elem: elem,
+                curr: vueData.query.page,
+                count: vueData.pageInfo.total,
+                layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'],
+                jump: function(obj, first){
+                    vueData.query.page = obj.curr;
+                    vueData.query.size = obj.limit;
+                    if (!first) {
+                        baseUtils.post(vue, listUrl, vueData.query, function (data) {
+                            vueData.pageInfo = data;
+                        });
+                    }
+                }
+            });
+        });
+    },
 
     full: function (s) {
         return s < 10 ? '0' + s: s;
