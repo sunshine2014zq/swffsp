@@ -82,10 +82,10 @@ var userVue = new Vue({
             });
         },
         //删除
-        admin_del: function (event, id) {
+        admin_del: function (id) {
             var vue = this;
             userVue.$data.ids.push(id);
-            layer.confirm('确认要删除吗？', function (index) {
+            layer.confirm('确认要删除吗？', function () {
                 service.del(vue, userVue.$data.ids)
             });
         },
@@ -112,7 +112,7 @@ var userVue = new Vue({
                 $("input[type='password']").parents(".row").hide(); //修改页面不能修改密码
             } else {
                 //添加
-                $("input[type='password']").parents(".row").show();  //添加页面-密码
+                $("input[type='password']").parents(".row").show(); //添加页面-密码
             }
         }
         //methods...
@@ -125,27 +125,27 @@ var userVue = new Vue({
 var userEdit = new Vue({
     el: ".admin-edit",
     data: {
-        user:{ //表单
-            id:""
-            ,username:""
-            ,nickName:""
-            ,password:""
-            ,passwordRepeat:""
-            ,phoneNum:""
-            ,email:""
-            ,roles:[]
+        user: { //表单
+            id: "",
+            username: "",
+            nickName: "",
+            password: "",
+            passwordRepeat: "",
+            phoneNum: "",
+            email: "",
+            roles: []
         },
-        errors:{ //错误提示
-            usernameErr:""
-            ,nickNameErr:""
-            ,passwordErr:""
-            ,passwordRepeatErr:""
-            ,phoneNumErr:""
-            ,emailErr:""
-            ,rolesErr:""
+        errors: { //错误提示
+            usernameErr: "",
+            nickNameErr: "",
+            passwordErr: "",
+            passwordRepeatErr: "",
+            phoneNumErr: "",
+            emailErr: "",
+            rolesErr: ""
         },
-        roles:[],
-        index:"" //修改的第几条记录
+        roles: [],
+        index: "" //修改的第几条记录
     },
     mounted: function () {
         //初始化
@@ -153,40 +153,42 @@ var userEdit = new Vue({
         validate.errors = this.$data.errors;
         $('#form-admin-edit').validate(validate); //开启数据校验
         //加载角色信息
-        baseUtils.post(this,rolesUrl,{},function (data) {
+        baseUtils.post(this, rolesUrl, {}, function (data) {
             userEdit.$data.roles = data;
         })
     },
     methods: {
         save: function () {
-            var names = userEdit.$data.user.id == "" ? [] : ["password","passwordRepeat"];
+            //不需要校验字段
+            var names = userEdit.$data.user.id == "" ? [] : ["password", "passwordRepeat"];
             var result = $.vf_validate.each(names); //检查整个表单数据
-            if(result){
+            if (result) {
                 //表单校验通过
-                baseUtils.post(this,saveUrl,this.$data.user,function (data) {
+                baseUtils.post(this, saveUrl, this.$data.user, function (data) {
                     //更改列表显示数据
-                    if(userEdit.$data.user.id != ""){
+                    if (userEdit.$data.user.id != "") {
                         //修改成功-修改内容同步到列表
                         var current = userVue.$data.pageInfo.content[userEdit.$data.index];
-                        baseUtils.copyValue(current, userEdit.$data.user)
-                    }else {
+                        baseUtils.copyValue(current, userEdit.$data.user);
+                    } else {
                         //添加时
                         var user = $.extend(true, {}, userEdit.$data.user);
                         user.id = data;
                         user.status = 1;
                         user.createdTime = baseUtils.now();
                         //添加的数据同步到列表
-                        userVue.$data.pageInfo.content.insert(0,user);
+                        userVue.$data.pageInfo.content.insert(0, user);
                         userVue.$data.pageInfo.total += 1;
-                        service.laypageLoad(userVue);
+                        service.laypageLoad(userVue); //重新加载分页控件
                     }
                     layer.close(userVue.$data.edit)
-                },function (code, data) {
-                    $.each(data,function (index,el) {
+                }, function (code, data) {
+                    //显示服务端校验的错误信息
+                    $.each(data, function (index, el) {
                         var msg = "";
-                        $.each(el.messages,function (index,message) {
-                            msg += (message+"<br>")
-                        })
+                        $.each(el.messages, function (index, message) {
+                            msg += (message + "<br>")
+                        });
                         userEdit.$data.errors[el.field + "Err"] = msg;
                     })
                 })

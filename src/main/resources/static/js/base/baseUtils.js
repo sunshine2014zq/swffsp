@@ -12,7 +12,7 @@ var baseUtils = {
      * @param item
      * @returns {boolean}
      */
-    isEmptyValue : function (item) {
+    isEmptyValue: function (item) {
         if (item.val() == '' || item.val() == undefined) {
             return true;
         }
@@ -22,7 +22,7 @@ var baseUtils = {
      * 判断是否为空"",null,undefined
      * @param val
      */
-    isEmpty : function(val){
+    isEmpty: function (val) {
         if (val == undefined || val == null || val == '') {
             return true;
         }
@@ -36,14 +36,20 @@ var baseUtils = {
      * @param time 时间/毫秒
      */
     tip: function (message, icon, time) {
-        if(message){
+        if (message) {
             layer.msg(message, {icon: icon, time: time});
         }
     },
 
-    reqTip: function(message,code,time){
+    /**
+     * 请求弹框提示
+     * @param message
+     * @param code
+     * @param time
+     */
+    reqTip: function (message, code, time) {
         var icon = code == SUCCESS ? 1 : 2;
-        this.tip(message,icon,time);
+        this.tip(message, icon, time);
     },
 
     /**
@@ -87,7 +93,7 @@ var baseUtils = {
      * @param closeCallback 弹框关闭回调
      * @returns {*} index
      */
-    layer_show: function (type, title, content, w, h,closeCallback) {
+    layer_show: function (type, title, content, w, h, closeCallback) {
         if (title == null || title == '') {
             title = false;
         }
@@ -121,9 +127,9 @@ var baseUtils = {
      * @param obj
      * @param from
      */
-    copyValue: function (obj,from) {
-        $.each(obj,function (key, val) {
-            if(from[key]){
+    copyValue: function (obj, from) {
+        $.each(obj, function (key, val) {
+            if (from[key]) {
                 obj[key] = from[key];
             }
         })
@@ -133,8 +139,8 @@ var baseUtils = {
      * @param obj
      */
     clearValues: function (obj) {
-        $.each(obj,function (key, val) {
-            if(obj[key].length != undefined){
+        $.each(obj, function (key, val) {
+            if (obj[key].length != undefined) {
                 //字符串和数组
                 if ($.isArray(obj[key])) {
                     obj[key] = [];
@@ -153,15 +159,15 @@ var baseUtils = {
      * @param attrName
      * @param attrValue 可以是数组
      */
-    removeObjectByAttr: function(array,attrName,attrValue){
+    removeObjectByAttr: function (array, attrName, attrValue) {
         var result = [];
-        for (var i = 0;i < array.length; i++) {
-            if($.isArray(attrValue)){
-                if($.inArray(array[i][attrName],attrValue) < 0) {
+        for (var i = 0; i < array.length; i++) {
+            if ($.isArray(attrValue)) {
+                if ($.inArray(array[i][attrName], attrValue) < 0) {
                     result.push(array[i])
                 }
-            }else {
-                if(array[i][attrName] != attrValue) {
+            } else {
+                if (array[i][attrName] != attrValue) {
                     result.push(array[i])
                 }
             }
@@ -180,16 +186,16 @@ var baseUtils = {
      *     ----vueData.query.page/size 页码，每页数据<br>
      *     --vueData.pageInfo 分页接口返回的数据<br>
      */
-    laypage: function(elem,listUrl,vue){
+    laypage: function (elem, listUrl, vue) {
         var vueData = vue.$data;
-        layui.use('laypage', function(){
+        layui.use('laypage', function () {
             var laypage = layui.laypage;
             laypage.render({
                 elem: elem,
                 curr: vueData.query.page,
                 count: vueData.pageInfo.total,
                 layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'],
-                jump: function(obj, first){
+                jump: function (obj, first) {
                     vueData.query.page = obj.curr;
                     vueData.query.size = obj.limit;
                     if (!first) {
@@ -203,17 +209,17 @@ var baseUtils = {
     },
 
     full: function (s) {
-        return s < 10 ? '0' + s: s;
+        return s < 10 ? '0' + s : s;
     },
     now: function () {
         var myDate = new Date();
-        var year=myDate.getFullYear();        //获取当前年
-        var month=myDate.getMonth()+1;   //获取当前月
-        var date=myDate.getDate();            //获取当前日
-        var h=myDate.getHours();              //获取当前小时数(0-23)
-        var m=myDate.getMinutes();          //获取当前分钟数(0-59)
-        var s=myDate.getSeconds();
-        return year+'-'+this.full(month)+"-"+this.full(date)+" "+this.full(h)+':'+this.full(m)+":"+this.full(s);
+        var year = myDate.getFullYear();        //获取当前年
+        var month = myDate.getMonth() + 1;   //获取当前月
+        var date = myDate.getDate();            //获取当前日
+        var h = myDate.getHours();              //获取当前小时数(0-23)
+        var m = myDate.getMinutes();          //获取当前分钟数(0-59)
+        var s = myDate.getSeconds();
+        return year + '-' + this.full(month) + "-" + this.full(date) + " " + this.full(h) + ':' + this.full(m) + ":" + this.full(s);
     }
 }
 
@@ -222,34 +228,34 @@ var baseUtils = {
  * jQuery库扩展--序列化为对象
  * @returns {Object}
  */
-jQuery.prototype.serializeObject=function(){
-    var obj=new Object();
-    $.each(this.serializeArray(),function(index,param){
-        if(!(param.name in obj)){
-            obj[param.name]=param.value;
+jQuery.prototype.serializeObject = function () {
+    var obj = new Object();
+    $.each(this.serializeArray(), function (index, param) {
+        if (!(param.name in obj)) {
+            obj[param.name] = param.value;
         }
     });
     return obj;
 }
-String.prototype.endWith = function(str){
-    if(str==null || str=="" || this.length == 0 ||str.length > this.length){
+String.prototype.endWith = function (str) {
+    if (str == null || str == "" || this.length == 0 || str.length > this.length) {
         return false;
     }
-    if(this.substring(this.length - str.length)){
+    if (this.substring(this.length - str.length)) {
         return true;
-    }else{
+    } else {
         return false;
     }
     return true;
 };
 
-String.prototype.startWith = function(str){
-    if(str == null || str== "" || this.length== 0 || str.length > this.length){
+String.prototype.startWith = function (str) {
+    if (str == null || str == "" || this.length == 0 || str.length > this.length) {
         return false;
     }
-    if(this.substr(0,str.length) == str){
+    if (this.substr(0, str.length) == str) {
         return true;
-    }else{
+    } else {
         return false;
     }
     return true;
