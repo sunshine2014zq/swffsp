@@ -182,33 +182,33 @@ $(function(){
 	//不能为空
 	$.vf_validate.addMethod("required",function (value) {
 	    return !isEmpty(value) && value.length >0;
-    },"这是必填字段")
+    },"这是必填字段");
     //邮箱格式 -jquery-validate
     $.vf_validate.addMethod("email",function (value) {
         var reg = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
         return isEmpty(value) || reg.test(value);
-    },"请输入有效的电子邮件地址")
+    },"请输入有效的电子邮件地址");
     //url格式 -jquery-validate
     $.vf_validate.addMethod("url",function (value) {
         var reg = /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})).?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;
         return isEmpty(value) || reg.test(value);
-    },"请输入有效的网址")
+    },"请输入有效的网址");
     //data -jquery-validate
     $.vf_validate.addMethod("data",function (value) {
         return isEmpty(value) || !/Invalid|NaN/.test( new Date( value ).toString() );
-    },"请输入有效的日期")
+    },"请输入有效的日期");
     // dateISO-jquery-validate
     $.vf_validate.addMethod("dateISO", function (value) {
         return this.optional(element) || /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.test(value);
-    }, "请输入有效的日期 (YYYY-MM-DD)")
+    }, "请输入有效的日期 (YYYY-MM-DD)");
     // number-jquery-validate
     $.vf_validate.addMethod("number", function (value) {
         return this.optional(element) || /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value);
-    }, "请输入有效的数字")
+    }, "请输入有效的数字");
     // digits-jquery-validate
     $.vf_validate.addMethod("digits", function (value) {
         return this.optional(element) || /^\d+$/.test(value);
-    }, "只能输入数字")
+    }, "只能输入数字");
     //信用卡 creditcard-jquery-validate
     $.vf_validate.addMethod("creditcard",function (value) {
         if(isEmpty(value)){
@@ -241,24 +241,28 @@ $(function(){
             bEven = !bEven;
         }
         return ( nCheck % 10 ) === 0;
-    },"请输入有效的信用卡号码")
+    },"请输入有效的信用卡号码");
     //长度 length(minLength,maxLength)
     $.vf_validate.addMethod("length",function (value, param) {
         var length = value.length;
         return isEmpty(value) || ( length >= param.min && length <= param.max );
-    },"format:请输入长度在 {0} 到 {1} 之间的字符串")
+    },"format:请输入长度在 {0} 到 {1} 之间的字符串");
     //值范围 range(minValue,maxValue)
     $.vf_validate.addMethod("range",function (value, param) {
         return isEmpty(value) || ( value >= param.min && value <= param.max );
-    },"format:请输入范围在 {0} 到 {1} 之间的数值")
+    },"format:请输入范围在 {0} 到 {1} 之间的数值");
     //相等 equal(eqValue)
     $.vf_validate.addMethod("equalTo",function (value, eqName) {
         var eqVal = $("input[name='"+ eqName+"']").val();
         return isEmpty(value) || value ==eqVal;
-    },"两次输入不一致")
+    },"两次输入不一致");
+    $.vf_validate.addMethod("notEqualTo",function (value, eqName) {
+        var eqVal = $("input[name='"+ eqName+"']").val();
+        return isEmpty(value) || value !=eqVal;
+    },"两次输入不能相同");
     $.vf_validate.addMethod("isUsername",function (value) {
         return isEmpty(value) || /^[a-zA-Z][a-zA-Z0-9]*$/.test(value);
-    },"以字母开头，只能包含英文字母，数字")
+    },"以字母开头，只能包含英文字母，数字");
 
 });
 

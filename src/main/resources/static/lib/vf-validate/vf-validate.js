@@ -66,7 +66,7 @@
                                 self.isUndefinedEmpty(cm[name][key])){
                                 message = $.vf_validate.messages[key];
                             }else {
-                                message = validate.messages[name][key];
+                                message = cm[name][key];
                             }
                             if(message.startWith("format")){
                                 message = self.paramInstall(message.split("format:")[1],val);
