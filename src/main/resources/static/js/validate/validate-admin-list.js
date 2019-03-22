@@ -30,7 +30,7 @@ var validate = {
                 max:16
             }
         },
-        passwordRepeat:{
+        rePassword:{
             required:true,
             equalTo:"password"
         },

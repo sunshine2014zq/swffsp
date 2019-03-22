@@ -130,7 +130,7 @@ var userEdit = new Vue({
             username: "",
             nickName: "",
             password: "",
-            passwordRepeat: "",
+            rePassword: "",
             phoneNum: "",
             email: "",
             roles: []
@@ -139,7 +139,7 @@ var userEdit = new Vue({
             usernameErr: "",
             nickNameErr: "",
             passwordErr: "",
-            passwordRepeatErr: "",
+            rePasswordErr: "",
             phoneNumErr: "",
             emailErr: "",
             rolesErr: ""
@@ -160,7 +160,7 @@ var userEdit = new Vue({
     methods: {
         save: function () {
             //不需要校验字段
-            var names = userEdit.$data.user.id == "" ? [] : ["password", "passwordRepeat"];
+            var names = userEdit.$data.user.id == "" ? [] : ["password", "rePassword"];
             var result = $.vf_validate.each(names); //检查整个表单数据
             if (result) {
                 //表单校验通过
