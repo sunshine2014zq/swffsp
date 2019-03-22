@@ -10,34 +10,88 @@ var userInfoUrl = contextPath +"/user/info";
 var service = {
 
 }
-var menu = new Vue({
-    el: "#vue-menu",
+var vue = new Vue({
+    el: "#body",
     // 内部参数定义
     data: {
-        menus:[],
-        contextPath:contextPath
+        menus: [],
+        contextPath: contextPath,
+        pwd: {
+            oldPwd: "",
+            newPwd: "",
+            rePwd: ""
+        },
+        errors: {
+            oldPwdErr: "",
+            newPwdErr: "",
+            rePwdErr: ""
+        }
     },
     // vue加载初始化函数
     mounted: function () {
         baseUtils.post(new Vue(), userInfoUrl, {}, function (data) {
             var name = baseUtils.isEmpty(data.nickName) ? data.username : data.nickName;
             $(".username").html(name)
-            menu.$data.menus = data.menus
+            vue.$data.menus = data.menus
         })
     },
     methods: {
-        // vue element 范围内触发事件处理
-        fold:function (index,e) {
-            var t=e.currentTarget;
+        fold: function (index, e) {
+            var t = e.currentTarget;
             $('.menu_dropdown dl dd').not($('.menu_dropdown dl dd').eq(index)).slideUp('fast');
             $('.menu_dropdown dt').not($('.menu_dropdown dt').eq(index)).removeClass('selected');
-            if($(t).siblings('dd').css('display')=="block"){
+            if ($(t).siblings('dd').css('display') == "block") {
                 $(t).removeClass('selected');
-            }else{
+            } else {
                 $(t).addClass('selected');
             }
             $(t).siblings('dd').slideToggle('fast');
+        },
+        pwdChange: function () {
+            baseUtils.layer_show(1, "修改密码", $(".pwd"), 500, 300, function () {
+                //修改密码弹框关闭
+                baseUtils.clearValues(vue.$data.pwd);
+                baseUtils.clearValues(vue.$data.errors);
+            });
+            $("#form-change-password").validate({
+                obj: vue.$data.pwd,
+                errors: vue.$data.errors,
+                rules: {
+                    oldPwd: {
+                        required: true
+                    },
+                    newPwd: {
+                        required: true,
+                        isRightfulString: true,
+                        length: {
+                            min: 6,
+                            max: 16
+                        },
+                        notEqualTo: "oldPwd"
+                    },
+                    rePwd: {
+                        required: true,
+                        equalTo: "newPwd"
+                    }
+                },
+                messages: {
+                    newPwd: {
+                        notEqualTo: "新密码不能与旧密码相同"
+                    },
+                    rePwd: {
+                        equalTo: "两次输入的密码不一致"
+                    }
+                }
+            });
+
+        },
+        savePwd: function () {
+            var result = $.vf_validate.each([]);
+            if(result) {
+                //通过校验
+            }
         }
+        // methods...
     }
 });
 
