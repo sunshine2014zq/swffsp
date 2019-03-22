@@ -40,7 +40,7 @@ public interface SecurityService extends UserDetailsService {
      * @param user
      * @return
      */
-    Response save(UserDto user);
+    Response saveUser(UserDto user);
 
     /**
      * 删除
@@ -56,4 +56,5 @@ public interface SecurityService extends UserDetailsService {
      * @return
      */
     List<RoleDto> roles();
+
 }

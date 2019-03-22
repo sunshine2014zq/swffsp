@@ -54,9 +54,9 @@ public class SecurityController {
      * @param user
      * @return
      */
-    @RequestMapping("/save")
-    public Object save(@RequestBody UserDto user) {
-        return securityService.save(user);
+    @RequestMapping("/saveUser")
+    public Object saveUser(@RequestBody UserDto user) {
+        return securityService.saveUser(user);
     }
 
     /**
@@ -69,6 +69,15 @@ public class SecurityController {
     public Object delete(@RequestBody List<String> ids) {
         return securityService.delete(ids);
     }
+
+
+
+
+
+
+
+
+
 
     /**
      * 可用角色

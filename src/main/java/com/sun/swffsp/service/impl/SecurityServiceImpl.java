@@ -112,7 +112,7 @@ public class SecurityServiceImpl extends BaseService<UserDto> implements Securit
     }
 
     @Override
-    public Response save(UserDto user) {
+    public Response saveUser(UserDto user) {
         try {
             //用户名重复检测
             List<UserDto> users = userRepository.findAll(uniqueSpecification(user));

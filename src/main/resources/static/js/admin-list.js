@@ -3,9 +3,9 @@
  */
 
 // 全局变量
-var contextPath = "/swffsp"
+var contextPath = "/swffsp";
 var listUrl = contextPath +"/security/userList";
-var saveUrl = contextPath + "/security/save";
+var saveUrl = contextPath + "/security/saveUser";
 var delUrl = contextPath + "/security/deleteUsers";
 var rolesUrl = contextPath + "/security/roles";
 
