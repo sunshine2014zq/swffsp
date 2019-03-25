@@ -19,21 +19,28 @@
                 valObject: {},//需要验证的数据对象-vue 绑定的对象
                 rules: {},//校验规则
                 messages: {}, //自定义消息
+                errors: {}, //如覆盖了showSuccess,showFail,messageReset三个方法则该字段不需要传入
                 selector: "input",//默认验证元素
                 event: "focusout",//验证事件
                 others: [{
                     // select:"",
                     // event:""
                 }],
-                //校验成功操作-默认无操作-用户自定义覆盖该操作
+                //校验成功操作--用户可以自定义覆盖该操作
                 showSuccess: function (target) {
+                    var ok_icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-ok"></use></svg>';
+                    $(target).parents(".row").find(".message-icon").html(ok_icon);
                 },
-                //校验失败操作-用户自定义覆盖该方法
+                //校验失败操作-用户可以自定义覆盖该方法
                 showFail: function (target, name, message) {
-                    alert(message);
+                    var fail_icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-icon--jinggao"></use></svg>';
+                    $(target).parents(".row").find(".message-icon").html(fail_icon);
+                    this.errors[name + "Err"] = message;
                 },
-                //消息复位方法-用户自定义覆盖该方法
+                //消息复位方法-用户可以自定义覆盖该方法
                 messageReset: function (target, name) {
+                    $(target).parents(".row").find(".message-icon").html("");
+                    this.errors[name + "Err"] = "";
                 }
             },
             validation: function (target) {
@@ -148,6 +155,9 @@
             }
             if (options.valObject) {
                 $.vueValidator.setting.valObject = options.valObject;
+            }
+            if (options.errors) {
+                $.vf_validate.setting.errors = options.errors;
             }
             if (options.showSuccess && $.isFunction(options.showSuccess)) {
                 $.vueValidator.setting.showSuccess = options.showSuccess;

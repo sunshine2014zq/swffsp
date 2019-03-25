@@ -5,6 +5,7 @@
 
 var validate = {
     valObject: {},
+    errors: {},
     rules: {
         username: {
             required: true,
