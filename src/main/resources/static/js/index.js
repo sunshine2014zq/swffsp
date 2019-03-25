@@ -54,7 +54,7 @@ var vue = new Vue({
                 baseUtils.clearValues(vue.$data.errors);
             });
             $("#form-change-password").validate({
-                obj: vue.$data.pwd,
+                valObject: vue.$data.pwd,
                 errors: vue.$data.errors,
                 rules: {
                     oldPwd: {
@@ -86,9 +86,10 @@ var vue = new Vue({
 
         },
         savePwd: function () {
-            var result = $.vf_validate.each([]);
+            var result = $.vueValidator.validationAll([]);
             if(result) {
                 //通过校验
+                console.log("提交表单")
             }
         }
         // methods...
