@@ -33,21 +33,21 @@ var service = {
      * 删除
      */
     del: function () {
-        var ids = userVue.$data.ids;
-        baseUtils.post(userVue, delUrl, ids, function () {
-            var pageInfo = userVue.$data.pageInfo;
+        var ids = listVue.$data.ids;
+        baseUtils.post(listVue, delUrl, ids, function () {
+            var pageInfo = listVue.$data.pageInfo;
             //移除已删除的数据
             pageInfo.content = baseUtils.removeObjectByAttr(pageInfo.content, "id", ids);
             pageInfo.total -= ids.length; //改变总记录条数
-            userVue.$data.ids = []; //多选框复位
-            service.laypageLoad(userVue); //重新加载分页插件
+            listVue.$data.ids = []; //多选框复位
+            service.laypageLoad(listVue); //重新加载分页插件
         })
     }
 
 }
 
 //用户列表模块
-var userVue = new Vue({
+var listVue = new Vue({
     el: ".page-container",
     data: {
         pageInfo: {}, //页面数据
@@ -85,31 +85,31 @@ var userVue = new Vue({
         //删除
         admin_del: function (id) {
             var vue = this;
-            userVue.$data.ids.push(id);
+            listVue.$data.ids.push(id);
             layer.confirm('确认要删除吗？', function () {
-                service.del(vue, userVue.$data.ids)
+                service.del(vue, listVue.$data.ids)
             });
         },
         //批量删除
         batch_del: function () {
             var vue = this;
             layer.confirm('确认要删除吗？', function (index) {
-                service.del(vue, userVue.$data.ids);
+                service.del(vue, listVue.$data.ids);
             });
         },
         /*管理员-编辑*/
         admin_edit: function (title, w, h, index) {
-            userVue.$data.edit = baseUtils.layer_show(1, title, $(".admin-edit"), w, h, function () {
+            listVue.$data.edit = baseUtils.layer_show(1, title, $(".admin-edit"), w, h, function () {
                 //编辑框关闭回调
-                baseUtils.clearValues(userEdit.$data.user);  //清空输入框数据
-                baseUtils.clearValues(userEdit.$data.errors);  //清空错误提示
+                baseUtils.clearValues(editVue.$data.user);  //清空输入框数据
+                baseUtils.clearValues(editVue.$data.errors);  //清空错误提示
                 $(".input-message .message-icon").html("");  //清空验证图标
             });
             if (index != undefined) {
                 //修改
-                var current = userVue.$data.pageInfo.content[index];
-                baseUtils.copyValue(userEdit.$data.user, current);//加载数据到表单作为默认值
-                userEdit.$data.index = index;
+                var current = listVue.$data.pageInfo.content[index];
+                baseUtils.copyValue(editVue.$data.user, current);//加载数据到表单作为默认值
+                editVue.$data.index = index;
                 $("input[type='password']").parents(".row").hide(); //修改页面不能修改密码
             } else {
                 //添加
@@ -123,7 +123,7 @@ var userVue = new Vue({
 /**
  * 用户添加或修改
  */
-var userEdit = new Vue({
+var editVue = new Vue({
     el: ".admin-edit",
     data: {
         user: { //表单
@@ -155,34 +155,34 @@ var userEdit = new Vue({
         $('#form-admin-edit').validate(validate); //开启数据校验
         //加载角色信息
         baseUtils.post(this, rolesUrl, {}, function (data) {
-            userEdit.$data.roles = data;
+            editVue.$data.roles = data;
         })
     },
     methods: {
         save: function () {
             //不需要校验字段
-            var names = userEdit.$data.user.id == "" ? [] : ["password", "rePassword"];
+            var names = editVue.$data.user.id == "" ? [] : ["password", "rePassword"];
             var result = $.vueValidator.validationAll(names); //检查整个表单数据
             if (result) {
                 //表单校验通过
                 baseUtils.post(this, saveUrl, this.$data.user, function (data) {
                     //更改列表显示数据
-                    if (userEdit.$data.user.id != "") {
+                    if (editVue.$data.user.id != "") {
                         //修改成功-修改内容同步到列表
-                        var current = userVue.$data.pageInfo.content[userEdit.$data.index];
-                        baseUtils.copyValue(current, userEdit.$data.user);
+                        var current = listVue.$data.pageInfo.content[editVue.$data.index];
+                        baseUtils.copyValue(current, editVue.$data.user);
                     } else {
                         //添加时
-                        var user = $.extend(true, {}, userEdit.$data.user);
+                        var user = $.extend(true, {}, editVue.$data.user);
                         user.id = data;
                         user.status = 1;
                         user.createdTime = baseUtils.now();
                         //添加的数据同步到列表
-                        userVue.$data.pageInfo.content.insert(0, user);
-                        userVue.$data.pageInfo.total += 1;
-                        service.laypageLoad(userVue); //重新加载分页控件
+                        listVue.$data.pageInfo.content.insert(0, user);
+                        listVue.$data.pageInfo.total += 1;
+                        service.laypageLoad(listVue); //重新加载分页控件
                     }
-                    layer.close(userVue.$data.edit)
+                    layer.close(listVue.$data.edit)
                 }, function (code, data) {
                     //显示服务端校验的错误信息
                     $.each(data, function (index, el) {
@@ -190,7 +190,7 @@ var userEdit = new Vue({
                         $.each(el.messages, function (index, message) {
                             msg += (message + "<br>")
                         });
-                        userEdit.$data.errors[el.field + "Err"] = msg;
+                        editVue.$data.errors[el.field + "Err"] = msg;
                     })
                 })
             }
