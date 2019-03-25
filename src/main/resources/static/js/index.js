@@ -31,7 +31,7 @@ var vue = new Vue({
     mounted: function () {
         baseUtils.post(new Vue(), userInfoUrl, {}, function (data) {
             var name = baseUtils.isEmpty(data.nickName) ? data.username : data.nickName;
-            $(".username").html(name)
+            $(".username").html(name);
             vue.$data.menus = data.menus
         })
     },
