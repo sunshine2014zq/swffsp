@@ -157,7 +157,7 @@
                 $.vueValidator.setting.valObject = options.valObject;
             }
             if (options.errors) {
-                $.vf_validate.setting.errors = options.errors;
+                $.vueValidator.setting.errors = options.errors;
             }
             if (options.showSuccess && $.isFunction(options.showSuccess)) {
                 $.vueValidator.setting.showSuccess = options.showSuccess;
