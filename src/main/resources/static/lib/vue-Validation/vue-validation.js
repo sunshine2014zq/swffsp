@@ -15,6 +15,7 @@
             },
             //插件参数设置
             setting: {
+                scope: "", //校验范围
                 valObject: {},//需要验证的数据对象-vue 绑定的对象
                 rules: {},//校验规则
                 messages: {}, //自定义消息
@@ -25,19 +26,20 @@
                     // event:""
                 }],
                 //校验成功操作-默认无操作-用户自定义覆盖该操作
-                showSuccess: function (name) {
+                showSuccess: function (target) {
                 },
                 //校验失败操作-用户自定义覆盖该方法
-                showFail: function (name, message) {
+                showFail: function (target, name, message) {
                     alert(message);
                 },
                 //消息复位方法-用户自定义覆盖该方法
-                messageReset: function (name) {
+                messageReset: function (target, name) {
                 }
             },
-            validation: function (name) {
+            validation: function (target) {
+                var name = $(target).attr("name");
                 //清除旧的消息
-                this.setting.messageReset(name);
+                this.setting.messageReset(target,name);
                 var rules = this.setting.rules[name];
                 if (!rules) {
                     return true;
@@ -55,11 +57,11 @@
                     }
                     var result = method.call(this, this.setting.valObject[name], ruleVal);
                     if (!result) {
-                        this.setting.showFail(name, this.getMessage(name, rule, ruleVal));
+                        this.setting.showFail(target, name, this.getMessage(name, rule, ruleVal));
                         return false;
                     }
                 }
-                this.setting.showSuccess(name);
+                this.setting.showSuccess(target, name);
                 return true;
             },
             getMessage: function (name, rule, val) {
@@ -95,6 +97,36 @@
                     result += paramArray[s2[0]] + s2[1]
                 }
                 return result;
+            },
+            /**
+             * 循环校验
+             * @param names 不需要校验的字段数组
+             * @returns {*|boolean}
+             */
+            validationAll:function(names){
+                var tags = $($.vueValidator.setting.scope).find($.vueValidator.setting.selector);
+                names = (names == undefined ? [] : names);
+                var flag = this.validations(tags,names);
+                for (var index in $.vueValidator.setting.others) {
+                    var other = $.vueValidator.setting.others[index];
+                    var tags = $($.vueValidator.setting.scope).find(other.selector);
+                    var result = this.validations(tags,names);
+                    if(!result) flag = false;
+                }
+                return flag;
+            },
+            validations: function(tags,names){
+                var flag = true;
+                if(tags != undefined) {
+                    for (var i = 0; i< tags.length; i++) {
+                        if($.inArray($(tags[i]).attr("name"),names) > -1){
+                            continue;
+                        }
+                        var result = this.validation($(tags[i]));
+                        if(!result) flag = false;
+                    }
+                }
+                return flag;
             }
         }
     });
@@ -102,6 +134,7 @@
     $.extend($.fn, {
         validate: function (options) {
             //设置参数
+            $.vueValidator.setting.scope = this.selector;
             $.vueValidator.setting.rules = options.rules;
             $.vueValidator.setting.messages = options.messages;
             if (options.selector) {
@@ -127,13 +160,13 @@
             }
             //绑定默认事件
             this.find($.vueValidator.setting.selector).on($.vueValidator.setting.event, function (event) {
-                $.vueValidator.validation($(event.target).attr("name"));
+                $.vueValidator.validation(event.target);
             });
             //绑定自定义事件
             var others = $.vueValidator.setting.others;
             for (var i = 0; i < others.length; i++) {
                 this.find(others[i].selector).on(others[i].event, function (event) {
-                    $.vueValidator.validation($(event.target).attr("name"));
+                    $.vueValidator.validation(event.target);
                 });
             }
         }

@@ -4,8 +4,7 @@
  */
 
 var validate = {
-    obj: {},
-    errors: {},
+    valObject: {},
     rules: {
         username: {
             required: true,

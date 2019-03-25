@@ -42,6 +42,19 @@ var service = {
             userVue.$data.ids = []; //多选框复位
             service.laypageLoad(userVue); //重新加载分页插件
         })
+    },
+    showSuccess: function (target) {
+        var ok_icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-ok"></use></svg>';
+        $(target).parents(".row").find(".message-icon").html(ok_icon);
+    },
+    showFail: function (target, name, message) {
+        var fail_icon = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-icon--jinggao"></use></svg>';
+        $(target).parents(".row").find(".message-icon").html(fail_icon);
+        userEdit.$data.errors[name + "Err"] = message;
+    },
+    messageReset: function (target, name) {
+        $(target).parents(".row").find(".message-icon").html("");
+        userEdit.$data.errors[name + "Err"] = "";
     }
 }
 
@@ -149,8 +162,10 @@ var userEdit = new Vue({
     },
     mounted: function () {
         //初始化
-        validate.obj = this.$data.user;
-        validate.errors = this.$data.errors;
+        validate.valObject = this.$data.user;
+        validate.showFail = service.showFail;
+        validate.showSuccess = service.showSuccess;
+        validate.messageReset = service.messageReset;
         $('#form-admin-edit').validate(validate); //开启数据校验
         //加载角色信息
         baseUtils.post(this, rolesUrl, {}, function (data) {
@@ -161,7 +176,7 @@ var userEdit = new Vue({
         save: function () {
             //不需要校验字段
             var names = userEdit.$data.user.id == "" ? [] : ["password", "rePassword"];
-            var result = $.vf_validate.each(names); //检查整个表单数据
+            var result = $.vueValidator.validationAll(names); //检查整个表单数据
             if (result) {
                 //表单校验通过
                 baseUtils.post(this, saveUrl, this.$data.user, function (data) {
