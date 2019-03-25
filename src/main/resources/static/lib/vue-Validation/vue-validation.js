@@ -157,6 +157,9 @@
                 $.vueValidator.setting.valObject = options.valObject;
             }
             if (options.errors) {
+                //采用默认消息
+                $.getScript("//at.alicdn.com/t/font_1072156_35luz1mgyhi.js");
+                $.getScript("//at.alicdn.com/t/font_1072156_xtoytjy4dn.js");
                 $.vueValidator.setting.errors = options.errors;
             }
             if (options.showSuccess && $.isFunction(options.showSuccess)) {
