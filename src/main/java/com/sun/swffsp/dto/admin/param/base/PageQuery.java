@@ -1,4 +1,4 @@
-package com.sun.swffsp.dto.admin.query.base;
+package com.sun.swffsp.dto.admin.param.base;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @date 2019/2/26 10:17
  */
 @Data
-public class PageCondition implements Serializable {
+public class PageQuery implements Serializable {
 
     /**
      * 页面

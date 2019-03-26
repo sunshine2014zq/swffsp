@@ -1,6 +1,6 @@
 package com.sun.swffsp.controller;
 
-import com.sun.swffsp.dto.admin.query.UserCondition;
+import com.sun.swffsp.dto.admin.param.UserQuery;
 import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.dto.core.RoleDto;
 import com.sun.swffsp.dto.core.UserDto;
@@ -43,7 +43,7 @@ public class UserController {
      * @return
      */
     @RequestMapping("/list")
-    public Object list(@RequestBody UserCondition condition) {
+    public Object list(@RequestBody UserQuery condition) {
         Page<UserDto> list = securityService.list(condition);
         return Response.success().data(list);
     }

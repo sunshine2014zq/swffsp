@@ -1,6 +1,6 @@
 package com.sun.swffsp.service;
 
-import com.sun.swffsp.dto.admin.query.UserCondition;
+import com.sun.swffsp.dto.admin.param.UserQuery;
 import com.sun.swffsp.dto.admin.result.UserInfoResult;
 import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.dto.core.RoleDto;
@@ -31,7 +31,7 @@ public interface UserService extends UserDetailsService {
      * @param condition
      * @return
      */
-    Page<UserDto> list(UserCondition condition);
+    Page<UserDto> list(UserQuery condition);
 
     /**
      * 保存<br>

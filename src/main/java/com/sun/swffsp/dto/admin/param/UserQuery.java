@@ -1,6 +1,6 @@
-package com.sun.swffsp.dto.admin.query;
+package com.sun.swffsp.dto.admin.param;
 
-import com.sun.swffsp.dto.admin.query.base.PageCondition;
+import com.sun.swffsp.dto.admin.param.base.PageQuery;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @date 2019/3/14 17:32
  */
 @Data
-public class UserCondition extends PageCondition implements Serializable {
+public class UserQuery extends PageQuery implements Serializable {
 
     /**
      * 用户名关键字

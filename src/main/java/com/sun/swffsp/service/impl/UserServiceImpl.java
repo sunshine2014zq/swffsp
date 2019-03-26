@@ -1,7 +1,7 @@
 package com.sun.swffsp.service.impl;
 
 import com.google.gson.Gson;
-import com.sun.swffsp.dto.admin.query.UserCondition;
+import com.sun.swffsp.dto.admin.param.UserQuery;
 import com.sun.swffsp.dto.admin.result.FieldErrorsResult;
 import com.sun.swffsp.dto.admin.result.UserInfoResult;
 import com.sun.swffsp.dto.core.PrivilegeDto;
@@ -96,7 +96,7 @@ public class UserServiceImpl extends BaseService<UserDto> implements UserService
     }
 
     @Override
-    public Page<UserDto> list(UserCondition condition) {
+    public Page<UserDto> list(UserQuery condition) {
         Pageable pageable = PageRequest.of(condition.getPage(), condition.getSize(),
                 Sort.Direction.DESC, "createdTime");
         Page<UserDto> list = userRepository.findAll((Specification<UserDto>) (root, criteriaQuery, criteriaBuilder) -> {
