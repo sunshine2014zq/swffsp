@@ -3,6 +3,7 @@ package com.sun.swffsp.security;
 import com.google.gson.Gson;
 import com.sun.swffsp.dto.admin.result.base.Response;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
@@ -26,7 +27,8 @@ public class CustomAuthenticationFailureHandler extends ExceptionMappingAuthenti
 
             //JSON请求处理返回JSON
             httpServletResponse.setContentType("application/json;charset=utf-8");
-            String message = e instanceof UsernameNotFoundException ? "账号或密码错误" : e.getMessage();
+            String message = (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException) ?
+                    "账号或密码错误" : "登录异常";
             String str = new Gson().toJson(Response.fail(message));
             httpServletResponse.getWriter().println(str);
         } else {
