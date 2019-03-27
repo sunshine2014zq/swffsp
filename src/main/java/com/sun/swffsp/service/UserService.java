@@ -1,5 +1,6 @@
 package com.sun.swffsp.service;
 
+import com.sun.swffsp.dto.admin.param.PwdChangeParam;
 import com.sun.swffsp.dto.admin.param.UserQuery;
 import com.sun.swffsp.dto.admin.result.UserInfoResult;
 import com.sun.swffsp.dto.admin.result.base.Response;
@@ -57,4 +58,11 @@ public interface UserService extends UserDetailsService {
      */
     List<RoleDto> roles();
 
+    /**
+     * 修改密码
+     *
+     * @param param
+     * @return
+     */
+    Response pwdChange(PwdChangeParam param);
 }

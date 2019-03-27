@@ -1,6 +1,7 @@
 package com.sun.swffsp.service.impl;
 
 import com.google.gson.Gson;
+import com.sun.swffsp.dto.admin.param.PwdChangeParam;
 import com.sun.swffsp.dto.admin.param.UserQuery;
 import com.sun.swffsp.dto.admin.result.FieldErrorsResult;
 import com.sun.swffsp.dto.admin.result.UserInfoResult;
@@ -160,6 +161,22 @@ public class UserServiceImpl extends BaseService<UserDto> implements UserService
                 (root, query, criteriaBuilder) ->
                         criteriaBuilder.equal(root.get("status"), RoleDto.STATUS_NORMAL));
         return roles;
+    }
+
+    @Override
+    public Response pwdChange(PwdChangeParam param) {
+        //验证旧密码
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDto user = userRepository.findByUsername(name);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        boolean result = encoder.matches(param.getOldPwd(), user.getPassword());
+        if (!result) {
+            //旧密码不正确
+            return Response.fail("旧密码不正确");
+        }
+        user.setPassword(encoder.encode(param.getNewPwd()));
+        userRepository.save(user);
+        return Response.success("修改成功");
     }
 
     /**

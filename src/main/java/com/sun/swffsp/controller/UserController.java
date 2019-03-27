@@ -1,5 +1,6 @@
 package com.sun.swffsp.controller;
 
+import com.sun.swffsp.dto.admin.param.PwdChangeParam;
 import com.sun.swffsp.dto.admin.param.UserQuery;
 import com.sun.swffsp.dto.admin.result.base.Response;
 import com.sun.swffsp.dto.core.RoleDto;
@@ -24,7 +25,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserService securityService;
+    private UserService userService;
 
     /**
      * 用户信息
@@ -33,7 +34,7 @@ public class UserController {
      */
     @RequestMapping("/info")
     public Object userInfo() {
-        return Response.success().data(securityService.info());
+        return Response.success().data(userService.info());
     }
 
     /**
@@ -44,7 +45,7 @@ public class UserController {
      */
     @RequestMapping("/list")
     public Object list(@RequestBody UserQuery condition) {
-        Page<UserDto> list = securityService.list(condition);
+        Page<UserDto> list = userService.list(condition);
         return Response.success().data(list);
     }
 
@@ -56,7 +57,7 @@ public class UserController {
      */
     @RequestMapping("/save")
     public Object save(@RequestBody UserDto user) {
-        return securityService.save(user);
+        return userService.save(user);
     }
 
     /**
@@ -67,10 +68,19 @@ public class UserController {
      */
     @RequestMapping("/delete")
     public Object delete(@RequestBody List<String> ids) {
-        return securityService.delete(ids);
+        return userService.delete(ids);
     }
 
-
+    /**
+     * 修改密码
+     *
+     * @param param
+     * @return
+     */
+    @RequestMapping("/pwdChange")
+    public Object pwdChange(@RequestBody PwdChangeParam param) {
+        return userService.pwdChange(param);
+    }
 
 
 
@@ -90,7 +100,7 @@ public class UserController {
      */
     @RequestMapping("/roles")
     public Object roles() {
-        List<RoleDto> roles = securityService.roles();
+        List<RoleDto> roles = userService.roles();
         return Response.success().data(roles);
     }
 
