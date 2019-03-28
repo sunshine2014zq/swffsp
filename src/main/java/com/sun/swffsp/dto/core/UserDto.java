@@ -25,7 +25,7 @@ import java.util.List;
 @Entity
 @Data
 @ToString(exclude = {"roles"})
-public class UserDto extends BaseDto implements Serializable, UserDetails {
+public class UserDto extends BaseDto implements UserDetails {
 
     /**
      * 用户名

@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Table(name = "privilege")
 @Entity
 @Data
-public class PrivilegeDto extends BaseDto implements Serializable {
+public class PrivilegeDto extends BaseDto {
 
     /**
      * 权限代码

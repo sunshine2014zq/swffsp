@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "role")
 @Data
 @ToString(exclude = {"privileges"})
-public class RoleDto extends BaseDto implements Serializable {
+public class RoleDto extends BaseDto {
 
     /**
      * 角色代码
